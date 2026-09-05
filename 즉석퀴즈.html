@@ -1,0 +1,1080 @@
+<title>즉석 퀴즈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#e4eaef;
+    --surface:#ffffff;
+    --surface-muted:#eef2f6;
+    --ink:#1b2733;
+    --ink-muted:#5c6b79;
+    --border:#c9d3da;
+    --accent:#24437a;
+    --accent-strong:#17325c;
+    --accent-soft:#dce6f5;
+    --correct:#1f7a4d;
+    --correct-soft:#dff3e7;
+    --wrong:#b8342f;
+    --wrong-soft:#fbe3e1;
+    --easy:#2e8b57;
+    --medium:#c57f1d;
+    --hard:#b8342f;
+    --shadow:0 12px 32px rgba(23,37,58,0.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10161d;
+      --surface:#1a222b;
+      --surface-muted:#212b35;
+      --ink:#e7ecf1;
+      --ink-muted:#93a2af;
+      --border:#2e3944;
+      --accent:#6e9ee0;
+      --accent-strong:#8fb4ec;
+      --accent-soft:#1f3350;
+      --correct:#4fbe85;
+      --correct-soft:#163826;
+      --wrong:#e5726b;
+      --wrong-soft:#3a1d1c;
+      --easy:#4fbe85;
+      --medium:#e0a63e;
+      --hard:#e5726b;
+      --shadow:0 12px 32px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10161d;
+    --surface:#1a222b;
+    --surface-muted:#212b35;
+    --ink:#e7ecf1;
+    --ink-muted:#93a2af;
+    --border:#2e3944;
+    --accent:#6e9ee0;
+    --accent-strong:#8fb4ec;
+    --accent-soft:#1f3350;
+    --correct:#4fbe85;
+    --correct-soft:#163826;
+    --wrong:#e5726b;
+    --wrong-soft:#3a1d1c;
+    --easy:#4fbe85;
+    --medium:#e0a63e;
+    --hard:#e5726b;
+    --shadow:0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans KR", -apple-system, "Malgun Gothic", sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:28px 16px 48px;
+  }
+  .app{
+    width:100%;
+    max-width:440px;
+  }
+  .brand{
+    text-align:center;
+    margin-bottom:18px;
+  }
+  .brand h1{
+    font-family:"Gowun Batang", "Noto Serif KR", serif;
+    font-size:clamp(24px,6vw,30px);
+    margin:0 0 4px;
+    text-wrap:balance;
+  }
+  .brand p{
+    margin:0;
+    color:var(--ink-muted);
+    font-size:14px;
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:24px 20px;
+  }
+  .screen{ }
+  .screen[hidden]{ display:none; }
+
+  label.field-label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink-muted);
+    margin:0 0 8px;
+    letter-spacing:0.02em;
+  }
+  .diff-group{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin:14px 0 20px;
+  }
+  .diff-btn{
+    font:inherit;
+    font-size:14px;
+    font-weight:700;
+    padding:10px 4px;
+    border-radius:11px;
+    border:1.5px solid var(--border);
+    background:var(--surface-muted);
+    color:var(--ink-muted);
+    cursor:pointer;
+    transition:transform .1s ease, border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .diff-btn:active{ transform:scale(0.97); }
+  .diff-btn[data-selected="true"][data-level="쉬움"]{ border-color:var(--easy); color:var(--easy); background:color-mix(in srgb, var(--easy) 12%, var(--surface-muted)); }
+  .diff-btn[data-selected="true"][data-level="보통"]{ border-color:var(--medium); color:var(--medium); background:color-mix(in srgb, var(--medium) 12%, var(--surface-muted)); }
+  .diff-btn[data-selected="true"][data-level="어려움"]{ border-color:var(--hard); color:var(--hard); background:color-mix(in srgb, var(--hard) 12%, var(--surface-muted)); }
+
+  .unit-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin:14px 0 20px;
+  }
+  .unit-btn{
+    text-align:left;
+    font:inherit;
+    font-size:14.5px;
+    font-weight:700;
+    padding:12px 14px;
+    border-radius:12px;
+    border:1.5px solid var(--border);
+    background:var(--surface-muted);
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .unit-btn:hover{ border-color:var(--accent); }
+  .unit-btn:focus-visible{ outline:3px solid var(--accent-soft); outline-offset:1px; }
+  .unit-btn[data-selected="true"]{
+    border-color:var(--accent);
+    color:var(--accent-strong);
+    background:var(--accent-soft);
+  }
+
+  .primary-btn{
+    width:100%;
+    font:inherit;
+    font-size:16px;
+    font-weight:700;
+    padding:14px;
+    border-radius:13px;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease, opacity .15s ease;
+  }
+  .primary-btn:hover:not(:disabled){ background:var(--accent-strong); }
+  .primary-btn:active:not(:disabled){ transform:scale(0.98); }
+  .primary-btn:disabled{ opacity:0.5; cursor:not-allowed; }
+  .primary-btn:focus-visible{ outline:3px solid var(--accent-soft); outline-offset:2px; }
+
+  .text-link{
+    display:block;
+    width:100%;
+    text-align:center;
+    background:none;
+    border:none;
+    font:inherit;
+    font-size:14px;
+    font-weight:700;
+    color:var(--ink-muted);
+    padding:12px 4px 2px;
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .text-link:focus-visible{ outline:2px solid var(--accent-soft); border-radius:6px; }
+
+  .notice{
+    font-size:13px;
+    line-height:1.5;
+    padding:12px 14px;
+    border-radius:11px;
+    margin-bottom:16px;
+  }
+  .notice.warn{ background:var(--wrong-soft); color:var(--wrong); }
+  .notice[hidden]{ display:none; }
+
+  /* Loading screen */
+  .loading-wrap{
+    text-align:center;
+    padding:20px 4px 6px;
+  }
+  .spinner{
+    width:44px;height:44px;
+    margin:4px auto 18px;
+    border-radius:50%;
+    border:4px solid var(--surface-muted);
+    border-top-color:var(--accent);
+    animation:spin 0.9s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .spinner{ animation-duration:2.4s; }
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .loading-wrap h2{
+    font-family:"Gowun Batang", serif;
+    font-size:19px;
+    margin:0 0 6px;
+  }
+  .loading-wrap p{
+    color:var(--ink-muted);
+    font-size:13px;
+    margin:0 0 22px;
+  }
+
+  /* Quiz screen */
+  .progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:6px;
+  }
+  .progress-count{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .dots{
+    display:flex;
+    gap:6px;
+  }
+  .dot{
+    width:9px;height:9px;border-radius:50%;
+    border:1.5px solid var(--border);
+    background:transparent;
+  }
+  .dot[data-state="current"]{ border-color:var(--accent); background:var(--accent); }
+  .dot[data-state="correct"]{ border-color:var(--correct); background:var(--correct); }
+  .dot[data-state="wrong"]{ border-color:var(--wrong); background:var(--wrong); }
+
+  .question-text{
+    font-family:"Gowun Batang", serif;
+    font-size:clamp(18px,4.4vw,21px);
+    line-height:1.5;
+    margin:14px 0 18px;
+    text-wrap:balance;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .option-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-align:left;
+    font:inherit;
+    font-size:15px;
+    padding:13px 14px;
+    border-radius:13px;
+    border:1.5px solid var(--border);
+    background:var(--surface-muted);
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option-btn:hover:not(:disabled){ border-color:var(--accent); }
+  .option-btn:focus-visible{ outline:3px solid var(--accent-soft); outline-offset:1px; }
+  .option-letter{
+    flex:none;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:700;color:var(--ink-muted);
+  }
+  .option-btn:disabled{ cursor:default; }
+  .option-btn[data-mark="correct"]{ border-color:var(--correct); background:var(--correct-soft); }
+  .option-btn[data-mark="correct"] .option-letter{ border-color:var(--correct); color:var(--correct); background:var(--surface); }
+  .option-btn[data-mark="wrong"]{ border-color:var(--wrong); background:var(--wrong-soft); }
+  .option-btn[data-mark="wrong"] .option-letter{ border-color:var(--wrong); color:var(--wrong); background:var(--surface); }
+  .option-btn[data-mark="dim"]{ opacity:0.55; }
+
+  .explain-box{
+    display:flex;
+    gap:9px;
+    align-items:flex-start;
+    font-size:13.5px;
+    line-height:1.55;
+    padding:12px 13px;
+    border-radius:12px;
+    background:var(--surface-muted);
+    color:var(--ink-muted);
+    margin:14px 0 4px;
+  }
+  .explain-box[hidden]{ display:none; }
+  .explain-tag{
+    flex:none;
+    font-weight:900;
+    font-size:12px;
+    padding:2px 8px;
+    border-radius:999px;
+  }
+  .explain-tag.correct{ background:var(--correct-soft); color:var(--correct); }
+  .explain-tag.wrong{ background:var(--wrong-soft); color:var(--wrong); }
+
+  .next-btn{
+    margin-top:16px;
+  }
+  .next-btn[hidden]{ display:none; }
+
+  /* Result screen */
+  .score-wrap{
+    text-align:center;
+    padding:6px 0 4px;
+  }
+  .score-wrap .topic-line{
+    font-size:13px;
+    color:var(--ink-muted);
+    margin:0 0 10px;
+  }
+  .score-num{
+    font-family:"Gowun Batang", serif;
+    font-size:52px;
+    font-variant-numeric:tabular-nums;
+    color:var(--accent);
+    margin:0;
+    line-height:1;
+  }
+  .score-label{
+    font-size:14px;
+    color:var(--ink-muted);
+    margin:6px 0 20px;
+  }
+  .review-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin:4px 0 20px;
+  }
+  .review-item{
+    border:1.5px solid var(--border);
+    border-radius:13px;
+    padding:13px 14px;
+  }
+  .review-head{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    font-size:14.5px;
+    font-weight:700;
+    margin-bottom:8px;
+    line-height:1.4;
+  }
+  .review-mark{
+    flex:none;
+    width:20px;height:20px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:900;color:#fff;
+    margin-top:1px;
+  }
+  .review-mark.correct{ background:var(--correct); }
+  .review-mark.wrong{ background:var(--wrong); }
+  .review-answer{
+    font-size:13px;
+    color:var(--ink-muted);
+    margin:0 0 6px;
+  }
+  .review-answer b{ color:var(--ink); font-weight:700; }
+  .review-explain{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--ink-muted);
+    margin:0;
+    padding-top:8px;
+    border-top:1px dashed var(--border);
+  }
+
+  .footer-note{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--ink-muted);
+    margin-top:16px;
+    opacity:0.8;
+  }
+
+  .secondary-btn{
+    width:100%;
+    font:inherit;
+    font-size:15px;
+    font-weight:700;
+    padding:12px;
+    border-radius:13px;
+    border:1.5px solid var(--accent);
+    background:transparent;
+    color:var(--accent);
+    cursor:pointer;
+    margin-bottom:10px;
+    transition:background .15s ease, transform .1s ease, opacity .15s ease;
+  }
+  .secondary-btn:hover:not(:disabled){ background:var(--accent-soft); }
+  .secondary-btn:active:not(:disabled){ transform:scale(0.98); }
+  .secondary-btn:disabled{ opacity:0.55; cursor:not-allowed; }
+  .secondary-btn[hidden]{ display:none; }
+
+  /* 오답노트 화면 */
+  .notes-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .icon-btn{
+    flex:none;
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1.5px solid var(--border);
+    background:var(--surface-muted);
+    color:var(--ink);
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon-btn:focus-visible{ outline:3px solid var(--accent-soft); }
+  .notes-header h2{
+    flex:1;
+    font-family:"Gowun Batang", serif;
+    font-size:19px;
+    margin:0;
+  }
+  .clear-link{
+    flex:none;
+    background:none;
+    border:none;
+    font:inherit;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--wrong);
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    padding:4px 0;
+  }
+  .clear-link[hidden]{ display:none; }
+  .notes-empty{
+    text-align:center;
+    color:var(--ink-muted);
+    font-size:13.5px;
+    padding:32px 8px;
+    line-height:1.6;
+  }
+  .notes-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .note-item{
+    border:1.5px solid var(--border);
+    border-radius:13px;
+    padding:13px 14px;
+  }
+  .note-meta{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .note-tag{
+    font-size:11.5px;
+    font-weight:900;
+    padding:2px 8px;
+    border-radius:999px;
+    background:var(--surface-muted);
+  }
+  .note-date{
+    flex:1;
+    font-size:11.5px;
+    color:var(--ink-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .note-del{
+    flex:none;
+    background:none;
+    border:none;
+    color:var(--ink-muted);
+    font-size:15px;
+    line-height:1;
+    cursor:pointer;
+    padding:2px 4px;
+  }
+  .note-del:hover{ color:var(--wrong); }
+  .note-question{
+    font-size:14.5px;
+    font-weight:700;
+    line-height:1.45;
+    margin:0 0 6px;
+  }
+  .note-answer{
+    font-size:13px;
+    color:var(--ink-muted);
+    margin:0 0 6px;
+  }
+  .note-answer b{ color:var(--ink); font-weight:700; }
+  .note-explain{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--ink-muted);
+    margin:0;
+    padding-top:8px;
+    border-top:1px dashed var(--border);
+  }
+</style>
+
+<div class="app">
+  <div class="brand">
+    <h1>즉석 퀴즈</h1>
+    <p>『현대사회와 윤리』 Ⅱ. 생명윤리와 생태윤리 범위에서만 문제를 만들어드려요</p>
+  </div>
+
+  <div class="card">
+
+    <!-- 1) 입력 화면 -->
+    <section id="screen-start" class="screen">
+      <div id="notice-start" class="notice warn" hidden></div>
+
+      <label class="field-label">단원 선택</label>
+      <div class="unit-group" id="unit-group">
+        <button type="button" class="unit-btn" data-unit="u1" data-selected="true">01. 삶과 죽음의 윤리</button>
+        <button type="button" class="unit-btn" data-unit="u2">02. 사랑과 성 윤리</button>
+        <button type="button" class="unit-btn" data-unit="u3">03. 자연과 윤리</button>
+      </div>
+
+      <label class="field-label" style="margin-top:18px;">난이도</label>
+      <div class="diff-group" id="diff-group">
+        <button type="button" class="diff-btn" data-level="쉬움">쉬움</button>
+        <button type="button" class="diff-btn" data-level="보통" data-selected="true">보통</button>
+        <button type="button" class="diff-btn" data-level="어려움">어려움</button>
+      </div>
+
+      <button type="button" id="gen-btn" class="primary-btn" disabled>준비 중...</button>
+      <button type="button" id="notes-link" class="text-link" hidden>오답노트 보기</button>
+    </section>
+
+    <!-- 2) 로딩 화면 -->
+    <section id="screen-loading" class="screen" hidden>
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <h2>문제를 만드는 중이에요</h2>
+        <p id="loading-topic"></p>
+        <button type="button" id="cancel-btn" class="text-link">취소</button>
+      </div>
+    </section>
+
+    <!-- 3) 퀴즈 풀이 화면 -->
+    <section id="screen-quiz" class="screen" hidden>
+      <div class="progress-row">
+        <span class="progress-count" id="progress-count">문항 1/5</span>
+        <div class="dots" id="dots"></div>
+      </div>
+      <p class="question-text" id="question-text"></p>
+      <div class="options" id="options"></div>
+      <div class="explain-box" id="explain-box" hidden>
+        <span class="explain-tag" id="explain-tag"></span>
+        <span id="explain-text"></span>
+      </div>
+      <button type="button" id="next-btn" class="primary-btn next-btn" hidden>다음 문제</button>
+    </section>
+
+    <!-- 4) 결과 화면 -->
+    <section id="screen-result" class="screen" hidden>
+      <div class="score-wrap">
+        <p class="topic-line" id="result-topic"></p>
+        <p class="score-num"><span id="score-num">0</span><span style="font-size:22px;">/5</span></p>
+        <p class="score-label" id="score-label"></p>
+      </div>
+      <div class="review-list" id="review-list"></div>
+      <button type="button" id="save-notes-btn" class="secondary-btn" hidden>오답노트에 저장</button>
+      <button type="button" id="retry-btn" class="primary-btn">다시 풀기</button>
+      <button type="button" id="restart-btn" class="text-link">다른 단원 선택하기</button>
+    </section>
+
+    <!-- 5) 오답노트 화면 -->
+    <section id="screen-notes" class="screen" hidden>
+      <div class="notes-header">
+        <button type="button" id="notes-back-btn" class="icon-btn" aria-label="뒤로">←</button>
+        <h2>오답노트</h2>
+        <button type="button" id="notes-clear-btn" class="clear-link" hidden>모두 지우기</button>
+      </div>
+      <div id="notes-list"></div>
+    </section>
+
+  </div>
+  <p class="footer-note">문제는 『현대사회와 윤리』(해냄에듀) Ⅱ단원 본문을 근거로 Claude가 생성하며, 실제와 다를 수 있어요.</p>
+</div>
+
+<script>
+(function(){
+  var unitGroup = document.getElementById('unit-group');
+  var diffGroup = document.getElementById('diff-group');
+  var genBtn = document.getElementById('gen-btn');
+  var noticeStart = document.getElementById('notice-start');
+  var cancelBtn = document.getElementById('cancel-btn');
+  var loadingTopic = document.getElementById('loading-topic');
+  var progressCount = document.getElementById('progress-count');
+  var dotsEl = document.getElementById('dots');
+  var questionText = document.getElementById('question-text');
+  var optionsEl = document.getElementById('options');
+  var explainBox = document.getElementById('explain-box');
+  var explainTag = document.getElementById('explain-tag');
+  var explainText = document.getElementById('explain-text');
+  var nextBtn = document.getElementById('next-btn');
+  var resultTopic = document.getElementById('result-topic');
+  var scoreNum = document.getElementById('score-num');
+  var scoreLabel = document.getElementById('score-label');
+  var reviewList = document.getElementById('review-list');
+  var retryBtn = document.getElementById('retry-btn');
+  var restartBtn = document.getElementById('restart-btn');
+  var notesLink = document.getElementById('notes-link');
+  var saveNotesBtn = document.getElementById('save-notes-btn');
+  var notesBackBtn = document.getElementById('notes-back-btn');
+  var notesClearBtn = document.getElementById('notes-clear-btn');
+  var notesListEl = document.getElementById('notes-list');
+
+  var screens = {
+    start: document.getElementById('screen-start'),
+    loading: document.getElementById('screen-loading'),
+    quiz: document.getElementById('screen-quiz'),
+    result: document.getElementById('screen-result'),
+    notes: document.getElementById('screen-notes')
+  };
+
+  var sampleFn = null;
+  var dbApi = null;
+  var notesUnsub = null;
+  var UNITS = {"u1":{"title":"01. 삶과 죽음의 윤리","text":"삶과 죽음에 대한 다양한 관점 인간은 누구나 출생과 죽음을 경험한다. 출생이란 생물학적으로는 부모의 유전 자를 물려받은 태아가 모체로부터 독립하여 새로운 생명체로 태어나는 것을 말한 다. 개인적으로는 인간으로서의 삶을 영위하는 출발점이다. 개인은 출생 이후 점차 정신적·신체적으로 독립하는 과정을 통해 자아를 실현하고 도덕적 주체로 성장해 간다. 사회적으로는 공동체의 구성원으로 살아가는 사회적 삶의 시작이다. 출생과 동시에 개인은 사회의 일원으로 다양한 인간관계를 형성하며 사회적 역할을 수행 한다. 또한 출생은 세대 간의 연결과 사회의 지속을 의미 한다. 새로운 세대가 태어남으로써 사회가 존속할 수 있으며, 이전 세대의 문화적 소산이 다음 세대로 계 승된다. 출생 및 죽음의 의미와 삶의 가치 만약 자신이 단 하나의 기억만을 간직할 수 있다면 어떤 순간을 선택할까? 그 이유는? 영화 ‘원더풀 라이프’는 죽은 이들이 저승으로 가기 전 머물게 되는 ‘림보’라는 곳을 배경으로 진행된다. ‘림보’에 도착한 사람들은 그곳에 머무는 일주일 동안 자신의 삶에 서 저승으로 가지고 갈 단 하나의 기억을 골라야 한다. 그러면 ‘림보’의 직원들이 그 기 억을 재현해 영상으로 만드는 작업을 한다. 그러나 기억을 고르는 과정은 순탄치 않 다. 어떤 사람들은 행복했던 기억이 너무 많아 고를 수 없다고 하고, 어떤 사람은 고만 고만한 삶을 살아서 고를 수 있는 행복한 기억이 없다고 말한다. •삶과 죽음의 의미를 동서양 윤리의 입장에서 이해할 수 있다. •삶의 소중함을 깨닫고 삶의 의미를 성찰할 수 있다. 학습 목표 1 삶과 죽음의 윤리 01 ▼ 영화 ‘원더풀 라이프’ ◀ 우리나라는 아기가 태어나면 대문의 양쪽 기둥 사이에 금줄을 가로로 걸어 아기의 출산을 알리고, 외부인의 출입을 금하는 풍습이 있었다. 그리고 아기가 태어난 지 1년이 되면 돌잔치를 열어 장수를 기원하였다. 주제 열기 ◀ 현대의 돌잔치 36 II. II. 생명윤리와 생태윤리 생명윤리와 생태윤리 이렇게 출생으로부터 시작한 인간의 삶은 죽음으로 끝을 맺는다. 그 누구도 죽음 을 피해 갈 수는 없다. 하지만 죽음은 단지 삶이 끝나는 것만을 의미하지는 않으며, 한 번뿐인 삶의 소중함을 깨닫는 계기가 되기도 한다. 죽음을 자각함으로써 어떻게 살아야 할지를 고민하고, 삶의 의미를 성찰하게 되기 때문이다. 그렇다면 동서양의 사상가들은 삶과 죽음을 어떻게 바라보았을까? 공자는 죽음에 관해 묻는 질문에 “삶도 제대로 알지 못하는데 어찌 죽음을 알겠 느냐?”라고 답하며, 죽음보다 현세에서 도덕적 삶을 사는 것이 중요하다고 강조하 였다. 동시에 제자의 죽음에 슬퍼하는 모습을 보이며, 사회적 규범인 예(禮)에 따라 애도하는 마음을 표현해야 한다고 하였다. 불교에서는 윤회설(輪回說)에 기초하여 해탈하기 이전까지 삶과 죽음이 끊임없 이 반복된다고 본다. 삶과 죽음은 하나로 연결되며, 현재의 삶에서 쌓은 업(業)에 따라 내세(來世)의 삶이 결정된다는 것이다. 그러면서 본래의 자기 모습을 깨달아 윤회의 고통에서 벗어날 것을 강조하였다. 장자는 삶과 죽음을 차별하지 않는 삶의 태도를 강조하였다. 기(氣)가 모여 삶이 되고, 기가 흩어져 죽음이 되는 것은 사계절의 운행과도 같은 자연스러운 현상이므 로 죽음을 슬퍼할 필요가 없다는 것이다. 플라톤은 죽음을 영혼이 육체에서 벗어나 이데아의 세계로 가는 것이라고 보았 다. 그는 몸이라는 굴레에 묶인 인간은 사물을 올바르게 바라보지 못하고, 영혼이 몸에서 해방되어야 순수한 정신세계에서 행복을 누릴 수 있다고 주장하였다. 에피쿠로스(Epicouros, B.C. 341~B.C. 270)는 죽음 앞에서 두려워하지 말고 마 음의 평온을 누리며 살 것을 주장하였다. 그에 따르면 죽음이란 몸과 영혼을 구성 장자와 플라톤의 죽음관 • 삶은 죽음과 같은 무리요, 죽음이란 삶의 시작이니, 어찌 그 근본 이유를 알 수 있으리오. 사람의 삶이란 기의 모임이니, 기가 모이면 곧 살아 있는 것이요, 기가 흩어지면 곧 죽는 것이다. 삶과 죽음이 서로를 뒤따르는 것이라면, 나는 또 무엇을 근심하겠는가? - 장자, 『장자』 • 우리가 순수한 인식을 하려면 육체를 떠나야 한다는 것은 분명한 사실이라고 할 수 있네. 영혼이 그 자체로 돌아가야 사물을 올바로 볼 수 있네. 이렇게 될 때 비로소 우리가 추구하는 지혜에 도달할 수 있을 걸세. 지혜에 도달하게 되는 것은 우리가 생존하고 있는 동 안이 아니고, 죽은 후의 일일 걸세. 영혼이 육체와 함께 있는 동안, 순수한 인식을 할 수 없다면 우리는 전혀 인식할 수 없든가, 또는 죽은 후에야 인식할 수 있을 게 아닌가? 그때서야 비로소 영혼은 육체를 떠나 독립하게 될 것이며, 그때까지는 그렇게 될 수 없을 것 이 아닌가? - 플라톤, 『파이돈』 생각을 더하는 자 / 료 / 읽 / 기 장자는 삶과 죽음이 사계절의 운행과 같이 자연스러운 순환 과정이라고 보았다. 그는 이상적 인간인 진인(眞人)은 이러한 자연의 흐름을 깨달 아 삶과 죽음을 하나로 여기고 차별하지 않는다고 보았다. 플라톤은 죽음 이후에 영혼이 육체의 속박으로부터 해방되어 사물의 참된 실재를 인식할 수 있다고 주장하였다. 해설 이데아 감각으로 인식할 수 있는 불완전한 현상계와 달리, 이성으로 파악 가능한 사물의 실재이자 원형을 의미한다. 플라톤(Platon, B.C. 427~ B.C. 347) 고대 그리스의 철학자이자 소크라 테스의 제자로, 『변론』 등의 대화편 을 저술하였다. 01. 삶과 죽음의 윤리 37 37 하고 있던 원자들이 개별 원자로 흩어지는 것이다. 그리고 죽음 이후에는 고통을 경험할 수 있는 감각이 없다. 그래서 그는 죽음은 살아 있는 동안에는 오지 않은 것 이며, 죽음이 오면 인간은 이미 존재하지 않으므로 죽음은 두려워해야 할 대상이 아 니라고 주장하였다. 현대 실존주의 사상가들은 죽음에 대한 자각을 통해 주체적 삶을 살아갈 것을 주 장하였다. 하이데거는 인간만이 죽음을 인지할 수 있는 현존재임을 강조하며, 죽음 앞으로 미리 달려가 봄으로써 자신의 죽음을 직시할 때 참된 본래적 실존을 회복할 수 있다고 보았다. 야스퍼스는 죽음을 고통, 투쟁, 책임과 같이 인간이 어떤 수단을 동원해도 피할 수 없는 한계 상황이라고 보았는데, 한계 상황을 직시하고 주체적 결단을 함으로써 참된 실존에 이를 수 있다고 주장하였다. 사르트르는 죽음이라는 현상이 우리의 인생을 유일한 것으로 만들며, 우리는 자신의 인생을 주체적으로 살 고 선택에 책임져야 한다고 강조하였다. 또한 인간은 자유롭도록 운명 지어진 존재 이므로, 자신의 선택을 통해 스스로를 형성하고 자신의 삶을 만들어 나가야 한다고 주장하였다. 삶의 소중함과 가치 우리는 평소 죽음에 대해 생각하지 않다가도 가까운 사람 혹은 유명인의 죽음을 겪으면 자신의 죽음에 대해서 생각해 보게 된다. 죽음이 나에게도 언 시시포스는 왜 자신의 운명을 사랑하게 되었을까? 인생이 살 만한 가치가 있느냐 없느냐를 판단하는 것이야말로 철학의 근본 문제에 답하는 것 이다. …… 시시포스가 되풀이해서 무의미하게 바위를 밀어 올리는 형벌처럼, 인생이 살 만한 보 람이 없기 때문에 자살한다는 것은 당연해 보이지만, 그것은 아무짝에도 쓸모가 없는 진리다. 삶 에 대한 이런 모욕과 부정은 과연 삶의 무의미에서 유래하는 것일까? 과연 부조리는 죽음을 명하 는 것인가? …… 이리하여 나는 부조리에서 세 가지 귀결을 이끌어 낸다. 그것은 바로 나의 반항, 나의 자유, 그리고 나의 열정이다. 오직 의식의 활동만을 통해서 나는 죽음으로의 초대였던 것을 삶의 법칙으로 바꾸어 놓는다. 나는 자살을 거부한다. 산꼭대기를 향한 투쟁만으로도 인간의 마 음을 채우기에 충분하다. 우리는 시시포스가 행복하다고 상상하여야 한다. - 카뮈, 『시지프 신화』 생각을 더하는 자 / 료 / 읽 / 기 『시지프 신화』는 신의 형벌을 받는 시시포스를 묘사한 것이다. 이를 통해 카뮈는 “아무것도 성취할 수 없는 일에 전 존재를 다 바쳐야 하는 형용할 수 없는 형벌”일지라도, 이를 회피하거나 부정하지 않고 직시함으로써 자신의 운명을 넘어서는 자를 그려 낸다. 자살로 삶의 고통을 회피하지 말고 삶과 세상의 부조리를 직면하여 자유롭고 열정적으로 삶을 마주하라고 주장한다. 해설 ▲ 시시포스(1548~1549), 티치아노 베 첼리오(Vecellio, T.) 하이데거(Heidegger, M., 1889~1976) 독일의 실존주의 철학자로, 『존재와 시간』 등을 저술하였다. 현존재 ‘거기에 있는’ 구체적 인간을 의미한 다. 하이데거는 다른 존재자와 구별 하여 인간을 지칭하는 용어로 사용 하였다. 야스퍼스(Jaspers, K., 1883~1969) 독일의 실존주의 철학자로 『세계관 의 심리학』 등을 저술하였다. ◀ 죽음은 삶의 소중함과 어떻게 살아가야 하는지를 깨닫는 계기가 된다. 사진은 가상으로 임종 체험을 하는 모습이다. II. 생명윤리와 생태윤리 38 제든지 일어날 수 있는 일이라는 것을 깨닫게 되는 것이다. 동시에 죽음에 이른다 는 사실에 슬퍼하거나 두려워하기도 한다. 그러나 삶의 유한함은 우리로 하여금 더 욱 소중하고 가치 있는 것을 선택하고, 주어진 시간을 후회 없이 살도록 노력하며, 사람들과의 관계에 더욱 집중하는 계기를 마련해 준다. 중요한 것은 삶이 유한하다 는 사실이 아니라, 그것에 대처하는 우리의 자세일 것이다. 삶이 유한하다는 사실을 인지하고 나면 남은 인생을 후회 없이 주체적으로 살아 야겠다고 다짐하게 된다. 죽음을 인식함으로써 인간이 지녀야 할 삶의 가치와 태도 를 성찰하게 되는 것이다. 이를 통해 삶과 죽음은 분리된 일이 아니라 연결된 삶의 과정임을 알 수 있다. 따라서 잘 살아간다는 것은 죽음에 대해 성찰함으로써 삶의 의미와 가치를 탐색하는 것이며, 어떻게 살 것인가에 대한 탐구는 곧 어떻게 죽을 것인지에 대한 대답이 될 수 있다. 몽테뉴가 “내가 공부를 한다면 그것은 잘 살고 잘 죽는 법을 배우기 위함이다.”라고 한 것처럼, 유한한 삶의 소중함을 깨닫고 삶의 의미와 가치에 대한 성찰을 바탕으로 주체적인 삶을 위해 노력해야 한다. ▲ 최근 들어 죽음을 대하는 사람들 의 인식이 변화하면서 자신의 죽음 을 주체적으로 준비하는 사례도 증 가하고 있다. 특히 죽음을 맞이하기 전 가까웠던 이들과 작별 인사를 나 누는 생전 장례식이 새롭게 등장하 였다. 윤리적 관점에서 성찰하기 ‘죽음’을 생각하는 것이 ‘삶’과 어떤 관계가 있을까? 탐 / 구 / 하 / 기 윤리 문제 1 다음 순서도를 따라가 보고, 도달한 질문에 대한 자기 생각을 말해 보자. 2 죽음을 인식하는 것이 현재의 삶에 어떤 의미가 있는지 친구들과 토의해 보자. 예 예 예 예 예 아니요 아니요 아니요 아니요 아니요 만약 나에게 가장 소중한 존재가 시한부라면, 그 대상과 어떤 시간을 보내겠는가? 유한한 삶의 장점은 무엇이고, 단점은 무엇인가? 내가 진짜로 원하는 삶은 무엇인가? 삶에서 ‘죽음’이 두려운 이유는 무엇인가? 영원한 삶의 장점과 단점은 무엇인가? 사람들이 부러워하는 삶은 어떤 삶인가? 인생은 짧기 때문에 많은 사람들이 부러워하는 삶을 살고 싶다. 불멸의 삶을 살 수 있다면 그 삶을 선택하겠다. 죽음을 상상하면 두렵다. ‘죽음’에 관해 생각해 본 적이 있다. 인간의 삶이 유한하다는 것은 삶을 아름답게 만들어 준다. 01. 삶과 죽음의 윤리 39 39 인공임신중절의 윤리적 쟁점 인공임신중절이란, 태아가 모체 밖에서는 생명을 유지할 수 없는 시기에 인공적 으로 태아를 모체에서 분리하여 임신을 종결하는 것을 의미한다. 인공임신중절에 대한 논쟁은 여성의 선택권을 우선하는 입장(pro-choice)과 태아의 생명권을 강조 하는 입장(pro-life)으로 나뉜다. 두 주장의 주요 논거는 다음과 같다. 인공임신중절 허용 논거 인공임신중절 반대 논거 • 태아는 여성 몸의 일부이므로 여성은 태아에 대한 권리를 지님 • 인간은 자기 신체에 대해서 자율적으로 선택할 권 리를 지님 • 여성은 남성과 동등한 권리를 누려야 하며, 이에 따라 인공임신중절 결정도 자유롭게 선택할 수 있 어야 함 •태아는 온전한 인간이라고 볼 수 없음 •태아는 온전한 인간이라고 볼 수 없음 •여성은 자기방어와 정당방위의 권리를 가짐 •여성은 자기방어와 정당방위의 권리를 가짐 • 모든 인간의 생명은 존엄하며, 태아도 인간이므로 인간의 지위와 생명에 대한 권리를 가짐 • 어떤 권리보다 생명권이 우선되므로, 여성의 선택 권보다 태아의 생명권이 우선되어야 함 • 잘못이 없는 인간을 해치는 것은 도덕적으로 옳지 못함 • 태아는 태어나서 한 사람의 성인으로 발달할 잠재 • 태아는 태어나서 한 사람의 성인으로 발달할 잠재 성이 있으므로 인간으로서의 지위를 지님 성이 있으므로 인간으로서의 지위를 지님 주제 열기 출생 및 죽음과 관련된 윤리적 쟁점 유전자 편집 기술을 활용하여 유전자를 조작한다면 사회에 어떤 영향을 미칠까? •출생 및 죽음과 관련된 윤리적 쟁점을 설명할 수 있다. •출생 및 죽음과 관련된 윤리적 쟁점에 대한 자신의 견해를 말할 수 있다. 학습 목표 2 삶과 죽음의 윤리 01 이 기술을 활용하면 유전 질환이 대물림되는 것을 막을 수 있어. 인체 DNA 유전자 코드를 하나하나 자유자재로 편집할 수 있 는 차세대 유전자 편집 기술이 탄생했다. 이 기술을 적용하면 현존하는 유전 질환 중 90%를 치료할 수 있을 것으로 기대된 다. 이 유전자 편집 기술은 기존 유전자 가위 기술보다 정확하 고 정밀하게 유전자를 교정할 수 있다. 05 유전자를 조작하여 하나의 상품처럼 아기를 맞춤 제작할 위험성도 있어. II. II. 생명윤리와 생태윤리 생명윤리와 생태윤리 ▼ 인공임신중절 처벌법 폐지를 찬 성하는 시민들과 반대하는 시민들 40 어느 시기부터 인간의 지위를 인정할 것인지에 대한 문제도 인공임신중절 논쟁 의 중요한 쟁점이다. 이에 대해서는 난자와 정자가 수정된 순간부터 인간으로 볼 수 있다는 견해에서, 태아가 모체에서 독립하여 스스로 생존할 수 있을 때 인간으 로 봐야 한다는 주장까지 다양한 의견이 있다. 그리고 어떤 입장을 지지하느냐에 따라 인공임신중절 허용 여부에 관한 입장이 달라질 수 있다. 만일 배아나 태아를 인간으로 여긴다면 인위적으로 임신을 중단시키는 것은 인간의 생명권을 침해하므 로 허용될 수 없다. 반면 태아를 온전한 인간으로 보지 않는다면 인공임신중절은 허 용될 수도 있다. 안락사의 윤리적 쟁점 안락사는 불치병으로 고통받는 환자의 고통을 덜어 주기 위해 인위적으로 생명 을 단축하는 행위를 의미한다. 일반적으로 안락사는 회복 가능성이 없는 환자가 죽 음 이외에는 고통을 이겨 낼 방법이 없는 경우를 전제하고 있다. 하지만 그렇더라 도 사람이 죽음에 이르도록 돕는 것이 윤리적으로 허용될 수 있느냐 하는 논쟁이 계속되고 있다. 안락사와 관련된 논쟁에서는 특히 인간이 자신의 죽음에 개입하고 선택할 수 있는지가 쟁점이 된다. 안락사를 허용해야 한다는 입장은 불치병에 걸린 환자가 자신의 죽음을 선택하 고 존엄하게 죽을 권리를 지닌다는 점을 근거로 제시한다. 또한 환자 및 보호자의 경제적·심리적 부담을 줄여 줄 수 있으며, 제한된 의료 자원을 효율적으로 사용할 수 있다는 점에서 사회 전체의 이익을 증진한다고 본다. 안락사를 반대하는 입장은 인간이 자신의 죽음을 인위적으로 선택할 권리가 없 다는 점을 강조한다. 또한 죽음을 인위적으로 앞당기는 행위는 자연적 질서에 어긋 나며, 인간의 생명을 수단으로만 여기는 행위라고 비판한다. 배아와 태아 배아는 정자와 난자가 만나 수정이 이루어진 이후 조직과 기관으로 분 화가 마무리되는 8주까지의 단계를 말한다. 그 이후부터 아기가 태어나 기까지를 태아라고 한다. 안락사의 종류 자발적 안락사: 환자의 동의 하에 시행하는 안락사 비자발적 안락사: 환자가 판 단 능력을 상실했거나 의식 이 없어 환자의 의사를 알 수 없는 경우 가족이나 국가의 요구에 따라 시행하는 안락사 환자의 동의 여부에 따라 적극적 안락사: 구체적인 행 위를 통해 환자를 죽음에 이 르게 하는 안락사 예 의사 조 력 자살 등 소극적 안락사: 의료 행위를 중단함으로써 죽음에 이르게 하는 안락사 예 연명 치료 중단 시술 수단의 적극성에 따라 헌법 재판소의 낙태죄 헌법 불합치 판결 자기 낙태죄 조항은 모자 보건법이 정한 일정한 예외를 제외하 고는 임신 기간 전체를 통틀어 모든 낙태를 전면적, 일률적으로 금지하고, 이를 위반할 경우 형벌을 부과하도록 정함으로써 임신 한 여성에게 임신의 유지, 출산을 강제하고 있으므로, 임신한 여 성의 자기 결정권을 제한한다. …… 임신, 출산, 육아는 여성의 삶 생각을 더하는 자 / 료 / 읽 / 기 출생에 대해 국가가 개입하고 이를 처벌하는 것이 여성의 선택권을 침해한다는 목소리가 높아지면서 2019년 4월 낙태죄가 헌법 불합치 판정 을 받았다. 판결문에 의하면, 임신한 여성에게 임신 기간 동안 낙태를 원칙적으로 금지하는 것은 여성의 자기 결정권을 보장하지 않는 것이다. 하지만 낙태죄 헌법 불합치 판결 이후에도 여전히 태아의 생명권과 임신한 여성의 자기 결정권에 대한 의견이 대립하는 상황이어서 법률안 개 정도 이루어지지 않은 상태이다. 해설 에 근본적이고 결정적인 영향을 미칠 수 있는 중요한 문제이므 로, 임신한 여성이 임신을 유지 또는 종결할 것인지를 결정하는 것은 스스로 선택한 인생관, 사회관을 바탕으로 자신이 처한 신 체적, 심리적, 사회적, 경제적 상황에 대해 깊이 고민한 결과를 반 영하는 결정이다. - 헌법 재판소, 2019. 4. 11. 01. 삶과 죽음의 윤리 41 41 자살의 윤리적 문제 사람들은 신체적·정신적 고통에서 벗어나기 위해 스스로 목 숨을 끊기도 한다. 어떤 사람들은 자기 신체에 대한 결정권을 근 거로 자살을 이해하기도 한다. 그러나 대부분의 사람들은 자살이 도덕적으로 옳지 않다는 점에 동의할 것이다. 자살은 가족이나 친 구 등 주변 사람에게 큰 슬픔을 줄 뿐 아니라, 사회적인 문제가 될 수 있기 때문이다. 더욱이 자살은 자신의 고통과 문제를 근본적으 로 해결할 수 있는 방법이 아니다. 자신보다 더 큰 고통 속에서도 긍정적인 자세로 자신의 삶을 이어 가는 사람들이 있음을 생각하 면서 고통을 극복하기 위해 노력해야 할 것이다. 유교는 자살이 부모로부터 물려받은 소중한 신체를 훼손하는 것이므로 효에 어 긋난다고 보며, 불교는 불살생(不殺生)을 계율로 삼고 자신을 포함한 모든 생명을 해치는 것을 금지한다. 아퀴나스는 자살이 자신의 생명을 보존하고자 하는 자연적 성향에 어긋날 뿐 아니라 공동체를 훼손하고 신을 거스르는 행위라고 비판하였다. 칸트는 자살이 고통을 피하려고 자신의 인격을 한낱 수단으로 이용하는 것이므로 부도덕한 행위라고 지적하였다. 윤리적 관점에서 설명하기 자살일까, 사회적 타살일까? 탐 / 구 / 하 / 기 윤리 문제 (가) 개인적 상황은 자살 행위의 결정적인 원인이 아니다. 개인적 상황이 자살을 계획하는 데 있어서 가끔 중요한 역할을 한다고 해서 그것이 자살 원인이라는 증거가 되지는 못한다. 또한 자살률의 변동과 인종, 기후, 기온 등과 같이 신경 계통에 가장 큰 영향을 준 다고 여겨지는 자연환경 사이에도 아무런 상관관계가 없다는 것을 발견하였다. 생물학적, 물리적 특성과 자살과의 관계는 불명확 하고 애매하지만 사회적 환경과 자살의 관계는 직접적이고 일정하다. 어느 한 시기에 그 사회의 정신적 상태가 일시적인 자살의 빈도를 결정한다. 따라서 각 사회는 그 국민을 자살로 이끄는 일정한 양의 에너지로 이루어진 집단적인 힘을 가지고 있다. - 뒤르켐, 『자살론』 (나) 관광지에서 카페를 운영하던 20대 남성 A 씨는 신종 코로나바이러스 감염증(코로나19) 여파로 매출이 떨어지자 곳곳에서 돈을 빌리는 것도 모자라 물류 센터에서 아르바이트를 해야 했다. 심한 우울과 무기력증에 시달리던 A 씨는 결국 극단적인 선택을 했다. 정부가 코로나19로 인해 스스로 목숨을 끊은 29명을 ‘심리 부검’한 결과 이들의 가장 큰 스트레스 요인은 A 씨처럼 경제적 문제 였던 것으로 나타났다. 심리 부검이란 자살자의 유족과 지인의 진술을 통해 자살 원인을 분석하는 조사다. 보건 복지부는 19일 ‘2015∼2021년 심리 부검 면담 분석 결과’를 발표하면서 코로나19로 인한 자살자 심리 부검 결과를 공개했다. 이들 29명의 생전 스트레스 요인을 분석(복수 응답)한 결과 수입 감소와 파산 등 ‘경제적 문제’(23명)가 가장 큰 요인이었다. 구직과 실직, 과로 등 ‘직 업적 문제’(19명)가 그다음이었다. 이외에는 가족 관계(15명), 대인 관계(8명), 부부 관계(6명) 등의 순이었다. - 동아일보, 2022. 7. 20. 1 (가)의 입장에서 (나)에 나타난 자살 문제의 원인을 분석해 보자. 2 (가)의 입장을 바탕으로 (나)와 같은 문제를 극복하기 위한 국가의 역할을 탐구해 보자. 자살 예방 관련 기관 •한국 생명 존중 희망 재단 www.kfsp.or.kr •자살 예방 전문 상담 전화 13 93 •생명의 전화 1588-9191 • 정신 건강 위기 상담 전화 1577-0199 •청소년 상담 1388 경제 협력 개발 기구(OECD) 국가별 자살률 OECD, 2023년 II. 생명윤리와 생태윤리 42 뇌사의 윤리적 쟁점 생(生)과 사(死)를 구분하는 기준은 무엇일까? 전통적으로 죽음을 판정하는 기준 은 심장과 폐의 기능이 멈춘 심폐사로 여겨져 왔다. 그러나 현대에 들어 의학의 발 달로 심장과 폐의 기능을 인위적으로 연장할 수 있게 되면서 뇌사를 죽음의 판정 기준으로 허용해야 한다는 주장이 등장하였다. 뇌사에 이른 환자는 자발적 호흡이 불가능하며, 이후 심장이 정지하여 사망한다. 뇌사를 죽음의 판정 기준으로 인정해야 한다고 주장하는 사람들은 이 점에 주목하 여, 뇌사를 비가역적 죽음의 과정으로 본다. 이들은 뇌 기능의 정지가 인간 고유의 기능 상실을 의미한다는 점과 뇌사 판정 환자의 장기 기증으로 더욱 많은 생명을 구할 수 있다는 점을 근거로 뇌사를 인정해야 한다고 주장한다. 그러나 이를 반대하는 사람들은 장기 기증을 위해 뇌사를 죽음으로 인정하는 것 은 인간의 생명을 수단시하는 것이며, 이는 생명 경시 풍조를 불러일으킬 수 있다 고 우려한다. 또한 뇌사 판정 과정에서 오판의 가능성이 존재하기 때문에 뇌사를 죽음의 판정 기준으로 인정하면 안 된다고 주장한다. 유전자 복제 및 치료의 윤리적 쟁점 유전자 복제란 동일한 유전자를 지닌 새로운 생명체를 만드는 것을 의미한다. 인 간 유전자 복제는 배아 줄기세포를 얻기 위해 배아 단계까지만 복제를 진행하는 배 아 복제와 인간 개체를 복제하는 개체 복제로 구분할 수 있다. 배아 복제를 찬성하는 사람들은 줄기세포를 활용한 치료 효과에 주목한다. 이들 은 배아 줄기세포가 인체의 모든 조직으로 분화될 수 있어 난치병 치료에 효과적으 로 활용될 수 있다는 점을 강조한다. 그러나 이를 반대하는 사람들은 배아 줄기세 포를 얻는 데 필요한 난자를 채취하는 과정에서 여성의 인권과 건강권이 침해당한 다는 점, 배아 역시 인간 생명이므로 보호되어야 한다는 점 등을 근거로 제시한다. 뇌사의 판정 뇌사는 뇌간을 포함한 뇌 기능이 완 전히 정지하여 뇌 활동이 회복할 수 없는 상태를 의미한다. 우리나라에 서는 뇌사 추정자의 가족 또는 법률 대리인이 뇌사 판정을 신청하면 뇌 사 판정 위원회에서 뇌사 판정 결정 을 내린다. 비가역적(非可逆的) 원래의 상태로 다시 돌아갈 수 없는 성격을 띤 것 ▲ 체세포 복제 배아를 활용한 인간 개체 복제 과정 ▲ 체세포 복제 배아를 활용한 줄기세포 치료 과정 핵 제거 자궁에 배아 착상 줄기세포 배아 배양 분화된 체세포 환자에게 이식 태아 복제 인간 핵 추출 환자의 체세포 난자 핵 융합 복제 배아 배아 복제를 통한 개체 복제와 유전자 치료 과정 01. 삶과 죽음의 윤리 43 43 인간 개체를 복제하는 개체 복제 또한 윤리적 문제로 떠오르고 있다. 불임 부부 나 사고로 자녀를 잃은 부부의 고통을 해소하기 위해서 인간 개체 복제를 허용해 야 한다는 사람들도 있지만, 대다수 사람은 인간 개체 복제를 허용하면 안 된다고 생각한다. 복제 인간은 인간의 고유성을 위협할 뿐만 아니라, 자연스러운 출산 과 정과 가족 관계에 혼란을 주는 부작용이 우려되기 때문이다. 한편 인간 유전자에 관한 연구가 진행되면서 유전자 치료에 관한 관심이 증가하 고 있다. 유전자 치료는 크게 체세포 치료와 생식 세포 치료로 구분된다. 이 중 체 세포 치료는 유전자 치료의 결과가 환자 본인에게만 영향을 미치므로 의학적·윤리 적으로 정당하다고 인식되는 반면, 생식 세포 치료는 미래 세대의 유전자에 영향을 주기 때문에 윤리적 쟁점이 된다. 생식 세포 치료를 허용해야 한다고 주장하는 사람들은 유전자로 인한 질병을 막 아 미래 세대로 하여금 질병의 고통에서 벗어나게 할 수 있다고 본다. 미래 세대에 게 유전 질환을 물려주지 않으려는 부모의 선택을 존중하는 것일 뿐 아니라 유전 질환을 퇴치하는 새로운 치료법을 개발하는 데 도움을 주어 의학적으로도 유용하 다는 것이다. 반면 반대하는 사람들은 생식 세포 치료가 예측할 수 없는 부작용으로 후세대에 돌이킬 수 없는 위험을 가져다줄 수 있다고 본다. 또한 유전 형질을 바꾸는 것을 미 래 세대가 동의할지 알 수 없으며, 미래 세대의 유전 형질이 현세대에 의해 결정된 다는 점에서 미래 세대의 자율성을 침해할 수 있다고 본다. 하버마스(Habermas, J., 1929~)는 유전자를 조작하려는 시도가 유전자 강화를 위한 적극적 우생학을 부 추길 수 있음을 우려하였다. 그는 자녀의 유전자 강화를 위한 부모의 선택이 자녀 의 자율성을 침해할 뿐 아니라 세대 간 평등성 또한 훼손할 수 있음을 강조하였다. 인간 복제에 관한 유엔(UN) 선언문 • 생명 과학이 질병의 구제 및 인류 보건 개선에 기여해야 함 • 생명 과학의 적용에 있어 인간의 생명을 보호하기 위해 필요한 모 든 조치를 취해야 함 • 인간 존엄 및 인간 생명의 보호와 양립할 수 없는 모든 형태의 인간 복제 금지 • 인간 존엄에 반하는 유전 공학 기 술의 적용 금지 • 생명 과학의 적용에 있어 여성에 대한 착취 예방 - 유엔, 2005년 우생학 우수한 유전자를 보존하고 열등한 유전자를 제거해야 한다는 사상으 로, 각종 차별을 합리화하는 근거로 이용된다. 유전자 강화 기술은 정당화될 수 있을까? 생각을 더하는 자 / 료 / 읽 / 기 샌델은 유전 공학 기술로 완벽해지려는 시도는 인간 본성을 정복하고 통제하려는 오만이라고 말한다. 부모가 아이의 유전자 조작이나 약물 복 용으로 능력을 강화하는 행위는 인간의 본성을 재창조하여 완벽을 추구하려는 우생학적 열망이라는 것이다. 그는 인간의 능력을 무리하게 확 장하기보다 불완전한 인간의 한계에 대해 관용하는 사회를 제안한다. 해설 우리의 본성에 맞게 세상을 변화시키는 대신 세상에 맞추기 위해 우리의 본성을 바꾸는 것이야말로 사실 우리의 힘과 자율권을 잃어버리는 행동이다. 그렇게 되면 우리는 세상에 대해 비판적으로 숙고하기 힘 들어지며, 정치적·사회적 개선을 향한 충동도 무뎌진다. 우리는 새로운 유전학적 힘을 이용해 인간 본성을 바꾸려는 노력보다는, 불완 전한 인간 능력의 한계를 관대하게 받아들이는 사회 제도를 만들기 위해 노력해야 한다. - 샌델, 『완벽에 대한 반론』 유전자 치료 세포 안에 새로운 유전자를 주입하 거나 이상 유전자를 제거하여 유전 적 질병을 치료하는 방법 체세포 생식 세포를 제외한 모든 세포 II. 생명윤리와 생태윤리 44 토론 주제 탐구 안락사를 허용해야 할까? 다음 자료를 읽고 물음에 답해 보자. 다음 토론 방법에 따라 모둠별로 ‘안락사 허용 여부’에 관해 토론을 진행해 보자. 안락사는 절대 허용하면 안 된다고 생각해. 인간에게는 자신의 죽음을 결정할 권리가 없어. 토론을 마친 후 안락사에 대한 자기 생각을 정리하며 다음 표를 작성해 보자. 토론 이후 자신의 의견 (수정되었다면 그 이유도 적어 보자.) 새롭게 알게 된 점 소감 토론 중 인상 깊었던 친구의 주장과 그 이유 갑 을 병 인간은 품위 있게 죽을 권리가 있어. 환자의 의사에 따라 무의미한 연명 치료를 중단하는 소극적 안락사는 허용되어야 해. 해외의 한 단체는 심각한 신체적, 정신적 질환을 지닌 사람들이 의사의 도움을 받아 생을 마감할 수 있도록 돕고 있어. 이러한 형태의 안락사까지 허용되어야 해. •4~6명을 1조로 구성하고, 위 갑, 을, 병 중 자신의 입장을 선택한다. •1차 발언: 한 명씩 차례대로 자신의 입장과 근거를 동서양의 윤리 이론을 바탕으로 발언한다. •2차 발언: 1차 발언을 듣고 자신과 다른 입장에 대해 질문하거나 반박한다. •3차 발언: 2차 발언에서 받은 질문이나 반박에 대해 답변한다. •최종 발언: 최종 변론과 토론 참여 소감을 말한다. ※ 발언 시간은 한 명당 2분씩으로 한다. 토론 방법 01. 삶과 죽음의 윤리 45 인 물 과 고전 “삶이란 탄생과 죽음 사이의 선택이다.” 사르트르는 무신론적 실존주의의 대표적인 사상가이다. 당시의 시대는 제1, 2차 세 계 대전을 겪으면서 인간의 존엄성과 휴머니즘에 대해 비판적이고 회의적이었다. 이런 상황에서 사르트르는 인간이 삶에 대해서 어떤 태도를 가져야 하는지에 관심을 집중 하고 개인의 주체적인 삶의 자세를 강조하였다. 실존이 본질에 앞선다는 말은 무엇을 의미하는 걸까요? 이 말은 인간이 먼저 세계 속 에 실존하고, 만나고, 떠오른다는 것, 그리고 인간이 정의되는 것은 그 이후의 일이라는 것을 의미합니다. 실존주의자가 생각하는 인간이 정의될 수 없다면, 우선은 그가 아무것 도 아니기 때문입니다. 그는 오로지 그다음에야 그 스스로가 만들어 가는 것이 될 것입 니다. 이처럼 인간 본성이란 없는 것입니다. 인간은 인간 스스로가 구상하는 무엇이며, 또한 인간 스스로가 원하는 무엇일 뿐입니다. 결국 인간은 인간 스스로가 만들어 가는 것과 다른 무엇이 아닙니다. 이것이 바로 실존주의의 제1원칙입니다. 또한 이것은 사 람들이 주체성이라고 부르는 것이기도 합니다. 인간과 달리 사물은 본질이 실존에 앞섭니다. 예를 들어 종이칼은 제작자가 설정한 목적에 따라 생산되어 한정된 용도 를 갖는 사물입니다. 인간은 이런 사물과 달리 주체적인 자신의 삶을 만들기 위해 책 임감을 가지고 미래를 자유롭게 선택하는 존재입니다. …… 실존주의는 단순한 사변 적 이론이나 허무주의가 아니라 적극적으로 미래를 만드는 낙관론이자 인간적인 행 동의 강령이기 때문에 휴머니즘인 것입니다. - 『실존주의는 휴머니즘이다』 수정 인용 해설 사르트르는 “실존은 본질에 앞선다.”라고 말하며, 인간이라는 존재는 미리 본질이나 목적이 정해져 있지 않음을 강조하였다. 인간은 먼저 실존한 후에 자신의 본질을 스스로 만들어 가야만 하는 존재라는 것이다. 또한 그는 인간이 자유롭도록 운명 지어진 존재이며, 매 순간 선택을 통해 자신의 삶을 주체적으 로 만들어 나가면서 그에 대해 전적으로 책임져야 하는 존재임을 역설하였다. \u0007 사르트르의 \u0007 관점에서 \u0007 ‘인간은 \u0007 이성적 \u0007 존재이며, \u0007 궁극적으로 \u0007 행복을 \u0007 추구하는 \u0007 존재이 다.’라는 \u0007 주장을 \u0007 반박해 \u0007 보자. 적용하기 사르트르가 \u0007 강조하는 \u0007 삶의 \u0007 자세를 \u0007 말해 \u0007 보자. 사르트르 Jean-Paul Sartre 1905~1980 II. 생명윤리와 생태윤리 46 단원 마무리 핵심 내용 정리하기 (1) ( 가 ) 는 삶과 죽음의 관계를 어떻게 바라보고 있는지 서 술해 보자. (2) 죽음 이후의 세계에 대한 ( 가 ) , ( 나 ) 사상의 차이점을 서술해 보자. ◆ 다음은 한 학생이 ○ × 퀴즈에서 답한 내용이다. 이 학생이 맞힌 문제를 찾아보자. 핵심 내용 정리하기 ➊ 다음 글을 읽고 물음에 답해 보자. (가) 옛날의 진인(眞人)은 삶을 기뻐할 줄 모르고 죽 음을 싫어할 줄도 몰랐다. 태어남을 기뻐하지 아니하며, 죽음을 거부하지도 아니하였다. 홀가 분하게 세상을 떠나며, 홀가분하게 세상에 태어 날 뿐이다. - 장자, 『장자』 (나) 지혜에 도달하게 되는 것은 우리가 생존하고 있 는 동안이 아니고, 죽은 후의 일일 걸세. 영혼이 육체와 함께 있는 동안, 순수한 인식을 할 수 없 다면 우리는 전혀 인식에 도달할 수 없든가, 또 는 죽은 후에야 도달할 수 있을 게 아닌가? - 플라톤, 『파이돈』 핵심 내용 서술하기 핵심 내용 서술하기 ➌ 밑줄 친 ‘이 기술’을 유전자 강화 목적으로 사용하는 것 에 대한 자기 생각을 서술해 보자. 인체 DNA 유전 코드를 하나하나 자유자재로 편 집할 수 있는 차세대 유전자 편집 기술이 탄생했다. 이 기술을 적용하면 현존하는 유전 질환 중 90%를 치료할 수 있을 것으로 기대된다. 이 유전자 편집 기 술은 기존 유전자 가위 기술보다 정확하고 정밀하게 유전자를 교정할 수 있다. - 매일경제, 2019. 10. 22. ➋ 뇌사를 죽음의 판정 기준으로 삼는 것에 대한 찬성과 반 대 입장의 근거를 서술해 보자. 찬성 입장 반대 입장 ❺ 하이데거는 인간뿐만 아니라 모든 생명체가 죽 음을 인지할 수 있는 현존 재임을 강조한다. ❽ 배아 복제 반대 근거 중 하나는 배아가 잠재적 인간이라는 것이다. ❼ 안락사는 회복 가능성 이 없는 환자가 극심한 고 통을 겪는 경우를 전제한다. ❻ 인공임신중절을 허용 해야 한다는 입장은 여성 의 선택권보다 태아의 생 명권을 강조한다. ❶ 해탈하기 이전까지 불 교에서는 삶과 죽음이 끊 임없이 반복된다고 본다. ❸ 플라톤은 죽음 이후 영 혼이 육체로부터 해방되 어 사물의 본질을 인식할 수 있다고 본다. ❹ 에피쿠로스는 지혜로 운 사람이라면 죽음이 즐 거운 일임을 깨닫는다고 본다. ❷ 장자는 삶과 죽음을 필 연적인 과정으로 본다. 01. 삶과 죽음의 윤리 47"},"u2":{"title":"02. 사랑과 성 윤리","text":"주제 열기 사랑과 성(性)의 의미 우리는 평소 사랑에 대한 노래나 영화, 소설 등을 접하며 진정한 사랑의 의미에 대해 고민한다. 그렇다면 진정한 사랑이란 무엇일까? 진정한 사랑은 상대방을 아 끼고 소중하게 여기는 마음으로서 서로 간의 인격적 관계 속에서 성립할 수 있다. 그래서 사랑은 사회적 존재로서의 인간 본성을 실현하는 바탕이 된다. 프롬은 사랑이 책임, 존경, 이해, 보호의 요소를 포함한다고 말하였다. 그에 따르 면 사랑은 수동적 감정이 아닌 능동적인 행위이다. 상대방에게 사랑을 줌으로써 타 인을 풍요롭게 만들고 타인의 생동감을 고양할 수 있다는 것이다. 이러한 인간의 사랑은 성(性)과 밀접한 관련이 있다. 성(性)은 사랑하는 사람과 정신적·육체적으로 하나가 되는 것을 의미한다. 사랑과 성의 관계 위와 같은 행동을 사랑이라고 할 수 있을까? 그 이유는? •사랑과 성에 관한 다양한 윤리적 관점을 이해할 수 있다. •성과 관련된 문제들을 윤리적으로 성찰할 수 있다. 학습 목표 1 사랑과 성 윤리 02 ◀ 사랑은 상대방을 아끼고 보호해 주려는 마음이다. 사랑합니다. 이 선물을 받아 주세요. 싫다는데 왜 자꾸 따라올까? 너무 무서워! 좋아하는 연예인의 전화번호를 드디어 알아냈어. 어서 연락해 봐야지. 아! 어떻게 내 전화번호를 알았을까? 관심이 너무 지나쳐. 프롬(Fromm, E., 1900~1980) 독일의 정신 분석학자이자 사회 심 리학자이다. 그는 『사랑의 기술』에 서 진정한 사랑은 사랑하는 사람의 욕구와 성향을 배려하면서 자기 행 위에 책임을 지는 것, 사랑하는 사람 을 있는 그대로 받아들이며 존경하 는 것, 사랑하는 사람을 제대로 이해 하는 것, 사랑하는 사람을 아끼고 보 호하는 것이라고 주장하였다. II. 생명윤리와 생태윤리 48 성(性)은 생물학적 성(sex)과 사회·문화적 성(gender), 성적 정체성으로서의 섹 슈얼리티(sexuality)로 구분하여 사용한다. 생물학적 성이란 선천적으로 결정되는 성별을 뜻하며, 신체 구조에 드러난 외적 차이에 따라 구분된다. 사회·문화적 성은 환경적인 요인에 의해 후천적으로 구성되는 남성다움이나 여성다움을 말한다. 이 는 한 사회 안에서 성별에 따라 어떻게 생각하고 행동해야 하는지를 학습하는 과 정에서 형성된다. 섹슈얼리티는 주로 성적 욕망을 가리키며, 넓은 의미로는 성에 관한 정체성, 문화, 관습, 규범까지 포괄하여 사용된다. 그렇다면 성은 우리의 삶에서 어떤 가치를 지니고 있을까? 먼저 성은 생식적 가 치를 지닌다. 성은 새로운 생명을 탄생시키는 행위를 통해 종족 보존의 기능을 수 행한다. 또한 성은 쾌락적 가치를 지닌다. 성은 신체적 교감을 통해 인간의 감각적 욕구를 충족시켜 쾌락을 가져다준다. 그리고 성은 인격적 가치를 갖는다. 성을 통 해 상대방과 신체적·정신적으로 교감하며 서로에 대한 존중과 사랑을 확인한다. 사랑과 성을 어떤 관계로 보느냐에 따라 크게 보수주의, 중도주의, 자유주의 입 장이 있다. 보수주의는 결혼 및 자녀 출산과 관련한 성적 관계만이 도덕적이라고 보며, 배우자와의 신뢰와 사랑을 통해 안정된 가족 관계를 유지하는 것을 중요한 가치로 여긴다. 중도주의는 사랑이 수반되지 않는 성적 관계는 도덕적이지 않다고 보며, 사랑을 동반한 성적 관계만이 상호 간의 존중과 교감을 가능하게 한다고 주장한다. 자유주의는 성이 지닌 쾌락적 가치를 강조하며, 타인에게 해를 끼 치지 않는 범위 내에서 자발적으로 동의하여 이루어지는 성적 관계는 도덕 적으로 허용된다고 본다. 이러한 세 가지 관점은 사랑과 성의 관계에 대한 다양한 가치관을 보여 주지만, 모두 성을 통해 상대방을 존중하고 인격적 가치를 실현하고자 한 다는 공통점이 있다. 따라서 자신과 타인을 인격적으로 대우하는 태도로 성 과 사랑을 이해하고 실천해야 한다. 남성다움, 여성다움에 대한 인식 과거에는 남성다움이나 여성다움이 생물학적 성과 대개 일치한다고 보 았으나, 최근에는 대체로 고정된 것 이 아니라 끊임없이 변화하는 것으 로 본다. 나아가 여성스러움과 남성 스러움의 구분 자체를 탈피하고자 하는 움직임도 등장하고 있다. 성적 억압은 권위주의적 파시즘 독재의 기반이다. 생각을 더하는 자 / 료 / 읽 / 기 라이히는 가족 제도가 국가의 구조와 이데올로기의 제조 공장이 되어 근본적인 성 억압의 고착화와 성 충동의 생동적인 본질에 대한 두려움을 준다고 보았다. 권위주의적 제도가 성 충동을 억압함으로써 대중들이 자신의 경제적 이익에 반해 파시즘을 지지한다는 것이다. 그는 이 작동 원리를 이해해야 파시즘에 대한 투쟁이 전망을 가질 수 있다고 주장하였다. 해설 자유를 향한 의지를 억압하는 성적 도덕뿐만 아니라 권위주의 적 이해에 순응하는 힘 역시 그 에너지를 억압된 성욕에서 얻는 다. 이제 우리는 ‘경제적 토대에 대한 이데올로기의 반작용’이라 는 과정의 핵심 부분을 더 잘 이해할 수 있게 되었다. 다시 말해 성의 억압은 경제적으로 억압받는 인간을 자신의 구조적인 물질 적 이해관계에 반(反)하여 행동하고, 느끼고, 생각하도록 변화시 킨다. - 라이히, 『파시즘의 대중 심리』 ▲ 진정한 성의 가치를 깨닫고 상대방 에 대해 존중과 책임을 다해야 한다. 02. 사랑과 성 윤리 49 49 성과 관련된 윤리적 문제와 해결 방안 성차별 성차별이란, 성별을 이유로 정치·경제·사회·문화적으로 차별하는 행위를 말한다. 주로 여자는 여자다워야 하고 남자는 남자다워야 한다는 고정된 성 역할을 강요하는 것에서 비롯한다. 성 역할을 규정해 놓고 이에 부합하지 않을 때는 비난 하거나, 특정 성을 기준으로 우열을 나누어 대우함으로써 다양한 성차별이 발생하 는 것이다. 그동안 많은 경우에서 여성이 남성과 비교해 상대적으로 차별받아 왔지 만, 최근에는 남성에게 요구되는 사회적·경제적 부담을 남성에 대한 차별로 인식 하는 경우도 늘고 있다. 이러한 성차별은 인간으로서 마땅히 누려야 할 자유와 평등의 기본권을 침해하 며, 개인의 자아실현 및 능력 발휘를 제한한다. 이는 인간의 존엄성을 훼손할 뿐 아 니라 사회갈등을 초래하여 사회 발전과 통합을 가로막는다. 여성주의(feminism) 윤리학자들은 다양한 영역에서 동등하게 대우받지 못한 여 성의 입장에 주목하였다. 그들은 여성에 대한 성차별이 가부장적인 남성 중심의 문 화에서 비롯되었다고 비판하며 양성평등을 추구하였다. 여성주의 윤리를 바탕으로 한 배려 윤리는 자유와 자율성, 공정성, 권리를 중시 하는 남성 중심의 정의 윤리가 연민과 동정심, 배려와 보살핌, 유대감과 인간관계 를 중시하는 여성 중심의 덕목을 제대로 주목하지 못했다고 주장하였다. 길리건과 나딩스 같은 배려 윤리학자는 감성을 중시하는 배려 윤리의 덕목들이 모든 인간에 게 필요한 보편적 가치임을 강조하였다. 오늘날에는 남녀 간 성 역할을 고정하거나 우열로 나누는 것이 잘못이라는 인식 의 전환이 이루어지고 있다. 성차별을 해소하기 위해서는 양성평등의 관점에서 남 녀의 차이를 인정하되 차별하지 않는 사회로 나아가야 한다. 정치적·경제적으로 남성과 여성이 권리와 의무에서 평등한 지위를 누리며, 사회적으로 여성성과 남성 성에 구애받지 않고 다양성과 개성이 존중받아야 한다. 이를 위해서는 사회 제도의 개선과 함께 개인의 인식 전환 및 일상생활에서의 실천이 필요하다. 성적 자기 결정권 침해 성적 자기 결정권이란 성에 관한 행동을 스스로 자율적이 고 책임감 있게 결정하고 선택할 권리를 의미한다. 또한 그 과정에서 사회적 관행 이나 타인에 의해 강요를 받지 않을 권리를 포함한다. 그러나 개인의 성적 자기 결정권을 인정한다고 해서 그것이 어떤 성적 행위이든 무제한 허용하는 것은 아님을 알아야 한다. 성적 자기 결정권의 행사가 때로는 타인의 성적 자유 를 침해할 수 있기 때문이다. ▲ 참정권을 요구하는 여성들 오 랫동안 여성은 남성과 비교해 사회 활동이나 정치참여, 교육 등에서 많 은 제한을 받아 왔다. 탈코르셋 운동 성 고정 관념을 해소하기 위한 노력 으로 전개된 운동이다. 화장, 날씬한 몸매, 긴 머리 등 여성에게만 요구되 는 외모 기준을 탈피하려고 하였다. ▶ 성적 자기 결정권은 타인의 자유와 권리를 침해 하지 않는 범위에서 행사할 수 있다. 50 II. II. 생명윤리와 생태윤리 생명윤리와 생태윤리 타인의 성적 자기 결정권을 침해하는 대표적 행위가 성폭력이다. 성폭력은 성폭 행, 성추행, 성희롱 및 스토킹 등의 형태로 발생하는데, 특히 친밀한 관계에서 사랑 이라는 감정을 앞세워 일어나기도 한다. 최근에는 사이버 성폭력이 급증하고 있는 데, 디지털 공간의 특성상 확산 속도가 빠르고 삭제가 어려워 피해가 더욱 심각하 다. 이러한 성폭력을 당한 피해자는 육체적 고통뿐만 아니라 공포, 불안, 우울감, 수 치심, 혐오감 등 심각한 정신적 고통을 겪게 된다. 타인의 성적 자기 결정권을 침해하는 것은 개인의 인권을 심각하게 훼손하는 결 과를 가져온다. 따라서 우리는 자신의 성적 행동에 대해 책임을 져야 하며, 타인의 성적 자기 결정권을 존중해야 한다. 성 상품화 성 상품화란 성적인 이미지를 사용하여 이윤을 추구하는 것을 의미한 다. 여기에는 성을 직접 사고파는 성매매뿐만 아니라 성적 이미지를 상품화시켜 성 을 도구화하는 것도 포함한다. 어떤 사람들은 성 상품화가 개인의 표현의 자유와 자기 결정권에 해당하며, 자본 주의 경제 논리에 부합한다고 주장한다. 하지만 성 상품화는 인간의 성을 이윤 추 구의 수단으로만 취급하여 성의 가치와 의미를 훼손할 수 있다. 특히 성매매는 성 적 자기 결정권의 행사라기보다 실제로는 성적 착취의 형태로 이루어지는 경우가 대부분이어서 인간의 존엄성을 심각하게 훼손할 수 있다. 우리는 성적 자기 결정권을 발휘할 때 성의 인격적 가치가 훼손 되지 않도록 주의해야 하며, 성 상품화에 대한 비판적 성찰을 통해 성의 진정한 의미와 가치를 지켜나갈 수 있도록 노력해야 한다. 성폭력 관련 용어 • 성희롱: 성과 관련한 말과 행동으 로 불쾌하고 굴욕적인 느낌을 갖 게 하는 것 • 성추행: 성희롱 행위를 폭행이나 협박으로 강제하는 것 •성폭행: 강간과 강간 미수 • 스토킹(stalking): 상대방의 의사 에 반(反)하여 정당한 이유 없이 따라다니거나 하여 상대방에게 불 안감 또는 공포심을 일으키는 것 윤리적 실천 방안 제안하기 디지털 성범죄를 어떻게 해결할까? 탐 / 구 / 하 / 기 윤리 문제 1 디지털 성범죄 사례를 조사해 보자. 2 조사한 사례가 어떤 유형에 해당하는지 찾아보자. (복수 선택 가능) □ 공공장소에서 불법 촬영 후 게시 □ 유포 협박 □ 성적 촬영물 비동의 유포 □ 재유포 및 제3자 유포 □ 성적 사진 합성 후 게시 □ 디지털 그루밍 성범죄 □ 사이버 공간 내 성적 괴롭힘 디지털 성범죄 유형 그루밍 성범죄: 가해자가 피해자와 친밀한 관계를 형성한 뒤 성적인 가해 행위를 행하는 것 3 디지털 성범죄를 근절하기 위해 개인적 차원과 제도적 차원에서 할 수 있는 노력을 이야기해 보자. 성폭력 피해자 지원 기관 •여성 긴급 전화 1366 • 한국 성폭력 상담소 02-338-5801, http://www.sisters.or.kr • 한국 성폭력 위기 센터 02-883-9284, http://www.rape119.or.kr • 디지털 성범죄 지원 센터 02-735-8994 •헬프 콜 청소년 전화 1388 02. 사랑과 성 윤리 51 51 주제 열기 현대사회에서의 결혼과 가족의 의미 전통적으로 가족은 결혼과 출생, 입양 등으로 맺어진 관계를 의미하였다. 그러나 오늘날에는 삶의 방식과 가치관 등이 다양해지면서 가족의 의미도 빠르게 변화하 고 있다. 결혼과 출산이 필수적이라고 생각했던 과거와 달리 이를 선택하지 않는 사람들이 늘어나고 있으며, 혼인과 혈연관계를 넘어서 동거하는 친구나 연인 등을 가족 구성원으로 생각하기도 한다. 이는 가족의 의미와 범위가 핏줄을 중시하는 혈 연 공동체에서 서로 유대감을 가지고 상호 작용하며 생활하는 정서 공동체로 점차 확장하고 있음을 보여 준다. 이처럼 가족의 의미는 과거와 다르게 변화했지만, 가족이 개인과 사회에 가지는 중요한 가치는 변함없이 유지되고 있다. 서로 간의 애정과 신뢰를 바탕으로 하는 가족 관계는 심리적 안정감을 주고, 개인과 가족의 성장과 발달을 돕는다. 또한 가족과 상호 작용을 하는 과정에서 익힌 사회성은 사회의 구성원으로서 다른 사람들과 조화를 이루며 원만하게 살아갈 수 있도록 해 준다. •현대사회에서의 가족과 결혼이 지니는 의미를 이해할 수 있다. •현대사회의 결혼 및 가족 문제를 윤리적 관점에서 탐구할 수 있다. 학습 목표 결혼과 가족의 윤리 (가) (나) (다) (라) 반려 식물과 반려동물 동거 중인 애인 같이 살지 않는 부모님 10년째 같이 사는 방 친구 2 사랑과 성 윤리 02 (가)~(라)는 가족이라고 할 수 있을까? 그 이유는? ◀ 결혼은 새로운 가족을 구성하는 하나의 방법이다. 결혼의 윤리적 의미 결혼에는 서로 다른 환경에서 자란 두 사람이 평생 사랑하며 같이하겠 다는 의미와 서로의 차이를 존중하 고 배려하겠다는 의미가 담겨 있다. 52 II. II. 생명윤리와 생태윤리 생명윤리와 생태윤리 결혼 및 가족과 관련한 윤리적 문제와 해결 방안 오늘날 사회 구조의 변화와 과학기술의 발달은 핵가족화를 빠르게 진행시켰다. 이에 따라 결혼 및 가족과 관련하여 다양한 윤리적 문제들이 발생하고 있다. 첫째, 가족 해체 현상이 심각해지고 있다. 가족 해체란 가족 간의 유대감이 약화 하여 사회를 구성하는 핵심 단위인 가족의 고유 기능이 제대로 발휘되지 못하는 현 상을 말한다. 가족 해체의 대표적 요인으로는 이혼의 증가와 이로 인한 자녀와 부 모 간의 관계 변화를 들 수 있다. 이외에도 같은 주거 공간에서 생활하더라도 서로 교류하는 시간이 많지 않은 점 등도 가족 해체가 발생하는 요인이다. 이러한 가족 해체에 따라 경제적 불안정과 소외감에 시달리는 노인들이 늘어나면서 노인 문제 도 증가하고 있다. 둘째, 결혼과 출산이 지연되어 출산율이 하락하는 저출산 문제가 더욱 악화하고 있다. 우리나라는 경제 개발 협력 기구(OECD) 국가 중에서 최하위의 출산 율을 기록하고 있다. 경제 발전으로 인해 여성의 교육 및 취업 기회는 빠르 게 증가하였지만, 임신과 출산이 가져올 수 있는 경력 단절, 삶의 질을 중시 하는 가치관의 변화, 경쟁과 성과를 중시하는 직업 문화 등으로 인해 출산 율이 급격하게 감소하고 있다. 이러한 출산율 저하는 인구 고령화를 더욱 가속하고, 노동 인구의 감소와 사회 보장 비용의 부담 증가로 이어져 사회 전체에 부정적인 영향을 끼치게 된다. 가족의 형태는 어떻게 변화하고 있을까? 생각을 더하는 자 / 료 / 읽 / 기 최근에는 생활 양식의 변화, 가족 가치관의 변화, 이혼과 재혼의 증가, 국제결혼의 증가 등으로 다양한 가족이 증가하고 있다. 다양한 국적과 문화 정체성을 가진 사람들이 가족을 이루는 다문화 가족, 혼자서 생계를 유지하는 1인 가구, 고령자 부부나 한부모 가족 등 가족의 형태도 다 양해지고 있으며, 다양한 가족 형태를 모두 인정해야 한다는 인식도 늘어나고 있다. 해설 가족 가치관의 변화 (여성가족부, 2021년) ▲ 노인 1인 가구는 빠르게 증가하는 데 반해 그에 따른 적절한 복지 제도 가 마련되지 않거나 활용 절차나 방 법이 복잡하여 많은 노인이 최소한 의 돌봄조차 받지 못하고 있다. 합계 출산율 변화 우리 사회의 다양한 가족 38만 5천 가구 다문화 가족 323만 9천 가구 고령자만 있는 가구 405만 4천 가구 부부 단독 가족 716만 6천 가구 1인 가족 151만 가구 한부모 가족 (통계청, 2021년 인구 총조사) 02. 사랑과 성 윤리 53 53 이와 같은 가족과 관련한 윤리 문제를 해결하기 위해서는 어떻게 해야 할까? 먼저 가족 간의 유대감을 높이기 위한 가족 구성원들의 일상적인 노력이 필요하 다. 부족한 대면 시간을 보완하기 위해 스마트 기기나 사회 관계망 서비스(SNS) 등 을 적극적으로 활용하여 비대면 소통을 이어 가는 것도 새로운 대안이 될 수 있다. 가족의 형태가 달라진다고 해서 가족의 가치와 중요성이 사라지는 것은 아니다. 개 인의 독립성을 존중하되 가족의 친밀성을 동시에 지향하는 새로운 가족 관계를 만 들기 위해 가족 구성원 모두가 다 함께 노력해야 한다. 또한 변화된 시대에 걸맞은 새로운 가족 윤리의 정립이 요청된다. 우리 사회에는 전통적인 수직적 가족 관계 문화가 여전히 남아 있어 민주적인 가족 관계의 형성 을 가로막는 경우가 적지 않다. 따라서 부부 및 가족 구성원들이 평등하고 독립적 인 관계를 유지하되 서로를 존중하고 배려하는 가족 윤리를 재정립할 필요가 있다. 부부가 각각 일도 하면서 가사와 육아, 돌봄의 의무와 책임을 함께하겠다는 평등 의식이 필수적이다. 그리고 변화하는 가족 관계에 대한 사회적·국가적 관심과 지원을 확대하고 강화 해야 한다. 보육 시설 및 서비스 확대, 남성 육아 휴직 지원, 노동 시장의 성차별 규 제, 돌봄 노동의 사회화 등은 사회와 국가의 지원이 없으면 시행되기 어려 운 과제들이다. 급증하는 노인 1인 가구에 대한 안전, 의료, 경제적 지원 방안도 사회 국가적 차원에서 제도화할 필요가 있다. 윤리적 관점에서 토론하기 우리나라의 미래 우리나라의 미래 인구와 사회는 어떻게 변화할까? 탐 / 구 / 하 / 기 윤리 문제 1 우리나라의 저출산·고령화 원인은 무엇일까? 스마트 기기 등을 활용하여 저출산·고령화의 원인을 조사해 보자. 원인 내용 저출산 고령화 사회적 요인 경제적 요인 가치관의 변화 ( ) 2 지금과 같은 저출산·고령화 추세가 계속된다면 50년 후의 대한민국은 어떤 모습일지 이야기해 보자. 3 이민 정책과 결혼 정책의 변화가 저출산·고령화로 인한 문제를 해결할 수 있을까? 다른 나라의 사례를 찾아보고 모둠원들과 토 론해 보자. ▼ 가족 간의 유대감을 높이기 위해 서는 대화하며 소통하는 것이 중요 하다. II. 생명윤리와 생태윤리 54 토론 주제 탐구 다음 글을 읽고 물음에 답해 보자. 결혼을 안 해도 가족이 될 수 있을까? 2023년 현재, 혼자 사는 1인 가구는 전체의 30%를 넘고, 이 가운데 절반 가까이는 50대 이상 의 고령층이다. 지금의 가족 제도로는 홀로 사는 외로움과 돌봄, 집안일 등이 앞으로 큰 사회적 부 담이 될 수 있다는 문제가 제기되면서, 혈연이나 혼인 관계가 아닌 동거인들에게도 가족과 동등한 권리를 보장해 달라는 요구가 생겨나고 있다. 이렇게 ‘다양한 모양의 가족’을 인정해 달라는 요구 가 이어지면서 국회에도 처음으로 생활 동반자 법안이 발의되었다. 성인 2명이 합의해 동반자 관계가 되면, 동거·부양의 의무와 함께 혼인에 준하는 법적 권리를 갖는다 는 게 핵심이다. 생활 동반자 법이 통과되면 수술 동의서 작성 등 의료적 결정권 이나 부양가족 인적 공제 같은 경제적 권리, 상속권 인정 등의 권리가 동반자에 게도 허용된다. ‐ KBS 뉴스, 2023. 5. 5. 수정 인용 위 기사에서 ‘생활 동반자법’의 찬성과 반대 근거를 찾아 보자. 생활 동반자법 찬성 근거 생활 동반자법 반대 근거 예시 독거노인의 돌봄 문제나 저출산 문제 해결을 위해서는 전통적 인 가족 개념에서 벗어나 새로운 가족 형태를 폭넓게 인정할 필요가 있다. 예시 실질적으로 동성 결혼을 허용하게 되어 전통적인 가족 윤리의 해체를 가속하고 사회에 큰 혼란을 초래할 수 있다. 아래 토론 방법에 따라 모둠별로 ‘생활 동반자법 도입’에 대한 찬반 토론을 진행해 보자. 1. 3인 1조(찬성자, 반대자, 판결자) 구성 2. 토론 규칙 •판결자에게만 자신의 주장과 근거를 말할 수 있다. •찬성자와 반대자는 서로에게 말할 수 없다. •발언 1회당 30초씩 총 4회 발언한다. •판결자가 최종 승자를 판정한다. 토론 방법 토론을 마친 후 ‘생활 동반자법’에 관한 의견을 정리하고, 이를 국민 제안 누리집에 청원으로 올려 보자. •국민 권익 위원회 국민 신문고(epeople.go.kr) •청원24(cheongwon.go.kr) 청원 가능한 국민 제안 누리집 02. 사랑과 성 윤리 55 인 물 과 고전 “여성은 태어나는 것이 아니라 여성으로 만들어진다.” 보부아르의 \u0007 관점에서 \u0007 양성평등을 \u0007 실현하기 \u0007 위한 \u0007 정책을 \u0007 마련해 \u0007 보자. 적용하기 \u0007 “여성성은 \u0007 남성 \u0007 중심의 \u0007 가치관이 \u0007 반영된 \u0007 사회적 \u0007 산물이다.”라는 \u0007 보부아르의 \u0007 주장을 \u0007 뒷 받침할 \u0007 수 \u0007 있는 \u0007 구체적 \u0007 사례를 \u0007 찾아 \u0007 제시해 \u0007 보자. 보부아르 Simone de Beauvoir 1908~1986 시몬 드 보부아르는 프랑스의 작가이자 철학자로서 삶의 주체적 선택을 중시하는 실존주의 철학의 관점에서 남성 중심적인 사회 구조에 예속된 여성의 상황을 비판적 으로 분석하였다. 여자는 남자와의 관계에서 결정되고 구별되지만 남자는 그렇지 않다. 여자는 본질적 인 것 앞에 있는 비본질적인 것이다. 남자는 주체이며 절대이고 여자는 타자이다. …… 모든 개인에게는 주체로서 자신을 확립하고자 하는 윤리적 주장과 더불어 자유를 회피 하고 자신을 사물로 구성하고자 하는 유혹이 공존한다. 후자는 불행한 길이다. 왜냐하면 수동적이고 소외되고 길을 잃은 개인은 모든 가치를 상실한 채 낯선 이들의 의지의 먹잇 감이 되어 버리기 때문이다. 그러나 주체성의 회피는 쉬운 길이다. 그렇게 하면 실존의 공포와 긴장을 피할 수 있기 때문이다. 그러므로 여자를 타자로 만드는 남자는 여자 속 에서 뿌리 깊은 동조자를 만나게 될 것이다. 이처럼 여자가 자기를 주체로서 주장하지 않는 까닭은 그렇게 할 수단이 없기 때문이고, 상호성을 세우지 않은 채 남자에 결부시 키는 필연적 관계를 느끼기 때문이며, 흔히 타자의 역할에 만족하기 때문이다. …… 인간 은 주어진 존재가 아니라 스스로 만들어 나가는 존재이듯이, 여자는 고정불변의 현실이 아니라 하나의 생성이다. - 『제2의 성』 해설 보부아르는 여성을 남성 주체의 ‘타자’로서 종속적인 상황에 놓이도록 한 여성성의 허구를 파헤치 면서 양성 간의 동등한 권리를 주장하였다. 남성에 의한 여성 지배와 남성이 부여한 여성 역할이나 이미 지를 비판하면서, 여성이 실존적 조건을 자각하여 자율적이고 독립적인 주체로 거듭날 것을 촉구하였다. 특히 여성 스스로 주체성을 회피하고 고정된 성 역할에 안주하며 타자화되는 모습에 대해서도 강한 성찰 이 필요하다고 주장하였다. II. 생명윤리와 생태윤리 56 단원 마무리 ➊ 다음 글을 읽고 물음에 답해 보자. (가) 사랑 있는 성은 도덕적으로 옳고, 사랑 없는 성은 도덕적으로 그르다. 사랑만이 인간적 성 의 고유한 가치이고, 인간의 성이 특별한 가치 와 존엄성을 가지도록 만들어 준다. (나) 성은 그 자체가 쾌락을 산출하는 즐거운 경험 이다. 성적 쾌락을 생식이나 사랑과 같은 고차 적 가치를 실현하기 위한 수단으로만 보는 것 은 성적 쾌락의 고유한 가치를 부당하게 무시 하는 것이다. ➋ 밑줄 친 ‘이것’이 무엇인지 쓰고, ‘이것’의 문제점을 서술 해 보자. ‘이것’은 성적인 이미지를 사용하여 이윤을 추구 하는 것을 의미한다. 여기에는 성을 직접 사고파는 성매매뿐만 아니라 성적 이미지를 상품화시켜 성을 도구화하는 것도 포함한다. ➌ 현대사회의 변화에 걸맞은 새로운 가족 윤리 실천 방법 을 두 가지 이상 서술해 보자. ➍ 우리 사회의 성차별을 줄이기 위한 실천 방법을 두 가지 이상 서술해 보자. 핵심 내용 서술하기 핵심 내용 서술하기 핵심 내용 정리하기 ◆ 오른쪽 뜻풀이를 보고 다음 초성 문자가 의미하는 바를 써 보자. (1) ( 가 ) 와 ( 나 ) 는 사랑과 성을 어떤 관계로 보는지 비교해 서술해 보자. (2) ( 가 ) 와 ( 나 ) 입장 중 하나를 선택하여 다른 입장을 비 판해 보자. 02. 사랑과 성 윤리 57"},"u3":{"title":"03. 자연과 윤리","text":"주제 열기 동서양의 전통적 자연관 전통적으로 동양에서는 인간과 자연의 조화로운 삶을 강조하였다. 자연과 인간 은 상호 의존적인 관계로 서로 긴밀하게 연결되어 있다고 보았다. 유교는 자연과 인간이 하나가 되는 천인합일(天人合一)의 경지를 지향하였다. 자연과 인간을 하 나의 유기체로 파악하고, 인간과 만물은 조화를 이루며 더불어 사는 존재라고 보았 다. 불교는 연기적 세계관에 따라 인간과 자연을 파악하였다. 하나의 그물망 안에 연결된 만물은 상호 의존하고 있으므로 자타불이(自他不二)의 정신으로 자비를 베 풀어야 한다고 주장하였다. 도가는 자연에 대한 인위적인 행위를 자제하고, 자연의 순리에 따라 살아야 한다고 강조하였다. 노자는 무위자연(無爲自然)의 삶을 지향 하였고, 장자는 인간을 포함한 만물이 타고난 그대로 모두 평등하므로 자연을 인위 적으로 조작해서는 안 된다고 보았다. 전통적으로 서양에서는 자연을 인간의 목적을 달성하기 위한 수단으로 여겼다. 고대 그리스 사상이나 그리스도교에서는 자연을 규칙적이고 합리적인 것으로 이 •동서양의 자연관을 비교하여 설명할 수 있다. •인간과 자연의 바람직한 관계를 성찰할 수 있다. 학습 목표 자연을 바라보는 동서양의 관점 이들은 왜 자원봉사에 나섰을까? 인간을 위한 것일까, 바다와 갯벌을 위한 것일까? 1 자연과 윤리 03 2007년 12월 태안군 앞바다에서 8천여 톤의 원유가 유출되는 사고 가 일어났다. 이에 전국 각지에서 어마한 수의 자원봉사자들이 몰려와 직접 기름을 제거하기 시작하였다. 타르로 범벅이 된 바위 구석구석을 닦고, 모래와 흙을 자루에 담아 세척 장소로 옮겼다. 어린아이들까지 고사리손으로 바윗돌에 낀 기름을 닦아 내는 모습은 많은 사람에게 감 동을 전해 주었다. 이렇게 전국 각지에서 몰려온 사람들 덕분에 최소 10년이 걸릴 것 이라 예상했던 방재 작업은 2달 만에 어느 정도 성과를 이루었다. 본업을 미루고 태안을 찾아 자원봉사에 나선 인원만 123만 명에 달해 세계를 놀라게 하였다. ◀ 동양의 전통 사상은 유기체적 자연관의 관점에서 이 세계를 하나의 생명체로 이해하고, 개개의 생명이 서로 긴밀한 관계를 맺고 있다고 보았다. II. 생명윤리와 생태윤리 58 해하였으며, 인간 중심적 관점에서 바라보았다. 아리스토텔레스는 “식물은 동물을 위해 존재하고, 동물은 인간을 위해 존재한다.”라고 말하였으며, 아퀴나스는 “신의 섭리에 따라 동물은 자연의 과정에서 인간이 사용하도록 운명 지어졌다.”라고 주장 하였다. 이러한 생각은 근대 이후 자연 과학의 발달과 함께 자연을 정복의 대상으 로 보는 관점에 영향을 미쳤다. 자연과 인간의 관계에 대한 다양한 입장 인간중심주의 인간중심주의는 도덕적 고려의 대상을 인간으로 한정하고, 인간 이 외의 모든 존재는 인간의 목적을 위한 단순한 수단으로 이용될 수 있다고 여긴다. 서양의 근대 사상가들은 인간과 자연의 관계를 이분법적으로 설정하거나 기계론 적 입장에서 자연을 바라보고 개발하고자 하였다. 베이컨(Bacon, F., 1561~1626)은 “자연에 대해 아는 것이 곧 힘이다.”라고 주장하며 자연에 관한 지식의 활용을 주 장하였다. 데카르트는 심신 이원론에 입각하여 인간과 자연의 관계를 설명하였다. 이성적인 인간은 생각하는 주체이고, 물질적인 객체로서의 자연은 단순한 기계로 본 것이다. 그는 인류의 복리를 위해 자연을 적극적으로 이용해야 한다고 주장하 며, 동물을 포함한 자연을 도덕적 고려의 대상에서 제외하였다. 이러한 서양의 자 연관을 강경한 인간중심주의라고 하는데, 오늘날 자원 고갈과 생태계 파괴, 기후 위기 등을 불러온 원인으로 비판받고 있다. 심신 이원론 인간을 구성하는 마음과 몸의 관계를 서로 다른 근원을 가진 독립한 별개 의 실체로 파악하는 것이다. 데카르 트는 마음의 근원은 생각이고, 몸의 근원은 크기와 운동이라고 보았다. 동양의 자연관 • 대인(大人)은 천지 만물을 일체로 여긴다. 대인이 천지 만물을 일체로 여길 수 있는 것은 의도적으로 하는 것이 아니라, 그 마음의 인 (仁)이 본래 이와 같아서 자연히 천지 만물과 일체가 되는 것이다. - 왕수인, 『대학문』 • 인드라 하늘에는 진주 그물이 있고, 그 그물은 잘 정돈되어 있어 만일 사람이 어떤 하나의 진주를 주시한다면 그것 속에 다른 모든 것이 반영되어 있는 것을 볼 것이다. 이와 같이 이 세계 내의 각각의 대상들은 단지 그것 자체로서가 아니라 다른 모든 대상들을 서 로서로 포함한다. 그러므로 사실상 각각의 대상은 서로 다른 대상이 된다. 한 티끌의 먼지 입자에도 무수히 많은 붓다들이 존재한다. - 『화엄경』 • 사람은 땅을 본받고, 땅은 하늘을 본받고, 하늘은 도를 본받고, 도는 자연을 본받는다. …… 이 때문에 성인은 사람들이 욕심내지 않 는 것을 욕구하여 얻기 어려운 재화를 귀하게 여기지 아니하며, 사람들이 배우려고 아니하는 것을 배워서 뭇사람들이 간과하는 것 으로 돌아가서 만물의 자연을 돕고, 감히 억지로 하지 않는다. - 노자, 『도덕경』 생각을 더하는 자 / 료 / 읽 / 기 유교, 불교, 도가의 자연관은 각각 차이는 있지만 대체로 인간과 자연의 조화로운 관계를 중시하는 모습을 보여 주었다. 유교는 하늘과 땅을 기 계적 물체가 아니라 서로 느끼고 상응하면서 만물을 낳고 기르는 존재, 즉 유기체적 존재로 보았다. 불교는 하나의 작은 티끌에도 온 세계가 나 타난다는 화엄의 세계를 인드라망의 비유를 통해 설명하였다. 도가는 아무런 외부적 힘이 관여하지 않은 자연 그대로의 성질, 스스로 그러한 모습[自然]을 본받는 것이 도(道)이며, 그러한 도에 따라 살아갈 것을 제안하였다. 이러한 동양의 자연관은 서양의 인간중심적 자연관이 갖는 문제점을 보완할 수 있다. 해설 데카르트(Descartes, R., 1596~1650) 프랑스의 합리주의 철학자로 『방법 서설』 등을 저술하였다. 03. 자연과 윤리 59 59 온건한 인간중심주의는 전통적인 인간중심주의가 자연의 개발과 이용에만 초점 을 두었다는 반성에서 출발하였다. 이들은 기존의 인간중심주의적 관점을 ‘강경한’ 입장이라고 비판하며 개발과 보존의 균형을 통해 자연과 인간이 함께 지속 가능할 수 있는 방법을 모색하고자 하였다. 패스모어(Passmore, J., 1914~2004)는 자연에 대한 인간의 도덕적 책임을 인정하고, 인류의 장기적인 이익과 생존을 위해 자연 친화적인 삶을 살 것을 주장하였다. 그는 “우리 자신이 계승했던 상황보다 지금과 같거나, 한층 더 훌륭한 상황을 우리의 직접적인 자손에게 양도해야 한다.”라고 말 하며 자연의 보전 문제에 관심을 기울였다. 동물중심주의 동물중심주의는 도덕적 고려의 대상을 동물에게까지 확대해야 한 다고 본다. 대표적인 윤리 사상가로 싱어와 레건이 있다. 싱어는 “중요한 것은 이성을 갖는가 혹은 말할 수 있는가가 아니라 고통을 느낄 수 있는가이다.”라는 벤담의 공리주의를 계승하였다. 그는, 어떤 존재가 고통을 느 낀다면 그 존재가 인간이든 동물이든 관계없이 도덕적 고려의 대상으로 삼아야 한 다고 보았다. 이익 평등 고려의 원칙은 한 존재의 고통을 다른 존재의 고통과 동등 하게 취급할 것을 요구하기 때문이다. 이를 위반하는 것은 종차별주의에 해당한다 고 본 싱어는 쾌고 감수 능력이 어떤 존재를 도덕적으로 고려할지를 결정하는 유일 한 기준이라고 주장하였다. 레건은 한 살 이상의 포유동물들이 삶의 주체로서 도덕적으로 존중받을 권리가 있다고 주장하였다. 이때 삶의 주체라는 것은 단지 살아 있다는 것, 또는 단지 의식 칸트의 인간중심주의 칸트는 인간 이외의 존재는 이성이 없어 도덕적인 지위를 갖지 못한다 고 보았다. 다만 자연을 잔인하게 다 루는 것은 인간의 자신에 대한 의무에 어긋난다고 주장하며 자연과 관련 한 인간의 간접적 의무를 인정하 였다. 종차별주의(speciesism) 자신이 속한 종(種)의 이익을 다른 종의 이익보다 우선하는 잘못된 태 도를 인종 차별주의와 성차별주의 에 빗대어 부르는 말이다. 인간중심주의 생각을 더하는 자 / 료 / 읽 / 기 인간중심주의 사상가들은 도덕적 행위 주체인 인간만이 직접적인 도덕적 고려 대상으로 보면서, 자연은 인간을 위한 수단으로만 바라본다. 베 이컨은 자연을 인류 복지의 수단으로 보고 있고, 칸트는 자연이나 동물과 관련한 간접적 의무만을 인정한다. 패스모어도 인류의 장기적인 이 익을 위해 생태 친화적인 삶을 추구해야 한다고 주장하지만 자연 자체의 내재적 가치를 인정하지 않는다. 해설 아는 것이 힘이다. 방황하는 자연을 사냥해서 노예로 만들어 인간의 이익에 봉사하도록 해야 한다. 과학의 목적은 자연의 비밀을 밝혀내는 것이다. 인간이 자연을 사랑하고 아름답다고 느끼기 때문에 자연이 가치 있는 것이다. 또 우리가 자연에 대해 책임이 있는 것은 그 책임의 바탕에 인간의 이익과 관심이 들어 있기 때문이다. 자연은 비록 무생물이지만 자연을 무자비하게 파괴하고자 하는 성향은 인간의 자신에 대한 의무를 거스르는 것이다. 자연을 파괴하고자 하는 성향은 도덕성에 기여할 감정을 약화시키거나 제거하기 때문이다. ▲ 베이컨 ▲ 칸트 ▲ 패스모어 레건(Regan, T., 1938~2017) 미국의 철학자로 『동물권 옹호』 등 을 저술하였다. II. 생명윤리와 생태윤리 60 을 갖고 있다는 것 이상을 의미한다. 삶의 주체가 된다는 것은 믿음, 욕구, 지각, 기 억, 미래에 대한 의식, 쾌락과 고통 등의 감정을 느낄 수 있다는 것이다. 그는 일부 동물을 자원으로 보는 것이 근본적으로 잘못되었음을 지적하며 무분별한 공장식 축산과 동물 실험 등에 반대하였다. 동물중심주의는 인간의 이윤 추구를 위해 동물을 무분별하게 이용해 온 관행을 비판적으로 성찰하는 계기를 마련해 주었다. 특히 동물 실험에 대한 논쟁에 중요한 윤리적 근거를 마련해 주었다. 그러나 동물의 복지에 초점을 맞춘 논의에만 치중해 환경 문제 전체를 다루지 못한다는 비판도 받는다. 생명중심주의 생명중심주의는 도덕적 고려의 대상을 모든 생명체로 확대해야 한 다고 보는 입장이다. 대표적인 윤리 사상가로 슈바이처와 테일러가 있다. 슈바이처(Schweitzer, A., 1875~1965)는 인간은 다른 모든 생명 의지에 대해서 도 자신의 생명 의지를 대할 때와 마찬가지로 생명에 대해 외경심을 가져야 한다고 주장하였다. 인간은 다른 모든 생명에 대해 외경심을 가져야 한다. 선이란 생명을 유지하고 촉진하는 것이며, 악이란 생명을 파괴하고 저해하는 것이다. 이것이야말로 도덕의 절대적 기본적인 원리이다. - 슈바이처, 『나의 생애와 사상』 테일러는 모든 생명체가 자기 보존을 위한 목적 지향적 활동을 하는 ‘목적론적 삶의 중심’이 되는 존재라고 보았다. 그는 생명체가 자신의 생존을 유지하고, 종 (種)을 재생산하며, 변화하는 환경에 적응하여 생명 활동을 영위한다는 점에 주목 하였다. 그래서 그는 모든 생명체를 본래적 가치를 지닌 도덕적 고려의 대상으로 대우해야 한다고 주장하며 생명체에 대한 네 가지 의무를 제시하였다. 동물중심주의 생각을 더하는 자 / 료 / 읽 / 기 싱어와 레건은 동물의 도덕적 지위를 인정하는 점에서 공통점을 지닌다. 그러나 싱어가 공리주의 입장에서 쾌고 감수 능력을 이익 관심과 도 덕적 지위 획득의 필요충분조건으로 보는 데 반면, 의무론적 입장을 취하는 레건은 쾌고 감수 능력을 삶의 주체가 되기 위한 하나의 필요조건 으로 인정한다. 그러면서 레건은 일부 동물은 도덕적 무능력자이지만 삶의 주체이기 때문에 수단으로만 대우받아서는 안 된다고 주장한다. 해설 차별을 정당화할 수 있는 것은 무엇인가? 중요한 문제는 이성적 사고 능력이나 대화를 나눌 능력이 있는지가 아니라 고통을 느 낄 수 있는가이다. …… 억압과 착취는 종식되어야 하며, 이익에 대한 동등한 고려라는 기본적인 도덕 원리를 아무런 이유 없이 우리 인간에게만 적용해서는 안 된다. ◀ 싱어 삶의 주체가 된다는 것은 믿음, 욕구, 지각, 기억, 미래에 관한 의식, 쾌락과 고통 등의 감정, 즉 선호와 복지에 관한 이익 관심, 자기의 욕구와 목표를 위한 행위능력, 자신의 정체성을 느끼고, 자신의 삶이 좋을 수도 나쁠 수도 있다는 의미에서 자 신의 복지를 갖고 있다는 것이다. ◀ 레건 동물 실험에 관한 원칙(3R) • 대체[Replacement]: 동물 실험 의 대체 방법 우선 고려 • 축소[Reduction]: 불가피한 경우 최소한으로 줄임 • 개선[Refinement]: 최대한 고통 을 완화하는 방법으로 실시 - 『동물보호법』 테일러의 생명체 에 대한 네 가지 의무 • 악행 금지의 의무: 어떤 생명체도 해치지 않아야 한다는 의무 • 불간섭의 의무: 개별 유기체의 자 유를 제한하지 말고, 생태계에 간 섭하지 않아야 한다는 의무 • 성실의 의무: 인간의 즐거움을 위 해 야생 동물을 사냥하거나 덫을 놓는 등의 기만행위를 해서는 안 된다는 의무 • 보상적 정의의 의무: 위 세 가지 의무를 어겼을 때 이를 보상해야 한다는 의무 03. 자연과 윤리 61 61 생명중심주의는 모든 생명체의 고유한 가치를 일깨워 주는 데 큰 역할을 하였다. 그러나 한편으로는 종(種)이나 생태계와 같이 전체론적 관점에서 환경 문제를 바 라보지 못했다는 비판을 받기도 한다. 생태중심주의 생태중심주의는 기존의 자연관들이 개별 생명체의 도덕적 지위를 중시한 것과 달리, 전일론적 관점에서 자연을 바라보고자 한다. 그래서 무생물을 포함한 생태계 전체를 도덕적 고려의 대상으로 여긴다. 대표적인 윤리 사상가로 레 오폴드와 네스가 있다. 레오폴드(Leopold, A., 1887~1948)는 흙, 물, 식물과 동물 등을 포함한 대지를 도덕 공동체의 범위에 포함하는 대지 윤리를 주장하였다. 그는 인간을 대지 공동체 의 정복자에서 그 구성원으로 변화시켜야 하고, 공동체의 구성원으로서 인간은 동 료인 생명체와 전체 공동체에 대해 존경심을 가져야 한다고 강조하였다. 대지 윤리가 진화할 수 있도록 풀어 주어야 할 빗장은 바로 이것이다. 바람직한 대지 이용을 오직 경제적 문제로만 생각하지 말라. 낱낱의 물음을 경제적으로 무 엇이 유리한가 하는 관점뿐만 아니라 윤리적, 심미적으로 무엇이 옳은가의 관점에 서도 검토하라. 생명 공동체의 통합성과 안정성, 그리고 아름다움의 보전에 이바 지한다면, 그것은 옳다. 그렇지 않다면 그르다. - 레오폴드, 『모래 군의 열두 달』 레오폴드는 인간의 자원 이용 권리를 제한적으로 인정하면서도 생태적 자연이 가능한 한 그대로 존재할 권리를 보장해야 한다고 강조하였다. 그에 따르면 어떤 것이 생명 공동체의 온전성, 안전성, 아름다움을 보전하는 경향이 있다면 옳고, 그 렇지 않다면 그르다. 네스(Naess, A., 1912~2009)는 환경 오염과 자원 고갈의 문제에 집중하는 이전 의 생태주의를 인간 중심적이라고 비판하면서 근본적인 변화와 실천을 요구하는 심층 생태주의를 주장하였다. 그는 생태계의 위기를 극복하기 위해서는 인간의 세 계관과 삶의 방식 자체를 생태 중심적으로 바꾸어야 한다고 주장하였다. 그러면서 그는 자신을 자연이라는 더 큰 전체와의 상호 연관성을 통해 이해하는 ‘큰 자아실 현’과 모든 생명체를 상호 연결된 공동체의 평등한 구성원으로 이해하는 ‘생명 중 심적 평등’을 강조하였다. 생태중심주의는 생태계와 생명체 전반에 대한 포괄적인 이해를 바탕으로 윤리 적 실천을 하고자 노력했다는 점에서 의의가 있다. 하지만 대지 윤리나 심층 생태 주의 모두 생명 공동체의 선을 위해 개별 생명, 특히 인간의 희생을 정당화할 위험성이 있다. 또한 생태계의 자연적 사실로부터 생태 계의 규범적 가치를 도출함으로써 자연주의적 오류를 범하고 있다는 비판을 받기도 한다. ‘큰 자아실현’ ‘큰 자아’는 자연과 이어진 자아를 말 한다. ‘큰 자아실현’은 자신을 자연과 의 상호 연관 속에서 존재하는 것으 로 이해하는 과정이다. 전일론적 관점 전체는 단순히 부분의 총합이 아닌 각 부분이 밀접하게 연결되고 결합 하여 하나의 독립된 실체를 이룬다 는 견해이다. 생태계 전체로서의 자 연환경 보전에 초점을 맞춘다. ▼ 생태중심주의는 무생물을 포함 한 생태계 전체를 도덕적 고려의 대 상으로 삼는다. 62 II. II. 생명윤리와 생태윤리 생명윤리와 생태윤리 자연과 인간의 바람직한 관계 오늘날 환경 문제의 근본적인 원인은 인간과 자연을 이분법적으로 나누고, 인간 의 욕구 충족을 위해 자연을 지배하고 정복하려는 인간중심주의에서 찾을 수 있다. 인간은 생존하고 발전하기 위해서는 어쩔 수 없이 자연을 이용할 수밖에 없지만, 동시에 자연의 영향 속에서 살아가는 생태계의 구성원이다. 따라서 필요에 따라 자 연을 개발하더라도 인간의 욕구를 적절하게 조절해 개발이 생태계에 미칠 부정적 영향을 최소화해야 한다. 이런 점에서 인간과 자연의 조화로운 공존을 추구한 동양 의 자연관은 인간중심주의의 한계를 극복하는 데 도움을 줄 수 있다. 그렇다면 인간과 자연의 조화로운 공존을 추구하기 위해서는 어떤 노력이 필요 할까? 먼저 인간은 생태계의 한 구성원으로서 자연과 더불어 살아가는 존재라는 환경친화적인 가치관을 확립해야 한다. 또한 효율성과 경제성보다는 자연과 인간 의 공생을 중시하는 사회적 노력이 확대되어야 한다. 이를 위해 개발로 인한 환경· 생태적 부작용을 최소화하기 위한 제도적 차원의 지원이 필요하다. 윤리적 관점에서 설명하기 지구 온난화는 북극에 어떤 영향을 주었을까? 탐 / 구 / 하 / 기 윤리 문제 환경 파괴로 인해 북극 지방의 빙하가 전례 없는 속도로 녹고 있으며, 이 때문에 이곳에 살고 있는 물개, 물고기, 북극여우, 늑대, 북극 곰 등이 생존에 위협을 받고 있다. 북극 지방의 먹이 사슬은 빙하의 밑바닥에 서식하는 해조류가 동물 플랑크톤이라는 작은 생물에 의 해 먹히고, 차례로 물고기, 물개, 그리고 마지막으로는 북극곰에게까지 연결된다. 이처럼 북극 지방의 먹이 사슬은 안정적인 빙하에 전 적으로 의지하고 있는데, 이것이 사라지면서 전체 먹이 사슬이 파괴되고 있다. 또한 전문가들은 북극 지방의 빙하가 감소하면서 지구 전체에 극단적 기후 현상을 발생할 수 있다고 경고한다. 북극 지방의 빙하가 녹는 것은 그 자체로도 큰 문제이지만, 지구의 온도를 높이는 원인이 되기도 한다. 이는 북극과 중위도 사이 온도 균형을 맞추는 역할 을 하는 제트 기류를 약화시켜 극단적 기후 현상이 잦아진다. 1 사례에 제시된 환경 문제를 여러 자연관의 관점에서 평가해 보자. 2 모둠별로 하나의 자연관을 선택한 후, 이 자연관의 관점에서 사례에 제시된 환경 문제의 해결 방안을 토론해 보자. 03. 자연과 윤리 63 63 주제 열기 기후 위기의 윤리적 문제 오늘날 인류는 다양한 환경 문제에 직면해 있다. 산업화, 도시화로 인한 토양 오 염, 수질 오염, 대기 오염 등의 환경 오염뿐만 아니라 산림·습지·갯벌의 파괴, 생물 종의 다양성 감소, 지구 온난화와 이에 따른 기후 변화 등 지구 환경 전반에서 다양 한 환경 문제가 발생하고 있다. 이러한 환경 문제들은 소규모 지역에서부터 지구 전체에 이르기까지 피해 규모도 다양하다. 현대의 환경 문제는 과거와 달리 어떤 특징이 있을까? 첫째, 지구의 자정 능력을 넘어서서 발생하는 경우가 많다. 오염 물질의 배출이 생태계의 자정 능력을 벗어나 생태계 전반에 회복하기 어려운 피해를 준다. 둘째, 책임 소재가 불분명하다. 환경 문제는 다양한 원인으로 발생하고, 불특정 다수에게 피해를 주기 때문에 가해자와 피해자를 구분하기가 쉽지 않 다. 또한 환경 문제는 저항력이 약한 어린이나 노인, 사회적 약자에게 더 큰 피해를 줄 수 있고, 현세대에만 국한되는 것이 아니라 미래 세대 에까지 영향을 미친다. 셋째, 국경을 초월하여 전 지구적으로 영향을 미치고 있다. 한 지역 또는 국가에서 발생한 환경 문제가 다른 지역 또는 국가에 연쇄적으로 영향을 준다. 따라서 환경 문제는 한 국가만의 노력으로 해결할 수 없 고 전 세계적인 협력이 필요하다. •오늘날 환경 문제에 대해 설명할 수 있다. •환경 문제의 원인과 해결 방안을 윤리적 관점에서 제시할 수 있다. 학습 목표 환경 문제에 대한 윤리적 쟁점 환경 문제와 관련하여 현세대는 미래 세대에 대해 어떤 도덕적 책임을 져야 할까? 2 자연과 윤리 03 모든 미래 세대의 눈이 여러분에게 향해 있습니다. 여러분이 우리를 실망시키는 쪽을 선택한다면, 우리는 여러분을 절대로 용서하지 않을 겁니다. 이러고도 무사히 넘어가도록 놔두지 않을 겁니다. - 툰베리, 2019년 유엔 기후 행동 정상 회의 연설 평균 지표 기온 변화에 따른 기후 변화 전망 II. 생명윤리와 생태윤리 64 환경 문제 중 가장 광범위하게 영향을 미치고 있는 문제가 기후 위기이다. 투발 루, 몰디브 등 남태평양의 섬나라들은 지구 온난화로 해수면이 높아져 국토가 물에 잠길 위기에 처해 있다. 그뿐만 아니라 세계 곳곳에서 홍수와 가뭄, 폭염이나 한파 와 같은 이상 기후 현상으로 많은 사람들이 큰 피해를 보고 있다. 또한 이러한 기후 위기는 식량 부족 문제를 초래할 수 있다. 가뭄과 홍수로 인해 농지가 파괴되고 생 태계가 급격하게 변화하면서 기존의 농업 환경이 위협받게 된다. 특히 식량 문제로 인한 사회갈등은 무력 충돌로 번질 위험이 크다. 기후 위기는 기후 정의를 심각하게 훼손하는 기후 불평등 문제를 초래한다. 온실 가스 배출로 인한 기후 위기 문제의 주된 책임은 경제 성장 과정에서 많은 온실가 스를 배출한 국가들에 있다. 그런데 그 피해는 주로 저개발국이 입고 있어 불공평 하다는 비판이 제기된다. 한 국가 안에서도 기후 재난으로 인한 피해는 사회적 약 자들이 더 심각하게 겪는다. 이러한 문제의 심각성을 인지하고 세계 각국에서는 국제적 협력을 통해 기후 위 기 문제를 해결하기 위해 노력하고 있다. 1992년 리우 유엔 환경 개발 회의에서 체 결한 리우 선언에서 지속 가능한 개발의 원칙을 천명하였다. 이후 1997년에는 선 기후 난민 시리아에서는 2005년부터 5년에 걸친 가뭄과 물 부족으로 식량 문제 가 심각해졌고, 이로 인한 사회갈등 이 내전으로 이어져 700만 명의 난 민이 발생하였다. 윤리적 관점에서 실천 방안 제안하기 환경 문제를 어떻게 해결해야 할까? 탐 / 구 / 하 / 기 윤리 문제 1 모둠별로 위의 사진 중 하나를 골라 이러한 환경 문제가 발생하게 된 원인을 조사해 보자. 2 모둠별로 조사한 원인을 다음 생선 가시 위쪽에 적고, 아래쪽에 해결 방안을 모색해 구조화시켜 보자. ▲ 기후 변화로 인한 대형 산불 ▲ 미세 먼지로 뿌옇게 흐려진 도시 ▲ 아무렇게나 버려진 쓰레기 ▲ 기후 변화로 인한 홍수로 살 곳을 잃은 사람들 환경 문제의 원인 해결 방안 03. 자연과 윤리 65 65 미래 세대에 대한 인간의 예견적 책임 생각을 더하는 자 / 료 / 읽 / 기 요나스는 과학기술 시대의 책임 윤리를 제시하면서, 책임의 범 위를 현세대로 한정하는 기존의 전통적 윤리는 환경 위기의 문 제를 해결하는 데 한계가 있다고 본다. 그는 윤리적 책임의 범위 를 확대해 인간뿐만 아니라 자연과 미래 세대에 대한 예견적 책 임까지 고려해야 한다고 보고, ‘생태학적 정언 명령’을 다음과 같 이 주장한다. 진국의 온실가스 감축 목표를 구체적으로 설정한 ‘교토 의정서’가 채택되었고, 2015년에는 ‘파리 기후 변화 협정’이 채택되었다. 세계 197개국이 참여한 파리 협 정에서는 산업화 이전 대비 지구 평균 기온 상승을 1.5℃ 이하로 제한하기 위한 노 력을 추구하기로 하고, 선진국뿐 아니라 참여국 모두에게 온실가스 감축 의무를 부 과하였다. 지속 가능한 미래를 위한 실천 자연 개발과 환경 보존 중 어느 것을 우선해야 할까? 지나친 개발은 환경 파괴로 이어지고, 반대로 환경 보존은 자칫 성장을 둔화할 수 있다. 이러한 ‘개발과 보존’ 의 딜레마를 해결하기 위해 ‘환경적으로 건전하고 지속 가능한 발전’이라는 개념이 등장하였다. 이는 생태적 지속 가능성과 미래 세대를 고려하여 개발과 환경 보존의 균형을 추구하자는 것이다. 지속 가능한 발전을 위해서는 현재의 우리 삶의 방식을 근본적으로 성찰하고 변 화하는 것이 필요하다. 먼저 개인은 경제적 측면에만 초점을 둔 소비 생활을 바꿔 지속 가능한 소비 생활을 해야 한다. 과도한 육식을 줄이고 채식을 늘리는 것도 환 경 문제 해결에 큰 도움이 될 수 있다. 또한 에너지 절약을 습관화하고, 일회용품 사용을 최대한 줄이는 등 생태계에 도움이 되는 생활 습관을 실천할 수도 있다. 그러나 환경 문제는 개인의 노력만으로 해결하기 어려운 문제이다. 기업 역시 지 속 가능한 생산 방식을 고민해야 한다. 기후 위기의 심각성이 대두되면서 RE100, 탄소 국경 조정세 등이 도입되어 기업의 상품 생산 및 유통 과정에서도 온실가스 배출을 줄이려는 움직임이 늘어나고 있다. 정부 또한 개인이나 기업이 온실가스 배 출을 획기적으로 줄일 수 있도록 다양한 정책과 제도를 마련하여 실행해야 한다. 환경적으로 건전하고 지속 가능 한 발전 미래 세대가 그들의 욕구를 충족할 수 있는 범위에서 현세대의 욕구를 충족하는 발전을 의미한다. RE100 ‘재생 에너지(Renewable Electricity) 100%’의 약자로, 기업이 사용하는 전력 100%를 재생 에너지로 충당 하겠다는 캠페인이다. 요나스는 우리의 행위가 영향을 미치게 될 자연과 미래 세대에 대해 책임을 강조하였다. 이 책임은 이미 일어난 결과에 대한 사후적 책임이 아 니라 해야 할 것에 대한 예방적이며 사전적 책임이다. 이를 위해 그는 ‘생태학적 정언 명령’이라는 지침을 세우고, 이 명령에 따라 행위할 때 미 래 세대와 생태계 전체가 존속할 수 있다고 말하였다. 해설 기후 변화에 관한 정부 간 협의체 (IPCC) 지구 온난화에 관한 국제적인 대책 을 마련하기 위해 1988년 설립된 유엔 산하 국제 협의체이다. 1992년 리우 환경 정상 회담에서 채택한 유 엔 기후 변화 협약과 1997년 발효된 교토 의정서의 이행과 관련한 문제들 에 대한 특별 보고서를 발표하고 있 으며, 궁극적으로는 ‘지구 온난화 방 지 조약’의 체결을 목표로 하고 있다. •“네 행위의 결과가 지상에서의 진정한 인간적 삶의 지속과 조화될 수 있도록 하라.” •“네 행위의 결과가 미래에 인간의 생존 가능성을 파괴하지 않도록 하라.” - 요나스, 『책임의 원칙』 II. 생명윤리와 생태윤리 66 논술 주제 탐구 다음 글을 읽고 모둠별로 토론해 보자. 기후 위기, 어떻게 대응할까요? 제시문 가 , 나 를 읽고 기후 문제를 정의의 문제로 보아야 하는 이유를 서술해 보자. 제시문 가 , 나 를 참고하여 다 의 문제를 해결하는 방안을 논술해 보자. 가 기후 변화 적응은 같은 시대에 사는 사람 간의 정의를 구현하기 위한 정책이다. 부유한 국가는 잘살기 위해 온실가스를 배출한다. 반면 가난한 국가는 배출 책임과 무관하지만, 기후 위험에 노출되어 피해를 받을 가능성이 더 높다. 이처럼 정의롭지 못한 현실을 해결하기 위해 빈곤 국 가와 취약 계층에 대한 지원, 사회 기반 시설 구축과 예방적 조치 등이 수행되어야 한다. - 조천호, 『파란하늘 빨간지구』 나 이산화탄소는 100년 이상 대기 중에 머무르며, 그 일부는 1,000년 이상 남아 있기도 한다. 지 금 온실가스 배출량을 줄이지 않으면 우리 후손이 감당해야 한다. 다시 말해서 결과를 일으킨 원인 유발자와 그 결과를 극복해야만 하는 처리자가 동시대인이 아니라는 점이 문제다. 기후 변화 저감은 세대 간 정의를 구현하기 위한 정책이다. 우리 세대가 잘살기 위해 배출한 온실가 스는 다음 세대에도 계속 남아 기후 변화를 일으키기 때문이다. 다음 세대는 우리 세대가 배출 한 온실가스로 인한 이익은 보지 못하고 피해만을 감당해야 한다. - 조천호, 『파란하늘 빨간지구』 다 기후 위기는 앞으로 장기 대응해야 할 위험을 넘어 이미 도착해 있는 위험이 되었다. 폭우, 폭 염, 산불 등 지구 온난화에 의한 극한 현상이 현실로 나타나고 있다. 파키스탄은 폭우로 국토 의 3분의 1이 물에 잠겨 국가 존속의 위기에 놓였고, 미국, 캐나다, 그리스 등 지구 곳곳에서 높은 기온과 건조한 기후로 심각한 대형 산불이 발생하였다. 태평양 도서국의 많은 국가들도 해수면 상승으로 집이 사라질 위기에 처했다. 67 03. 자연과 윤리 03. 자연과 윤리 인 물 과 고전 테일러 Taylor, P. W. 1923~2015 “모든 생명체는 목적론적 삶의 중심이다.” 테일러는 인간 중심 환경 윤리의 시각을 비판하면서 생명중심주의적 관점을 체계적 으로 정립하였다. 그에 따르면 이제까지 인간은 다른 동물이나 식물이 지니지 못한 인 간만의 특징을 이유로 인간을 우월한 존재로 인식하면서, 인간에 대한 인간의 태도만 을 윤리의 문제로 잘못 설정해 왔다. 그러나 다른 생명체에게는 비행, 속도, 광합성 능 력 등 인간에게 없는 저마다의 능력이 있다. 그는 이런 능력보다 인간의 능력이 우월하 다는 생각은 자의적인 인간중심주의적 사고에 불과하다고 비판하였다. • 목적론적 삶의 중심이라는 것은 외적 활동뿐 아니라 내적 기능도 모두 목표 지향적이 고, 시간이 지나도 유기체의 존재를 유지하며 같은 종을 재생산하고 변화하는 환경에 끊임없이 적응하는 지속적인 생물적 기능이 있다는 것이다. 유기체를 하나의 목적론 적 활동의 중심으로 만드는 것은 이런 기능의 일관성과 통일성이며, 그 기능은 모두 유기체의 선의 실현을 지향한다. 의식이 있든 없든 모든 유기체는 자신의 존재를 지키 고 유지하는 지속적인 경향이 있으며, 목표 지향적으로 활동하는 통일되고 일관성 있 고 질서 정연한 시스템이라는 의미에서 목적론적 삶의 중심이다. • 자연 존중 태도를 이해하고 정당화할 수 있는 근거가 되는 신념 체계가 생명 중심 관 점이다. 생명 중심 관점은 자연 존중 태도를 이해시키고 정당화하는 배경을 제공한다. 생명 존중 관점의 핵심을 이루는 믿음은 네 가지가 있다. - 인간은 지구 생명 공동체의 일원이다. - 인간은 다른 모든 종들과 함께 상호 의존하는 시스템(자연계)을 구성하는 요소이다. - 모든 유기체는 각각 자신의 방식대로 고유의 선을 추구하는 유일한 개체라는 의미에 서 목적론적 삶의 중심이다. - 인간은 다른 생명체보다 본질적으로 우월하지 않다. - 『자연에 대한 존중』 해설 테일러에 따르면 인간은 지구 생명 공동체의 구성원일 뿐이며, 자연 생태계의 야생 동식물도 수단 적인 효용성의 가치와 무관하게 본래적 가치를 지닌다. 즉 유기체로서의 각각의 개별 생명체는 인간처럼 자기 보존을 추구하는 자율적 선택의 목적론적 중심이며, 그 자체로 하나의 목적이기 때문에 도덕적인 지 위를 지닌다는 것이다. 그래서 그는 모든 생명체가 이성적 사고 능력이나 도덕적 행위능력이 없다 하더라 도, 그리고 인간에게 얼마나 유용한지와 관계없이 도덕적으로 존중받아야 한다고 주장하였다. \u0007 인간과 \u0007 다른 \u0007 존재의 \u0007 이해관계가 \u0007 충돌할 \u0007 때 \u0007 테일러의 \u0007 생명중심주의는 \u0007 우선순위를 \u0007 어떻 게 \u0007 설정할지 \u0007 생각해 \u0007 보자. 적용하기 테일러가 \u0007 말하는 \u0007 ‘목적’의 \u0007 구체적인 \u0007 내용을 \u0007 말해 \u0007 보자. II. 생명윤리와 생태윤리 68 단원 마무리 ➊ 강경한 인간중심주의 자연관이 오늘날 환경 문제와 관 련하여 비판받는 이유를 서술해 보자. ➌ ‘환경적으로 건전하고 지속 가능한 발전’의 의미를 서술 해 보자. ➋ 다음과 같은 정언 명령을 통해 요나스가 ‘윤리적 책임’을 강조한 이유를 서술해 보자. • “네 행위의 결과가 지상에서의 진정한 인간적 삶 의 지속과 조화될 수 있도록 하라.” • “네 행위의 결과가 미래에 인간의 생존 가능성을 파괴하지 않도록 하라.” - 요나스, 『책임의 원칙』 핵심 내용 서술하기 핵심 내용 서술하기 ➍ 다음 글을 읽고 물음에 답해 보자. ㉠ 이 사상은 기존의 자연관들이 개별 생명체의 도덕적 지위를 중시한 것과 달리, 전일론적 관점에 서 자연을 바라보고자 한다. 그래서 무생물을 포함 한 생태계 전체를 도덕적 고려의 대상으로 여긴다. (1) ㉠이 가리키는 것은 무엇인지 써 보자. (2) ㉠이 동물중심주의나 생명중심주의 자연관과 어떤 차 이점이 있는지 서술해 보자. (3) ㉠의 한계점을 서술해 보자. 핵심 내용 정리하기 ◆ 밑줄 친 부분을 바르게 고쳐 보자. ❶ 전통적으로 서양에서는 자연과 인간은 상호 의존적인 관계로 서로 긴밀하게 연결되어 있다고 보았다. ❹ 싱어는 한 살 이상의 포유동물 들이 삶의 주체로서 도덕적으로 존 중받을 권리가 있다고 주장하였다. ❷ 데카르트는 자연을 적극적으로 이용해야 한다고 주장하며, 도덕적 고려의 대상에 동물을 비롯한 자연 을 포함하였다. ❺ 테일러는 모든 생명체를 도구적 가치를 지닌 도덕적 고려의 대상으 로 대우해야 한다고 주장하며 생명 체에 대한 네 가지 의무를 제시하 였다. ❸ 네스는 온건한 인간중심주의의 대표 사상가로 자연에 대한 인간의 도덕적 책임을 인정하고, 자연 친화 적인 삶을 살 것을 주장하였다. ❻ 교토 의정서에서는 지구 평균 기온 상승을 산업화 이전 대비 1 .5℃ 이하로 제한하기 위해 참여국 모두에게 온실가스 감축 의무를 부 과하였다. 03. 자연과 윤리 69"}};
+  var currentUnitId = 'u1';
+  var currentTopic = '';
+  var currentDifficulty = '보통';
+  var questions = [];
+  var userAnswers = [];
+  var currentIndex = 0;
+  var score = 0;
+  var abortController = null;
+
+  function showScreen(name){
+    if (name !== 'notes' && notesUnsub){
+      notesUnsub();
+      notesUnsub = null;
+    }
+    Object.keys(screens).forEach(function(k){
+      screens[k].hidden = (k !== name);
+    });
+  }
+
+  // --- 단원 선택 ---
+  unitGroup.addEventListener('click', function(e){
+    var btn = e.target.closest('.unit-btn');
+    if (!btn) return;
+    Array.prototype.forEach.call(unitGroup.querySelectorAll('.unit-btn'), function(b){
+      b.removeAttribute('data-selected');
+    });
+    btn.setAttribute('data-selected', 'true');
+    currentUnitId = btn.dataset.unit;
+  });
+
+  // --- 난이도 선택 ---
+  diffGroup.addEventListener('click', function(e){
+    var btn = e.target.closest('.diff-btn');
+    if (!btn) return;
+    Array.prototype.forEach.call(diffGroup.querySelectorAll('.diff-btn'), function(b){
+      b.removeAttribute('data-selected');
+    });
+    btn.setAttribute('data-selected', 'true');
+    currentDifficulty = btn.dataset.level;
+  });
+
+  // --- Claude sample capability 준비 ---
+  (async function initSample(){
+    try{
+      if (window.claude && typeof window.claude.use === 'function'){
+        sampleFn = await window.claude.use('sample');
+      }
+    }catch(e){
+      sampleFn = null;
+    }
+    if (sampleFn){
+      genBtn.disabled = false;
+      genBtn.textContent = '퀴즈 만들기';
+    } else {
+      genBtn.textContent = '사용할 수 없음';
+      noticeStart.textContent = '이 화면은 Claude 앱(claude.ai) 안에서 열어야 퀴즈를 만들 수 있어요.';
+      noticeStart.hidden = false;
+    }
+  })();
+
+  // --- db capability 준비 (오답노트) ---
+  (async function initDb(){
+    try{
+      if (window.claude && typeof window.claude.use === 'function'){
+        dbApi = await window.claude.use('db');
+      }
+    }catch(e){
+      dbApi = null;
+    }
+    notesLink.hidden = !dbApi;
+  })();
+
+  function notesCollection(){
+    return dbApi.collection('wrongNotes');
+  }
+
+  var DIFF_VAR = { '쉬움': '--easy', '보통': '--medium', '어려움': '--hard' };
+
+  function formatDate(iso){
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mi = String(d.getMinutes()).padStart(2, '0');
+    return d.getFullYear() + '.' + mm + '.' + dd + ' ' + hh + ':' + mi;
+  }
+
+  async function saveWrongNotes(){
+    if (!dbApi) return;
+    var wrongs = [];
+    questions.forEach(function(q, i){
+      if (userAnswers[i] !== q.answerIndex){
+        wrongs.push({ q: q, userAnswerIndex: userAnswers[i] });
+      }
+    });
+    if (wrongs.length === 0) return;
+    saveNotesBtn.disabled = true;
+    saveNotesBtn.textContent = '저장 중...';
+    try{
+      await Promise.all(wrongs.map(function(w){
+        return notesCollection().add({
+          topic: currentTopic,
+          difficulty: currentDifficulty,
+          question: w.q.question,
+          options: w.q.options,
+          answerIndex: w.q.answerIndex,
+          userAnswerIndex: w.userAnswerIndex,
+          explanation: w.q.explanation,
+          createdAt: new Date().toISOString()
+        });
+      }));
+      saveNotesBtn.textContent = '오답노트에 저장됨 (' + wrongs.length + '개) ✓';
+    }catch(e){
+      saveNotesBtn.disabled = false;
+      saveNotesBtn.textContent = '오답노트에 저장';
+    }
+  }
+
+  function noteItemHtml(id, data){
+    var letters = ['A','B','C','D'];
+    var diffVar = DIFF_VAR[data.difficulty] || '--accent';
+    var userText = (typeof data.userAnswerIndex === 'number' && data.options[data.userAnswerIndex])
+      ? letters[data.userAnswerIndex] + '. ' + escapeHtml(data.options[data.userAnswerIndex])
+      : '-';
+    var correctText = letters[data.answerIndex] + '. ' + escapeHtml(data.options[data.answerIndex]);
+    return '' +
+      '<div class="note-item" data-id="' + id + '">' +
+        '<div class="note-meta">' +
+          '<span class="note-tag" style="color:var(' + diffVar + ')">' + escapeHtml(data.topic) + ' · ' + escapeHtml(data.difficulty) + '</span>' +
+          '<span class="note-date">' + formatDate(data.createdAt) + '</span>' +
+          '<button type="button" class="note-del" aria-label="삭제" data-id="' + id + '">✕</button>' +
+        '</div>' +
+        '<p class="note-question">' + escapeHtml(data.question) + '</p>' +
+        '<p class="note-answer">내 답: <b>' + userText + '</b> · 정답: <b>' + correctText + '</b></p>' +
+        '<p class="note-explain">' + escapeHtml(data.explanation) + '</p>' +
+      '</div>';
+  }
+
+  function renderNotes(docs){
+    notesClearBtn.hidden = docs.length === 0;
+    if (docs.length === 0){
+      notesListEl.innerHTML = '<p class="notes-empty">저장된 오답이 없어요.<br>퀴즈를 풀고 결과 화면에서 저장해보세요.</p>';
+      return;
+    }
+    var html = '<div class="notes-list">';
+    docs.forEach(function(snap){
+      var d = snap.data();
+      if (!d) return;
+      html += noteItemHtml(snap.id, d);
+    });
+    html += '</div>';
+    notesListEl.innerHTML = html;
+  }
+
+  function openNotes(){
+    if (!dbApi) return;
+    showScreen('notes');
+    notesListEl.innerHTML = '<p class="notes-empty">불러오는 중...</p>';
+    notesClearBtn.hidden = true;
+    notesUnsub = notesCollection().orderBy('createdAt', 'desc').limit(200).onSnapshot(
+      function(snap){ renderNotes(snap.docs); },
+      function(e){ notesListEl.innerHTML = '<p class="notes-empty">오답노트를 불러오지 못했어요.</p>'; }
+    );
+  }
+
+  notesListEl.addEventListener('click', function(e){
+    var btn = e.target.closest('.note-del');
+    if (!btn || !dbApi) return;
+    var id = btn.dataset.id;
+    btn.disabled = true;
+    notesCollection().doc(id).delete().catch(function(){ btn.disabled = false; });
+  });
+
+  notesClearBtn.addEventListener('click', async function(){
+    if (!dbApi) return;
+    notesClearBtn.disabled = true;
+    try{
+      var snap = await notesCollection().limit(200).get();
+      await Promise.all(snap.docs.map(function(d){ return notesCollection().doc(d.id).delete(); }));
+    }catch(e){}
+    notesClearBtn.disabled = false;
+  });
+
+  notesLink.addEventListener('click', openNotes);
+  notesBackBtn.addEventListener('click', function(){ showScreen('start'); });
+  saveNotesBtn.addEventListener('click', saveWrongNotes);
+
+  function buildPrompt(unit, difficulty){
+    return [
+      '당신은 고등학교 윤리 교과서 출제 전문가입니다.',
+      '아래는 교과서 『현대사회와 윤리』(해냄에듀) Ⅱ. 생명윤리와 생태윤리 중 "' + unit.title + '" 부분의 본문 지문입니다.',
+      '',
+      '[지문 시작]',
+      unit.text,
+      '[지문 끝]',
+      '',
+      '난이도: ' + difficulty + ' (쉬움/보통/어려움 중 하나이며, 문제의 개념 난이도와 보기 구성을 그 수준에 맞추세요)',
+      '',
+      '반드시 위 지문 내용만 근거로 4지선다 객관식 문제를 정확히 5개 만들어주세요. 조건:',
+      '- 지문에 나온 내용에서만 출제하고, 지문에 없는 사실이나 개념을 지어내지 마세요.',
+      '- 각 문제는 보기를 정확히 4개 제시하고, 정답은 그중 하나뿐이어야 합니다.',
+      '- 오답 보기도 그럴듯하지만 명백히 틀린 내용이어야 하며, 서로 겹치거나 모호하지 않아야 합니다.',
+      '- 각 문제마다 정답의 근거를 지문 내용에 기반해 설명하는 한 문장짜리 해설을 포함하세요.',
+      '- 문제, 보기, 해설은 모두 자연스러운 한국어로 작성하세요.',
+      '- 아래 형식의 JSON 배열만 출력하고, 다른 설명이나 코드블록 표시는 넣지 마세요.',
+      '',
+      '[{"question":"문제 내용","options":["보기1","보기2","보기3","보기4"],"answerIndex":0,"explanation":"한 문장 해설"}]'
+    ].join('\n');
+  }
+
+  function normalizeQuestion(q){
+    if (!q || typeof q.question !== 'string') return null;
+    if (!Array.isArray(q.options) || q.options.length !== 4) return null;
+    if (!q.options.every(function(o){ return typeof o === 'string' && o.trim(); })) return null;
+    var idx = Number(q.answerIndex);
+    if (!Number.isInteger(idx) || idx < 0 || idx > 3) return null;
+    if (typeof q.explanation !== 'string' || !q.explanation.trim()) return null;
+    return {
+      question: q.question.trim(),
+      options: q.options.map(function(o){ return o.trim(); }),
+      answerIndex: idx,
+      explanation: q.explanation.trim()
+    };
+  }
+
+  function errorMessage(e){
+    var code = e && e.code;
+    switch(code){
+      case 'cancelled': return null;
+      case 'not_granted':
+      case 'sampling_disabled':
+      case 'not_declared':
+      case 'capability_disabled':
+      case 'capability_removed':
+        return '이 아티팩트에서 Claude를 사용할 권한이 없어요.';
+      case 'rate_limited':
+        return '요청이 많아요. 잠시 후 다시 시도해주세요.';
+      case 'prompt_too_large':
+        return '지문이 너무 길어요. 다른 단원을 선택해주세요.';
+      case 'refused':
+        return '이 주제로는 문제를 만들 수 없어요. 다른 주제를 입력해주세요.';
+      case 'invalid_json':
+        return '문제를 만드는 데 실패했어요. 다시 시도해주세요.';
+      default:
+        return '일시적인 오류가 발생했어요. 다시 시도해주세요.';
+    }
+  }
+
+  async function runGeneration(unitId, difficulty){
+    var unit = UNITS[unitId];
+    if (!unit) return;
+    currentUnitId = unitId;
+    currentTopic = unit.title;
+    currentDifficulty = difficulty;
+    showScreen('loading');
+    loadingTopic.textContent = unit.title + ' · ' + difficulty;
+    abortController = new AbortController();
+    noticeStart.hidden = true;
+    try{
+      var data = await sampleFn.json(buildPrompt(unit, difficulty), {
+        modelTier: 'default',
+        cache: false,
+        signal: abortController.signal
+      });
+      var list = Array.isArray(data) ? data : [];
+      questions = list.map(normalizeQuestion).filter(Boolean).slice(0, 5);
+      if (questions.length === 0){ throw { code: 'invalid_json' }; }
+      userAnswers = new Array(questions.length).fill(null);
+      currentIndex = 0;
+      score = 0;
+      showScreen('quiz');
+      renderQuestion();
+    }catch(e){
+      var msg = errorMessage(e);
+      showScreen('start');
+      if (msg){
+        noticeStart.textContent = msg;
+        noticeStart.hidden = false;
+      }
+    }
+  }
+
+  genBtn.addEventListener('click', function(){
+    if (!sampleFn) return;
+    runGeneration(currentUnitId, currentDifficulty);
+  });
+
+  cancelBtn.addEventListener('click', function(){
+    if (abortController) abortController.abort();
+    showScreen('start');
+  });
+
+  function renderDots(){
+    dotsEl.innerHTML = '';
+    questions.forEach(function(_, i){
+      var d = document.createElement('span');
+      d.className = 'dot';
+      if (userAnswers[i] !== null){
+        d.setAttribute('data-state', userAnswers[i] === questions[i].answerIndex ? 'correct' : 'wrong');
+      } else if (i === currentIndex){
+        d.setAttribute('data-state', 'current');
+      }
+      dotsEl.appendChild(d);
+    });
+  }
+
+  function renderQuestion(){
+    var q = questions[currentIndex];
+    progressCount.textContent = '문항 ' + (currentIndex + 1) + '/' + questions.length;
+    renderDots();
+    questionText.textContent = q.question;
+    explainBox.hidden = true;
+    nextBtn.hidden = true;
+
+    optionsEl.innerHTML = '';
+    var letters = ['A','B','C','D'];
+    q.options.forEach(function(optText, i){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'option-btn';
+      btn.innerHTML = '<span class="option-letter">' + letters[i] + '</span><span>' + escapeHtml(optText) + '</span>';
+      btn.addEventListener('click', function(){ selectOption(i); });
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  function escapeHtml(s){
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function selectOption(i){
+    if (userAnswers[currentIndex] !== null) return;
+    var q = questions[currentIndex];
+    userAnswers[currentIndex] = i;
+    var correct = i === q.answerIndex;
+    if (correct) score++;
+
+    var btns = optionsEl.querySelectorAll('.option-btn');
+    Array.prototype.forEach.call(btns, function(btn, idx){
+      btn.disabled = true;
+      if (idx === q.answerIndex){
+        btn.setAttribute('data-mark', 'correct');
+      } else if (idx === i){
+        btn.setAttribute('data-mark', 'wrong');
+      } else {
+        btn.setAttribute('data-mark', 'dim');
+      }
+    });
+
+    explainTag.textContent = correct ? '정답' : '오답';
+    explainTag.className = 'explain-tag ' + (correct ? 'correct' : 'wrong');
+    explainText.textContent = q.explanation;
+    explainBox.hidden = false;
+
+    renderDots();
+    nextBtn.hidden = false;
+    nextBtn.textContent = (currentIndex === questions.length - 1) ? '결과 보기' : '다음 문제';
+  }
+
+  nextBtn.addEventListener('click', function(){
+    currentIndex++;
+    if (currentIndex >= questions.length){
+      showResult();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  function showResult(){
+    showScreen('result');
+    resultTopic.textContent = currentTopic + ' · ' + currentDifficulty;
+    scoreNum.textContent = String(score);
+    var pct = Math.round((score / questions.length) * 100);
+    var comment;
+    if (pct === 100) comment = '완벽해요! 만점입니다.';
+    else if (pct >= 60) comment = '잘했어요, 조금만 더 다듬어봐요.';
+    else comment = '다시 풀며 개념을 확인해봐요.';
+    scoreLabel.textContent = pct + '점 · ' + comment;
+
+    reviewList.innerHTML = '';
+    var letters = ['A','B','C','D'];
+    questions.forEach(function(q, i){
+      var ua = userAnswers[i];
+      var isCorrect = ua === q.answerIndex;
+      var item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML =
+        '<div class="review-head">' +
+          '<span class="review-mark ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '✓' : '✕') + '</span>' +
+          '<span>' + (i + 1) + '. ' + escapeHtml(q.question) + '</span>' +
+        '</div>' +
+        '<p class="review-answer">내 답: <b>' + (ua === null ? '-' : letters[ua] + '. ' + escapeHtml(q.options[ua])) + '</b>' +
+          (isCorrect ? '' : ' &nbsp;·&nbsp; 정답: <b>' + letters[q.answerIndex] + '. ' + escapeHtml(q.options[q.answerIndex]) + '</b>') +
+        '</p>' +
+        '<p class="review-explain">' + escapeHtml(q.explanation) + '</p>';
+      reviewList.appendChild(item);
+    });
+
+    var wrongCount = questions.filter(function(q, i){ return userAnswers[i] !== q.answerIndex; }).length;
+    saveNotesBtn.hidden = !dbApi || wrongCount === 0;
+    saveNotesBtn.disabled = false;
+    saveNotesBtn.textContent = '오답노트에 저장';
+  }
+
+  retryBtn.addEventListener('click', function(){
+    if (!sampleFn) return;
+    runGeneration(currentUnitId, currentDifficulty);
+  });
+
+  restartBtn.addEventListener('click', function(){
+    showScreen('start');
+  });
+
+})();
+</script>
