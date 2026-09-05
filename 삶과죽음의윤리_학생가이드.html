@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>삶과 죽음의 윤리 학습 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#E7E5DC;
+    --surface:#FAF9F4;
+    --surface-raised:#FFFFFF;
+    --ink:#26241E;
+    --ink-soft:#5C574A;
+    --ink-faint:#8A8574;
+    --line:#D7D3C4;
+    --line-soft:#E4E1D5;
+    --accent:#33356B;
+    --accent-strong:#22234A;
+    --accent-soft:#E9E8F3;
+    --amber:#AD6C2C;
+    --amber-soft:#F3E6D3;
+    --good:#3E6B4B;
+    --good-soft:#E1EDE3;
+    --bad:#9E3B2E;
+    --bad-soft:#F4E1DC;
+    --info:#2C5C6B;
+    --info-soft:#DFEBEE;
+    --shadow: 0 1px 2px rgba(38,36,30,0.06), 0 6px 20px -8px rgba(38,36,30,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1B1A20;
+      --surface:#242229;
+      --surface-raised:#2B2933;
+      --ink:#EDEAE0;
+      --ink-soft:#B7B1A0;
+      --ink-faint:#847E6E;
+      --line:#3B3844;
+      --line-soft:#312F39;
+      --accent:#A199DA;
+      --accent-strong:#C3BCEB;
+      --accent-soft:#332F52;
+      --amber:#E3A463;
+      --amber-soft:#3E3220;
+      --good:#82C199;
+      --good-soft:#213A2A;
+      --bad:#E0897A;
+      --bad-soft:#3E2622;
+      --info:#83C0D1;
+      --info-soft:#1F343B;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px -10px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1B1A20;
+    --surface:#242229;
+    --surface-raised:#2B2933;
+    --ink:#EDEAE0;
+    --ink-soft:#B7B1A0;
+    --ink-faint:#847E6E;
+    --line:#3B3844;
+    --line-soft:#312F39;
+    --accent:#A199DA;
+    --accent-strong:#C3BCEB;
+    --accent-soft:#332F52;
+    --amber:#E3A463;
+    --amber-soft:#3E3220;
+    --good:#82C199;
+    --good-soft:#213A2A;
+    --bad:#E0897A;
+    --bad-soft:#3E2622;
+    --info:#83C0D1;
+    --info-soft:#1F343B;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px -10px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{color-scheme:light dark;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans KR', system-ui, sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Gowun Batang', 'Noto Serif KR', serif;
+    font-weight:700;
+    color:var(--ink);
+    text-wrap:balance;
+    margin:0;
+  }
+  .mono{font-family:'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  p{margin:0;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:inherit;}
+  input{font-family:inherit;}
+
+  /* ---------- layout shell ---------- */
+  .app-header{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    max-width:800px; margin:0 auto; padding:14px 20px 0;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .eyebrow .code{color:var(--accent); font-weight:600;}
+  .title-row{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+    margin-top:6px; flex-wrap:wrap;
+  }
+  .app-header h1{font-size:22px; line-height:1.3;}
+  .school-tag{font-size:12.5px; color:var(--ink-soft); white-space:nowrap;}
+
+  .tabs{
+    display:flex; gap:4px; margin-top:14px;
+    overflow-x:auto; scrollbar-width:none;
+    border-bottom:1px solid transparent;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    appearance:none; border:none; background:none; cursor:pointer;
+    padding:10px 14px 12px;
+    font-size:14.5px; font-weight:600; color:var(--ink-soft);
+    white-space:nowrap;
+    border-bottom:2.5px solid transparent;
+    display:flex; align-items:center; gap:8px;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{color:var(--accent); border-color:var(--accent);}
+  .tab-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px; padding:1px 6px; border-radius:99px;
+    background:var(--accent-soft); color:var(--accent); font-weight:600;
+  }
+  .tab-btn.active .tab-chip{background:var(--accent); color:var(--surface);}
+
+  main{max-width:800px; margin:0 auto; padding:28px 20px 90px;}
+  .panel{display:none;}
+  .panel.active{display:block; animation:fadein .25s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion: reduce){
+    .panel.active{animation:none;}
+    *{scroll-behavior:auto !important;}
+  }
+
+  /* ---------- shared components ---------- */
+  .lede{
+    display:flex; flex-direction:column; gap:10px;
+    padding-bottom:20px; margin-bottom:22px;
+    border-bottom:1px solid var(--line);
+  }
+  .lede h2{font-size:25px;}
+  .lede .sub{color:var(--ink-soft); font-size:14.5px;}
+  .goal-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:14px 18px; margin-top:8px;
+  }
+  .goal-box .label{font-size:11.5px; font-weight:700; letter-spacing:.06em; color:var(--accent); text-transform:uppercase; font-family:'IBM Plex Mono',monospace;}
+  .goal-box ul{margin-top:8px; display:flex; flex-direction:column; gap:5px;}
+  .goal-box li{font-size:14.5px; padding-left:16px; position:relative;}
+  .goal-box li::before{content:"·"; position:absolute; left:2px; color:var(--amber); font-weight:800;}
+  .std-line{font-size:13px; color:var(--ink-soft); margin-top:10px; line-height:1.6;}
+
+  .sec{margin:34px 0;}
+  .sec-head{display:flex; align-items:baseline; gap:10px; margin-bottom:14px;}
+  .sec-num{font-family:'IBM Plex Mono',monospace; color:var(--amber); font-weight:600; font-size:14px;}
+  .sec-head h3{font-size:19px;}
+  .page-ref{margin-left:auto; font-size:11.5px; color:var(--ink-faint); font-family:'IBM Plex Mono',monospace; white-space:nowrap;}
+
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:18px 20px; box-shadow:var(--shadow);
+  }
+  .card + .card{margin-top:12px;}
+
+  .phil-card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:12px;}
+  .phil-head{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .phil-num{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint);}
+  .phil-name{font-size:17px;}
+  .tag{
+    margin-left:auto; font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px;
+    letter-spacing:.03em;
+  }
+  .tag-east{background:var(--info-soft); color:var(--info);}
+  .tag-west{background:var(--amber-soft); color:var(--amber);}
+  .phil-saying{font-family:'Gowun Batang', serif; font-size:15px; color:var(--ink-soft); font-style:italic; margin-bottom:10px;}
+  .phil-points{display:flex; flex-direction:column; gap:6px;}
+  .phil-points li{font-size:14.5px; padding-left:14px; position:relative;}
+  .phil-points li::before{content:"•"; position:absolute; left:0; color:var(--ink-faint);}
+
+  blockquote.quote{
+    margin:14px 0 0; padding:12px 16px 12px 18px;
+    border-left:3px solid var(--amber);
+    background:var(--amber-soft); border-radius:0 8px 8px 0;
+    font-family:'Gowun Batang', serif; font-size:14.5px; color:var(--ink);
+    line-height:1.75;
+  }
+  blockquote.quote cite{display:block; margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-style:normal; color:var(--ink-faint);}
+
+  .pair-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:600px){.pair-grid{grid-template-columns:1fr;}}
+  .pair-col{border-radius:12px; padding:16px 18px;}
+  .pair-col.pro{background:var(--good-soft); border:1px solid color-mix(in srgb, var(--good) 35%, transparent);}
+  .pair-col.con{background:var(--bad-soft); border:1px solid color-mix(in srgb, var(--bad) 35%, transparent);}
+  .pair-label{font-size:12px; font-weight:700; margin-bottom:9px; display:flex; align-items:center; gap:6px;}
+  .pair-col.pro .pair-label{color:var(--good);}
+  .pair-col.con .pair-label{color:var(--bad);}
+  .pair-col ul{display:flex; flex-direction:column; gap:7px;}
+  .pair-col li{font-size:13.8px; padding-left:14px; position:relative;}
+  .pair-col li::before{content:"•"; position:absolute; left:0; opacity:.6;}
+
+  .note-box{
+    margin-top:12px; padding:13px 16px; border-radius:10px;
+    background:var(--surface); border:1px solid var(--line-soft);
+    font-size:13.3px; color:var(--ink-soft);
+  }
+  .note-box .note-title{font-weight:700; color:var(--ink); font-size:13.5px; margin-bottom:7px; display:block;}
+  .note-box ul{display:flex; flex-direction:column; gap:5px;}
+  .note-box li{padding-left:12px; position:relative;}
+  .note-box li::before{content:"–"; position:absolute; left:0;}
+
+  .info-box{
+    margin-top:14px; padding:15px 18px; border-radius:10px;
+    background:var(--info-soft); border:1px solid color-mix(in srgb, var(--info) 30%, transparent);
+  }
+  .info-box .info-title{font-weight:700; color:var(--info); font-size:13.5px; display:flex; align-items:center; gap:6px; margin-bottom:8px;}
+  .info-box .hotlines{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13.5px;}
+  .info-box .hotlines span{font-family:'IBM Plex Mono',monospace; color:var(--ink); font-weight:600; margin-right:5px;}
+
+  /* blanks */
+  .blank-wrap{display:inline-flex; align-items:center; gap:3px; margin:0 1px;}
+  .blank-input{
+    border:none; border-bottom:2px solid var(--ink-faint);
+    background:transparent; color:var(--ink); font-size:inherit; font-family:inherit;
+    padding:1px 3px; text-align:center; border-radius:2px; min-width:3.5ch;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .blank-input:focus{outline:none; border-color:var(--accent); background:var(--accent-soft);}
+  .blank-input.correct{border-color:var(--good); background:var(--good-soft); color:var(--good); font-weight:700;}
+  .blank-input.incorrect{border-color:var(--bad); background:var(--bad-soft); color:var(--bad);}
+  .blank-hint{
+    appearance:none; border:1px solid var(--line); background:var(--surface-raised);
+    color:var(--ink-faint); width:18px; height:18px; border-radius:50%;
+    font-size:11px; line-height:1; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .blank-hint:hover{border-color:var(--accent); color:var(--accent);}
+  .blank-reveal{font-size:12px; color:var(--good); font-family:'IBM Plex Mono',monospace; font-weight:600;}
+
+  /* glossary */
+  .gloss-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:600px){.gloss-grid{grid-template-columns:1fr;}}
+  .gloss-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:0; cursor:pointer; overflow:hidden; min-height:64px;
+  }
+  .gloss-face{padding:13px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .gloss-term{font-weight:700; font-size:14.5px; color:var(--accent);}
+  .gloss-plus{color:var(--ink-faint); font-size:16px; transition:transform .2s ease;}
+  .gloss-card.open .gloss-plus{transform:rotate(45deg);}
+  .gloss-def{
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+    font-size:13.3px; color:var(--ink-soft); padding:0 16px;
+  }
+  .gloss-card.open .gloss-def{max-height:220px; padding:0 16px 14px;}
+
+  /* reflection */
+  .reflect{margin-top:14px;}
+  .reflect label{display:block; font-size:14px; font-weight:600; margin-bottom:6px;}
+  .reflect textarea{
+    width:100%; min-height:64px; resize:vertical;
+    border:1px solid var(--line); border-radius:8px; background:var(--surface-raised);
+    color:var(--ink); font-size:14px; padding:10px 12px; font-family:inherit; line-height:1.6;
+  }
+  .reflect textarea:focus{outline:none; border-color:var(--accent);}
+  .save-tag{font-size:11.5px; color:var(--good); font-family:'IBM Plex Mono',monospace; margin-top:5px; height:14px; opacity:0; transition:opacity .3s ease;}
+  .save-tag.show{opacity:1;}
+  .sample-toggle{
+    margin-top:10px; font-size:12.5px; color:var(--accent); background:none; border:1px dashed var(--accent);
+    padding:5px 11px; border-radius:99px; cursor:pointer;
+  }
+  .sample-answer{
+    display:none; margin-top:9px; padding:10px 13px; background:var(--accent-soft);
+    border-radius:8px; font-size:13.3px; color:var(--ink); border-left:3px solid var(--accent);
+  }
+  .sample-answer.show{display:block;}
+  .sample-answer .tag-sample{display:block; font-size:10.5px; font-weight:700; color:var(--accent); margin-bottom:4px; text-transform:uppercase; letter-spacing:.04em; font-family:'IBM Plex Mono',monospace;}
+
+  /* flow / inquiry list */
+  .flow-item{border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:10px; background:var(--surface);}
+  .flow-q{font-weight:700; font-size:14.5px; margin-bottom:8px;}
+
+  /* debate */
+  .role-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px;}
+  @media (max-width:600px){.role-grid{grid-template-columns:1fr;}}
+  .role-card{
+    border:2px solid var(--line); border-radius:10px; padding:13px 14px; cursor:pointer; background:var(--surface);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .role-card:hover{border-color:var(--ink-faint);}
+  .role-card.selected{border-color:var(--accent); background:var(--accent-soft);}
+  .role-name{font-weight:800; font-size:13.5px; color:var(--accent); font-family:'IBM Plex Mono',monospace;}
+  .role-text{font-size:13px; color:var(--ink-soft); margin-top:6px; line-height:1.55;}
+
+  .debate-steps{counter-reset:step; margin-top:14px; display:flex; flex-direction:column; gap:8px;}
+  .debate-steps li{
+    counter-increment:step; position:relative; padding-left:30px; font-size:13.8px; color:var(--ink-soft);
+  }
+  .debate-steps li::before{
+    content:counter(step); position:absolute; left:0; top:-1px;
+    width:20px; height:20px; border-radius:50%; background:var(--accent); color:var(--surface);
+    font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .debate-steps strong{color:var(--ink);}
+
+  .table-form{display:flex; flex-direction:column; gap:12px; margin-top:14px;}
+  .table-form .field label{font-size:13.3px; font-weight:600; color:var(--ink-soft); display:block; margin-bottom:5px;}
+
+  /* quote-card standalone */
+  .maxim{
+    text-align:center; padding:26px 18px; margin:26px 0;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .maxim p{font-family:'Gowun Batang', serif; font-size:19px; line-height:1.6;}
+  .maxim cite{display:block; margin-top:10px; font-size:12px; color:var(--ink-faint); font-family:'IBM Plex Mono',monospace; font-style:normal;}
+
+  /* quiz tab */
+  .quiz-score-bar{
+    display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:10px;
+    background:var(--surface); border:1px solid var(--line); margin-bottom:18px; position:sticky; top:118px;
+  }
+  .quiz-score-bar .n{font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--accent); font-size:15px;}
+  .quiz-score-bar .track{flex:1; height:6px; border-radius:99px; background:var(--line-soft); overflow:hidden;}
+  .quiz-score-bar .fill{height:100%; background:var(--accent); width:0%; transition:width .3s ease;}
+  .reset-btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface-raised); color:var(--ink-soft);
+    font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer; white-space:nowrap;
+  }
+  .reset-btn:hover{border-color:var(--bad); color:var(--bad);}
+
+  .fillquiz-item{border:1px solid var(--line); border-radius:10px; padding:13px 16px; margin-bottom:10px; background:var(--surface); font-size:14.5px;}
+  .fillquiz-num{font-family:'IBM Plex Mono',monospace; color:var(--ink-faint); font-size:12px; margin-right:6px;}
+
+  .ox-item{border:1px solid var(--line); border-radius:10px; padding:15px 16px; margin-bottom:10px; background:var(--surface);}
+  .ox-text{font-size:14.5px; margin-bottom:12px; line-height:1.65;}
+  .ox-btns{display:flex; gap:8px;}
+  .ox-btn{
+    flex:1; padding:9px; border-radius:8px; border:1.5px solid var(--line); background:var(--surface-raised);
+    font-weight:800; font-size:15px; cursor:pointer; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;
+  }
+  .ox-btn:hover{border-color:var(--ink-faint);}
+  .ox-btn.picked-correct{border-color:var(--good); background:var(--good-soft); color:var(--good);}
+  .ox-btn.picked-wrong{border-color:var(--bad); background:var(--bad-soft); color:var(--bad);}
+  .ox-btn[disabled]{cursor:default;}
+  .ox-explain{
+    display:none; margin-top:11px; padding:10px 13px; border-radius:8px; font-size:13.3px;
+    background:var(--surface-raised); border-left:3px solid var(--accent); color:var(--ink-soft); line-height:1.6;
+  }
+  .ox-explain.show{display:block;}
+
+  footer{max-width:800px; margin:0 auto; padding:0 20px 50px; color:var(--ink-faint); font-size:12px; text-align:center;}
+
+  ::selection{background:var(--accent-soft); color:var(--accent-strong);}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="eyebrow">
+      <span>현대사회와 윤리</span><span>·</span><span>Ⅱ. 생명윤리와 생태윤리</span><span>·</span><span class="code">01. 삶과 죽음의 윤리</span>
+    </div>
+    <div class="title-row">
+      <h1>삶과 죽음의 윤리 — 학생 학습 가이드</h1>
+      <span class="school-tag">울산동천고등학교 · 2학년</span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="t1">1차시 · 삶과 죽음의 의미 <span class="tab-chip" id="chip-t1">0/0</span></button>
+      <button class="tab-btn" data-tab="t2">2차시 · 윤리적 쟁점 <span class="tab-chip" id="chip-t2">0/0</span></button>
+      <button class="tab-btn" data-tab="t3">단원 정리 퀴즈 <span class="tab-chip" id="chip-t3">0/0</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ TAB 1 ============ -->
+  <section class="panel active" id="panel-t1">
+    <div class="lede">
+      <h2>1. 출생 및 죽음의 의미와 삶의 가치</h2>
+      <p class="sub">교과서 36~39쪽</p>
+      <div class="goal-box">
+        <span class="label">학습 목표</span>
+        <ul>
+          <li>삶과 죽음의 의미를 동서양 윤리의 입장에서 이해할 수 있다.</li>
+          <li>삶의 소중함을 깨닫고 삶의 의미를 성찰할 수 있다.</li>
+        </ul>
+        <p class="std-line"><span class="mono">[12현윤02-01]</span> 삶과 죽음을 동·서양 윤리의 입장에서 성찰하고, 현대사회에서 발생하는 생명윤리 문제를 다양한 윤리적 관점에서 설명할 수 있다.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">1</span><h3>삶과 죽음에 대한 다양한 관점</h3><span class="page-ref">교과서 36~38쪽</span></div>
+
+      <div class="card">
+        <p style="font-size:14.5px;"><strong>(1) 출생의 윤리적 의미</strong> — 개인적·사회적 삶의 시작이며, 세대 간의 연결과 사회의 지속을 의미함.</p>
+      </div>
+
+      <p style="margin:18px 0 10px; font-size:14.5px; font-weight:700;">(2) 삶과 죽음에 대한 동서양 사상의 관점</p>
+      <div id="phil-cards"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">2</span><h3>삶의 소중함과 가치</h3><span class="page-ref">교과서 38~39쪽</span></div>
+      <div class="card">
+        <p class="phil-points" style="display:flex;flex-direction:column;gap:8px;">
+          <span>(1) 삶의 <span id="blank-host-yuhan"></span>이 인생을 더욱 가치 있게 만들며, 주어진 삶을 주체적으로 살아가도록 함.</span>
+          <span>(2) 삶과 죽음은 분리된 일이 아니라 연결된 과정임을 깨닫고 삶의 가치를 탐색해야 함.</span>
+        </p>
+        <blockquote class="quote">
+          시시포스는 왜 자신의 운명을 사랑하게 되었을까? 인생이 살 만한 가치가 있느냐 없느냐를 판단하는 것이야말로 철학의 근본 문제에 답하는 것이다. …… 산꼭대기를 향한 투쟁만으로도 인간의 마음을 채우기에 충분하다. 우리는 시시포스가 행복하다고 상상하여야 한다.
+          <cite>— 카뮈, 『시지프 신화』 (보충 자료)</cite>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">◆</span><h3>주제 열기 — 영화 「원더풀 라이프」</h3><span class="page-ref">교과서 36쪽</span></div>
+      <div class="card">
+        <p style="font-size:13.8px; color:var(--ink-soft); line-height:1.75;">영화 속 ‘림보’에 도착한 사람들은 그곳에 머무는 일주일 동안 자신의 삶에서 저승으로 가지고 갈 단 하나의 기억을 골라야 한다. 어떤 사람들은 행복했던 기억이 너무 많아 고를 수 없다고 하고, 어떤 사람은 고를 수 있는 행복한 기억이 없다고 말한다.</p>
+        <div id="wonderful-life-qs"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">◆</span><h3>탐구하기 — ‘죽음’을 생각하는 것이 ‘삶’과 어떤 관계가 있을까?</h3><span class="page-ref">교과서 39쪽</span></div>
+      <div class="card">
+        <p style="font-size:13.3px; color:var(--ink-soft); margin-bottom:14px;">순서도를 따라가듯, 아래 질문에 순서대로 답하며 생각을 정리해 보자. 친구들과 토의해도 좋다.</p>
+        <div id="flow-qs"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">용어</span><h3>핵심 용어</h3></div>
+      <div class="gloss-grid" id="gloss-t1"></div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2 ============ -->
+  <section class="panel" id="panel-t2">
+    <div class="lede">
+      <h2>2. 출생 및 죽음과 관련된 윤리적 쟁점</h2>
+      <p class="sub">교과서 40~45, 79쪽</p>
+      <div class="goal-box">
+        <span class="label">학습 목표</span>
+        <ul>
+          <li>출생 및 죽음과 관련된 윤리적 쟁점을 설명할 수 있다.</li>
+          <li>출생 및 죽음과 관련된 윤리적 쟁점에 대한 자신의 견해를 말할 수 있다.</li>
+        </ul>
+        <p class="std-line"><span class="mono">[12현윤02-01]</span> 삶과 죽음을 동·서양 윤리의 입장에서 성찰하고, 현대사회에서 발생하는 생명윤리 문제를 다양한 윤리적 관점에서 설명할 수 있다.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">◆</span><h3>주제 열기</h3><span class="page-ref">교과서 40쪽</span></div>
+      <div class="card">
+        <p style="font-size:13.8px; color:var(--ink-soft); line-height:1.75;">인체 DNA 유전자 코드를 자유자재로 편집할 수 있는 차세대 유전자 편집 기술이 탄생했다. 이 기술을 적용하면 현존하는 유전 질환 중 90%를 치료할 수 있을 것으로 기대되며, 기존 유전자 가위 기술보다 정확하고 정밀하게 유전자를 교정할 수 있다.</p>
+        <p style="font-weight:700; font-size:14.5px; margin-top:14px;">Q. 유전자 편집 기술을 활용하여 유전자를 조작한다면 사회에 어떤 영향을 미칠까?</p>
+        <div class="reflect">
+          <textarea data-key="gene-open" placeholder="자신의 생각을 적어 보자."></textarea>
+          <div class="save-tag">자동 저장됨</div>
+          <button class="sample-toggle" data-target="sample-gene-open">예시 답안 보기</button>
+          <div class="sample-answer" id="sample-gene-open">
+            <span class="tag-sample">예시 답안</span>
+            원하는 유전자를 주입하여 부모가 원하는 능력을 지닌 자녀가 탄생할 것이다. 또한 유전병을 초래하는 유전자를 편집함으로써 유전 질환을 없앨 수 있다.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">1</span><h3>인공임신중절의 윤리적 쟁점</h3><span class="page-ref">교과서 40~41쪽</span></div>
+      <div class="pair-grid">
+        <div class="pair-col pro">
+          <div class="pair-label">허용 논거</div>
+          <ul id="abortion-pro"></ul>
+        </div>
+        <div class="pair-col con">
+          <div class="pair-label">반대 논거</div>
+          <ul id="abortion-con"></ul>
+        </div>
+      </div>
+      <div class="note-box">
+        <span class="note-title">모자보건법 제14조 ①항 — 인공임신중절 수술이 예외적으로 허용되는 경우</span>
+        <ul>
+          <li>본인이나 배우자가 대통령령으로 정하는 우생학적 또는 유전학적 정신 장애나 신체 질환이 있는 경우</li>
+          <li>본인이나 배우자가 대통령령으로 정하는 전염성 질환이 있는 경우</li>
+          <li>강간 또는 준강간으로 임신된 경우</li>
+          <li>법률상 혼인할 수 없는 혈족 또는 인척 간에 임신된 경우</li>
+          <li>임신의 지속이 보건 의학적 이유로 모체의 건강을 심각하게 해치고 있거나 해칠 우려가 있는 경우</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">2</span><h3>안락사의 윤리적 쟁점</h3><span class="page-ref">교과서 41쪽</span></div>
+      <div class="pair-grid">
+        <div class="pair-col pro">
+          <div class="pair-label">허용 근거</div>
+          <ul id="eutha-pro"></ul>
+        </div>
+        <div class="pair-col con">
+          <div class="pair-label">반대 근거</div>
+          <ul id="eutha-con"></ul>
+        </div>
+      </div>
+      <div class="note-box">
+        <span class="note-title">안락사를 둘러싼 세 가지 쟁점</span>
+        <ul>
+          <li>연명 의료 보류·중지 — 환자의 의사에 따라 연명 치료를 중단하는 것</li>
+          <li>의사 조력 자살(의사 조력 사망) — 의사가 약물 등을 제공하고 환자 스스로 삶을 마감하는 것</li>
+          <li>적극적 안락사 — 의사에게 죽음에 이르도록 적극적으로 도와 달라고 요청하는 것</li>
+        </ul>
+      </div>
+      <div class="gloss-grid" style="margin-top:12px;" id="gloss-eutha"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">3</span><h3>자살의 윤리적 문제</h3><span class="page-ref">교과서 42쪽</span></div>
+      <div class="card">
+        <ul class="phil-points" id="suicide-views"></ul>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <p style="font-weight:700; font-size:14.5px; margin-bottom:10px;">탐구하기 — 자살일까, 사회적 타살일까?</p>
+        <blockquote class="quote">
+          (가) 개인적 상황은 자살 행위의 결정적인 원인이 아니다. …… 생물학적, 물리적 특성과 자살과의 관계는 불명확하고 애매하지만 사회적 환경과 자살의 관계는 직접적이고 일정하다. 어느 한 시기에 그 사회의 정신적 상태가 일시적인 자살의 빈도를 결정한다.
+          <cite>— 뒤르켐, 『자살론』</cite>
+        </blockquote>
+        <blockquote class="quote" style="border-color:var(--info); background:var(--info-soft); margin-top:10px;">
+          (나) 코로나19 여파로 매출이 떨어지자 물류 센터 아르바이트까지 해야 했던 20대 A 씨는 우울과 무기력증에 시달리다 극단적 선택을 했다. 코로나19로 인해 스스로 목숨을 끊은 29명을 ‘심리 부검’한 결과, 이들의 가장 큰 스트레스 요인은 경제적 문제(23명), 직업적 문제(19명) 순으로 나타났다.
+          <cite>— 동아일보, 2022.7.20.</cite>
+        </blockquote>
+        <p style="font-weight:700; font-size:14px; margin-top:14px;">Q1. (가)의 입장에서 (나)에 나타난 자살 문제의 원인을 분석해 보자.</p>
+        <p style="font-weight:700; font-size:14px; margin-top:10px;">Q2. (가)의 입장을 바탕으로 (나)와 같은 문제를 극복하기 위한 국가의 역할을 탐구해 보자.</p>
+        <div class="reflect">
+          <textarea data-key="suicide-q" placeholder="두 질문에 대한 자신의 생각을 정리해 적어 보자."></textarea>
+          <div class="save-tag">자동 저장됨</div>
+          <button class="sample-toggle" data-target="sample-suicide-q">예시 답안 보기</button>
+          <div class="sample-answer" id="sample-suicide-q">
+            <span class="tag-sample">예시 답안</span>
+            제시문 (나)는 개인적 상황이나 심리적 문제가 아닌, 경제 불황이라는 사회적 환경이 초래한 수입 감소와 파산 등 경제적 문제가 자살의 가장 큰 원인임을 보여 준다. 자살 문제는 사회적 환경과 밀접하게 관련이 있으므로, 국가는 실업·빈곤·재해·노령·질병 등 사회적 위험에 노출된 사람들에게 최소한의 인간다운 생활을 보장하는 제도적 장치를 마련해야 한다.
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="info-title">자살 예방 관련 기관 — 힘든 순간, 혼자 견디지 않아도 됩니다</div>
+        <div class="hotlines">
+          <div><span>1393</span>자살예방 전문 상담전화</div>
+          <div><span>1588-9191</span>생명의전화</div>
+          <div><span>1577-0199</span>정신건강 위기상담전화</div>
+          <div><span>1388</span>청소년 상담</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">4</span><h3>뇌사의 윤리적 쟁점</h3><span class="page-ref">교과서 43쪽</span></div>
+      <div class="pair-grid">
+        <div class="pair-col pro">
+          <div class="pair-label">뇌사를 죽음으로 인정하는 입장</div>
+          <ul id="braindeath-pro"></ul>
+        </div>
+        <div class="pair-col con">
+          <div class="pair-label">뇌사를 죽음으로 인정하지 않는 입장</div>
+          <ul id="braindeath-con"></ul>
+        </div>
+      </div>
+      <div class="note-box">
+        <span class="note-title">뇌사의 판정</span>
+        <p>뇌사는 뇌간을 포함한 뇌 기능이 완전히 정지하여 뇌 활동이 회복할 수 없는(비가역적) 상태를 의미한다. 우리나라에서는 뇌사 추정자의 가족 또는 법률 대리인이 뇌사 판정을 신청하면, 뇌사 판정 위원회에서 뇌사 판정 결정을 내린다.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">5</span><h3>유전자 복제 및 치료의 윤리적 쟁점</h3><span class="page-ref">교과서 43~44쪽</span></div>
+      <div class="card">
+        <p style="font-weight:700; font-size:14.5px; margin-bottom:8px;">(1) 배아 복제에 대한 찬반 입장</p>
+        <div class="pair-grid">
+          <div class="pair-col pro">
+            <div class="pair-label">찬성 논거</div>
+            <ul id="embryo-pro"></ul>
+          </div>
+          <div class="pair-col con">
+            <div class="pair-label">반대 논거</div>
+            <ul id="embryo-con"></ul>
+          </div>
+        </div>
+        <p style="font-size:14px; margin-top:14px;"><strong>(2) 인간 개체 복제의 윤리적 문제</strong> — 인간의 고유성을 위협하고, 가족 관계에 혼란을 야기함.</p>
+        <p style="font-weight:700; font-size:14.5px; margin-top:16px; margin-bottom:8px;">(3) 생식 세포 치료 허용에 대한 찬반 입장</p>
+        <div class="pair-grid">
+          <div class="pair-col pro">
+            <div class="pair-label">찬성 근거</div>
+            <ul id="germline-pro"></ul>
+          </div>
+          <div class="pair-col con">
+            <div class="pair-label">반대 근거</div>
+            <ul id="germline-con"></ul>
+          </div>
+        </div>
+        <blockquote class="quote">
+          하버마스: 유전자 개입은 태어날 자녀의 자율성을 침해하고 부모-자녀 간의 대등한 관계를 훼손한다.
+        </blockquote>
+        <blockquote class="quote" style="margin-top:10px;">
+          우리의 본성에 맞게 세상을 변화시키는 대신 세상에 맞추기 위해 우리의 본성을 바꾸는 것이야말로 사실 우리의 힘과 자율권을 잃어버리는 행동이다. …… 우리는 불완전한 인간 능력의 한계를 관대하게 받아들이는 사회 제도를 만들기 위해 노력해야 한다.
+          <cite>— 샌델, 『완벽에 대한 반론』 (보충 자료)</cite>
+        </blockquote>
+        <div class="note-box">
+          <span class="note-title">인간 복제에 관한 유엔(UN) 선언문 (2005년)</span>
+          <ul>
+            <li>생명 과학이 질병의 구제 및 인류 보건 개선에 기여해야 함</li>
+            <li>생명 과학의 적용에 있어 인간의 생명을 보호하기 위해 필요한 모든 조치를 취해야 함</li>
+            <li>인간 존엄 및 인간 생명의 보호와 양립할 수 없는 모든 형태의 인간 복제 금지</li>
+            <li>인간 존엄에 반하는 유전 공학 기술의 적용 금지</li>
+            <li>생명 과학의 적용에 있어 여성에 대한 착취 예방</li>
+          </ul>
+        </div>
+      </div>
+      <div class="gloss-grid" style="margin-top:12px;" id="gloss-t2b"></div>
+    </div>
+
+    <div class="maxim">
+      <p>“삶이란 탄생과 죽음 사이의 선택이다.”</p>
+      <cite>— 사르트르 (인물과 고전)</cite>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">토론</span><h3>주제탐구 토론 — 안락사를 허용해야 할까?</h3><span class="page-ref">교과서 45, 79쪽</span></div>
+      <div class="card">
+        <p style="font-size:13.8px; color:var(--ink-soft); margin-bottom:6px;">아래 세 입장 중 하나를 골라 자신의 입장으로 정하고, 토론 방법에 따라 모둠 토론을 진행해 보자.</p>
+        <div class="role-grid" id="role-grid">
+          <div class="role-card" data-role="갑">
+            <div class="role-name">갑</div>
+            <div class="role-text">안락사는 절대 허용하면 안 된다. 인간에게는 자신의 죽음을 결정할 권리가 없다.</div>
+          </div>
+          <div class="role-card" data-role="을">
+            <div class="role-name">을</div>
+            <div class="role-text">인간은 품위 있게 죽을 권리가 있다. 환자의 의사에 따라 무의미한 연명 치료를 중단하는 소극적 안락사는 허용되어야 한다.</div>
+          </div>
+          <div class="role-card" data-role="병">
+            <div class="role-name">병</div>
+            <div class="role-text">심각한 신체적·정신적 질환을 지닌 사람이 의사의 도움을 받아 생을 마감할 수 있도록 돕는 형태의 안락사까지 허용되어야 한다.</div>
+          </div>
+        </div>
+
+        <p style="font-weight:700; font-size:14px; margin-top:20px;">토론 방법</p>
+        <ul class="debate-steps">
+          <li>4~6명을 1조로 구성하고, 갑·을·병 중 자신의 입장을 선택한다.</li>
+          <li><strong>1차 발언</strong> — 한 명씩 차례대로 자신의 입장과 근거를 동서양의 윤리 이론을 바탕으로 발언한다.</li>
+          <li><strong>2차 발언</strong> — 1차 발언을 듣고 자신과 다른 입장에 질문하거나 반박한다.</li>
+          <li><strong>3차 발언</strong> — 2차 발언에서 받은 질문·반박에 답변한다.</li>
+          <li><strong>최종 발언</strong> — 최종 변론과 토론 참여 소감을 말한다. <span style="color:var(--ink-faint);">(발언 시간은 1인당 2분)</span></li>
+        </ul>
+
+        <p style="font-weight:700; font-size:14px; margin-top:22px;">토론을 마친 후, 자신의 생각을 정리해 보자.</p>
+        <div class="table-form">
+          <div class="field">
+            <label>토론 이후 자신의 의견 (수정되었다면 그 이유도 적어 보자)</label>
+            <textarea class="reflect-area" data-key="debate-opinion" style="width:100%; min-height:56px; border:1px solid var(--line); border-radius:8px; background:var(--surface-raised); color:var(--ink); padding:10px 12px; font-family:inherit; font-size:14px;"></textarea>
+          </div>
+          <div class="field">
+            <label>새롭게 알게 된 점</label>
+            <textarea class="reflect-area" data-key="debate-learned" style="width:100%; min-height:56px; border:1px solid var(--line); border-radius:8px; background:var(--surface-raised); color:var(--ink); padding:10px 12px; font-family:inherit; font-size:14px;"></textarea>
+          </div>
+          <div class="field">
+            <label>소감</label>
+            <textarea class="reflect-area" data-key="debate-feeling" style="width:100%; min-height:56px; border:1px solid var(--line); border-radius:8px; background:var(--surface-raised); color:var(--ink); padding:10px 12px; font-family:inherit; font-size:14px;"></textarea>
+          </div>
+          <div class="field">
+            <label>토론 중 인상 깊었던 친구의 주장과 그 이유</label>
+            <textarea class="reflect-area" data-key="debate-impress" style="width:100%; min-height:56px; border:1px solid var(--line); border-radius:8px; background:var(--surface-raised); color:var(--ink); padding:10px 12px; font-family:inherit; font-size:14px;"></textarea>
+          </div>
+          <div class="save-tag" id="debate-save-tag">자동 저장됨</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB 3 ============ -->
+  <section class="panel" id="panel-t3">
+    <div class="lede">
+      <h2>단원 정리 퀴즈</h2>
+      <p class="sub">1·2차시 핵심 내용을 빈칸 채우기와 OX 퀴즈로 점검해 보자.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">A</span><h3>핵심 빈칸 복습</h3></div>
+      <div class="quiz-score-bar">
+        <span class="n"><span id="fill-score">0</span>/<span id="fill-total">0</span></span>
+        <div class="track"><div class="fill" id="fill-bar"></div></div>
+        <button class="reset-btn" id="fill-reset">다시 채점</button>
+      </div>
+      <div id="fillquiz-list"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="sec-num">B</span><h3>OX 퀴즈</h3></div>
+      <div class="quiz-score-bar">
+        <span class="n"><span id="ox-score">0</span>/<span id="ox-total">8</span></span>
+        <div class="track"><div class="fill" id="ox-bar"></div></div>
+        <button class="reset-btn" id="ox-reset">다시 풀기</button>
+      </div>
+      <div id="ox-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>2026 울산동천고등학교 2학년 현대사회와 윤리 학습지 기반 · 이 페이지의 입력 내용은 사용 중인 브라우저에만 저장됩니다.</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= state / storage ================= */
+  const STORE_KEY = 'lifedeath_guide_v1';
+  let store = {};
+  try{ store = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); }catch(e){ store = {}; }
+  function persist(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){} }
+
+  /* ================= tabs ================= */
+  const tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+      window.scrollTo({top:0, behavior:'auto'});
+    });
+  });
+
+  /* ================= blank helper ================= */
+  let blankSeq = 0;
+  const ALL_BLANKS = []; // {id, answer}
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function makeBlank(answer){
+    const id = 'bk' + (blankSeq++);
+    ALL_BLANKS.push({id, answer});
+    const w = Math.max(answer.replace(/\s/g,'').length, 2) + 1.5;
+    return `<span class="blank-wrap"><input type="text" class="blank-input" id="${id}" data-answer="${esc(answer)}" style="width:${w}ch" autocomplete="off" spellcheck="false" aria-label="빈칸 입력"><button type="button" class="blank-hint" data-target="${id}" title="정답 보기">?</button><span class="blank-reveal" id="rev-${id}"></span></span>`;
+  }
+
+  // [[정답]] -> blank input
+  function rich(str){
+    return esc(str).replace(/\[\[([^\]]+)\]\]/g, (m, ans) => makeBlank(ans.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')));
+  }
+
+  function wireBlanks(root){
+    root.querySelectorAll('.blank-input').forEach(inp=>{
+      function check(){
+        const ans = inp.dataset.answer;
+        const val = inp.value.trim().replace(/\s+/g,'');
+        const target = ans.replace(/\s+/g,'');
+        if(val.length===0){ inp.classList.remove('correct','incorrect'); return; }
+        if(val === target){
+          inp.classList.add('correct'); inp.classList.remove('incorrect');
+        } else {
+          inp.classList.add('incorrect'); inp.classList.remove('correct');
+        }
+        store['blank_'+inp.id] = inp.value;
+        persist();
+        updateProgress();
+      }
+      inp.addEventListener('blur', check);
+      inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); check(); inp.blur(); } });
+      if(store['blank_'+inp.id]){ inp.value = store['blank_'+inp.id]; check(); }
+    });
+    root.querySelectorAll('.blank-hint').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.target;
+        const inp = document.getElementById(id);
+        document.getElementById('rev-'+id).textContent = '정답: ' + inp.dataset.answer;
+      });
+    });
+  }
+
+  /* ================= content data ================= */
+
+  const philosophers = [
+    {num:'①', tradition:'east', tag:'동양', name:'공자', saying:'“삶도 제대로 알지 못하는데 어찌 죽음을 알겠느냐?”',
+      points:['죽음에 대한 논의보다 현세에서 [[도덕적 삶]]을 사는 것이 중요함.','죽은 사람에 대해서는 예(禮)를 갖추어 애도해야 함.']},
+    {num:'②', tradition:'east', tag:'동양', blankAns:'불교',
+      points:['윤회설(輪回說): 삶과 죽음은 끊임없이 반복됨.','현재의 삶에서 쌓은 업(業)에 따라 내세의 삶이 결정됨.']},
+    {num:'③', tradition:'east', tag:'동양', name:'장자',
+      points:['기(氣)가 모여 삶이 되고 기가 흩어져 죽음이 되는 것임.','삶과 죽음은 사계절의 운행과 같이 [[자연]]스러운 현상임.'],
+      quote:{text:'삶은 죽음과 같은 무리요, 죽음이란 삶의 시작이니, 어찌 그 근본 이유를 알 수 있으리오. 사람의 삶이란 기의 모임이니, 기가 모이면 곧 살아 있는 것이요, 기가 흩어지면 곧 죽는 것이다. 삶과 죽음이 서로를 뒤따르는 것이라면, 나는 또 무엇을 근심하겠는가?', cite:'장자, 『장자』'}},
+    {num:'④', tradition:'west', tag:'서양', name:'플라톤',
+      points:['죽음은 영혼이 육체에서 벗어나 [[이데아계]]로 돌아가는 것임.','영혼이 몸에서 해방되어야 순수한 정신세계에서 행복을 누림.'],
+      quote:{text:'우리가 순수한 인식을 하려면 육체를 떠나야 한다는 것은 분명한 사실이라고 할 수 있네. 영혼이 그 자체로 돌아가야 사물을 올바로 볼 수 있네. …… 그때서야 비로소 영혼은 육체를 떠나 독립하게 될 것이며, 그때까지는 그렇게 될 수 없을 것이 아닌가?', cite:'플라톤, 『파이돈』'}},
+    {num:'⑤', tradition:'west', tag:'서양', blankAns:'에피쿠로스',
+      points:['몸과 영혼을 이루고 있던 원자가 개별 원자로 흩어짐.','인간은 죽음을 경험할 수 없으므로 죽음을 두려워할 필요가 없음.']},
+    {num:'⑥', tradition:'west', tag:'서양', name:'실존주의',
+      points:['하이데거: 죽음 앞으로 미리 달려가 볼 때 실존을 회복할 수 있음.','야스퍼스: 죽음이라는 [[한계 상황]]을 직시하고 참된 실존에 이르게 됨.','사르트르: 죽음이 삶을 유일한 것으로 만듦. → 자유, 선택, 삶 강조.']}
+  ];
+  function renderPhilCards(){
+    const host = document.getElementById('phil-cards');
+    host.innerHTML = philosophers.map(p=>{
+      const nameHtml = p.blankAns ? rich('[['+p.blankAns+']]') : esc(p.name);
+      return `<div class="phil-card">
+        <div class="phil-head"><span class="phil-num">${p.num}</span><h4 class="phil-name">${nameHtml}</h4><span class="tag ${p.tradition==='east'?'tag-east':'tag-west'}">${p.tag}</span></div>
+        ${p.saying?`<p class="phil-saying">${esc(p.saying)}</p>`:''}
+        <ul class="phil-points">${p.points.map(pt=>`<li>${rich(pt)}</li>`).join('')}</ul>
+        ${p.quote?`<blockquote class="quote">${esc(p.quote.text)}<cite>— ${esc(p.quote.cite)}</cite></blockquote>`:''}
+      </div>`;
+    }).join('');
+  }
+
+  // yuhan (유한함) blank standalone
+  function renderYuhanBlank(){
+    document.getElementById('blank-host-yuhan').innerHTML = makeBlank('유한함');
+  }
+
+  const wonderfulQs = [
+    {q:'내가 단 하나의 기억만 가지고 갈 수 있다면 어떤 순간을 선택할까?', key:'wl-q1',
+      sample:'강아지와 고양이와 함께 평범한 하루를 보냈던 순간을 선택하고 싶다.'},
+    {q:'그 기억에서 내가 소중하게 여기는 것은 무엇일까?', key:'wl-q2',
+      sample:'특별한 사건이나 큰 성취보다, 사랑하는 존재와 함께하는 평범한 일상과 관계의 소중함이다.'},
+    {q:'‘언젠가 죽는다.’는 사실을 알고 살아가는 것은 지금 나의 삶에 어떤 영향을 줄까?', key:'wl-q3',
+      sample:'모든 존재와 함께할 수 있는 시간이 유한하다는 것을 깨닫게 한다. 그래서 특별한 일을 이루는 것뿐만 아니라, 지금 내 곁에 있는 존재와의 시간을 소중히 살아가는 것도 가치 있는 삶이라는 생각을 하게 한다.'}
+  ];
+  function renderWonderful(){
+    const host = document.getElementById('wonderful-life-qs');
+    host.innerHTML = wonderfulQs.map(item=>`
+      <div class="reflect">
+        <label>Q. ${esc(item.q)}</label>
+        <textarea data-key="${item.key}" placeholder="자신의 생각을 적어 보자."></textarea>
+        <div class="save-tag">자동 저장됨</div>
+        <button class="sample-toggle" data-target="sample-${item.key}">예시 답안 보기</button>
+        <div class="sample-answer" id="sample-${item.key}"><span class="tag-sample">예시 답안</span>${esc(item.sample)}</div>
+      </div>`).join('');
+  }
+
+  const flowQs = [
+    {q:'‘죽음’에 관해 생각해 본 적이 있는가? 삶에서 ‘죽음’이 두려운 이유는 무엇인가?', key:'flow-1',
+      sample:'삶에서 누리는 것들을 잃기 때문이며, 죽음 이후를 알 수 없기 때문이다.'},
+    {q:'만약 나에게 가장 소중한 존재가 시한부라면, 그 대상과 어떤 시간을 보내겠는가?', key:'flow-2',
+      sample:'그가 평소에 가장 하고 싶었던 것을 물어본 후 함께 하거나, 훗날 추억할 수 있는 특별하고 기념적인 것을 할 것이다.'},
+    {q:'유한한 삶의 장점과 단점은 무엇인가? 영원한 삶의 장점과 단점은 무엇인가?', key:'flow-3',
+      sample:'삶이 유한하므로 시간의 소중함을 느낄 수 있지만, 피할 수 없는 이별을 경험해야 한다. 삶이 무한하다면 시간에 구애받지 않고 원하는 일을 시도할 수 있지만, 삶이 지루해질 수 있다.'},
+    {q:'내가 진짜로 원하는 삶은 무엇인가? 사람들이 부러워하는 삶은 어떤 삶인가?', key:'flow-4',
+      sample:'내가 중요하다고 생각하는 가치(예: 사랑, 우정, 가족, 건강 등)를 찾고 그것을 실현해 나가는 삶이다. 사람들이 부러워하는 삶은 관심을 많이 받거나 위대한 업적을 이룬 삶 등이다.'},
+    {q:'죽음을 인식하는 것이 현재의 삶에 어떤 의미가 있는지 친구들과 토의해 보자.', key:'flow-5',
+      sample:'죽음을 인식하게 되면 남은 삶이 생각보다 길지 않다는 것을 알게 된다. 죽음을 남의 일로 여기면 고민 없이 살게 되지만, 삶의 유한성을 인식하는 순간 남은 삶을 가치 있게 살아야겠다고 다짐하며 자신이 진정으로 원하는 삶이 무엇인지 고민하게 된다.'}
+  ];
+  function renderFlow(){
+    const host = document.getElementById('flow-qs');
+    host.innerHTML = flowQs.map((item,i)=>`
+      <div class="flow-item">
+        <div class="flow-q">${i+1}. ${esc(item.q)}</div>
+        <div class="reflect" style="margin-top:0;">
+          <textarea data-key="${item.key}" placeholder="생각을 적어 보자."></textarea>
+          <div class="save-tag">자동 저장됨</div>
+          <button class="sample-toggle" data-target="sample-${item.key}">예시 답안 보기</button>
+          <div class="sample-answer" id="sample-${item.key}"><span class="tag-sample">예시 답안</span>${esc(item.sample)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  const glossT1 = [
+    {term:'이데아', def:'감각으로 인식할 수 있는 불완전한 현상계와 달리, 이성으로 파악 가능한 사물의 실재이자 원형을 의미한다.'},
+    {term:'현존재', def:'‘거기에 있는’ 구체적 인간을 의미한다. 하이데거는 다른 존재자와 구별하여 인간을 지칭하는 용어로 사용하였다.'}
+  ];
+  const glossEutha = [
+    {term:'자발적·비자발적 안락사', def:'환자의 동의 여부에 따른 구분. 자발적 안락사는 환자의 동의하에, 비자발적 안락사는 환자가 판단 능력을 상실했거나 의사를 알 수 없을 때 가족·국가의 요구에 따라 시행된다.'},
+    {term:'적극적·소극적 안락사', def:'시술 수단의 적극성에 따른 구분. 적극적 안락사는 구체적 행위로 죽음에 이르게 하는 것(예: 의사 조력 자살), 소극적 안락사는 의료 행위를 중단함으로써 죽음에 이르게 하는 것(예: 연명 치료 중단)이다.'}
+  ];
+  const glossT2b = [
+    {term:'배아와 태아', def:'배아는 정자와 난자가 수정된 이후 조직·기관 분화가 마무리되는 8주까지의 단계이며, 그 이후부터 출생까지를 태아라고 한다.'},
+    {term:'비가역적(非可逆的)', def:'원래의 상태로 다시 돌아갈 수 없는 성격을 띤 것.'},
+    {term:'유전자 치료', def:'세포 안에 새로운 유전자를 주입하거나 이상 유전자를 제거하여 유전적 질병을 치료하는 방법.'},
+    {term:'체세포', def:'생식 세포를 제외한 모든 세포.'},
+    {term:'우생학', def:'우수한 유전자를 보존하고 열등한 유전자를 제거해야 한다는 사상으로, 각종 차별을 합리화하는 근거로 이용된다.'}
+  ];
+  function renderGloss(hostId, list){
+    const host = document.getElementById(hostId);
+    host.innerHTML = list.map((g,i)=>`
+      <div class="gloss-card" data-idx="${i}">
+        <div class="gloss-face"><span class="gloss-term">${esc(g.term)}</span><span class="gloss-plus">+</span></div>
+        <div class="gloss-def">${esc(g.def)}</div>
+      </div>`).join('');
+    host.querySelectorAll('.gloss-card').forEach(card=>{
+      card.addEventListener('click', ()=>card.classList.toggle('open'));
+    });
+  }
+
+  /* ---- lesson 2 pair data ---- */
+  function renderList(hostId, items){
+    document.getElementById(hostId).innerHTML = items.map(t=>`<li>${rich(t)}</li>`).join('');
+  }
+
+  const abortionPro = ['여성은 몸의 일부인 [[태아]]에 대한 소유권과 자기 몸에 대한 자율권을 지님.','여성은 남성과 동등한 권리를 누려야 함.','태아는 온전한 인간이라고 볼 수 없음.','여성은 자기방어와 정당방위의 권리를 가짐.'];
+  const abortionCon = ['태아도 인간이므로 생명에 대한 권리를 지님.','여성의 선택권보다 [[생명권]]이 우선임.','잘못이 없는 인간을 해치는 것은 도덕적으로 옳지 않음.','태아는 인간이 될 [[잠재성]]을 지님.'];
+  const euthaPro = ['인간은 [[존엄]]하게 죽을 권리를 지님.','환자 및 보호자의 경제적·심리적 부담을 줄여 주고, 제한된 의료 자원을 효율적으로 사용하는 등 사회적 이익에 부합함.'];
+  const euthaCon = ['인간은 자신의 죽음을 선택할 권리가 없음.','죽음을 인위적으로 앞당기는 것은 자연의 질서에 어긋나며, 인간의 생명을 수단으로 여기는 것임.'];
+  const braindeathPro = ['뇌 기능의 정지는 인간 고유의 기능 상실임.','뇌사 판정 환자의 장기 기증으로 더 많은 생명을 구할 수 있음.'];
+  const braindeathCon = ['장기 기증을 위해 뇌사를 죽음으로 인정하면 [[생명 경시]] 풍조를 일으킬 수 있음.','뇌사 판정 과정에서 [[오판]]의 가능성이 존재함.'];
+  const embryoPro = ['배아는 인간이 아니며, [[난치병]] 치료에 활용할 수 있음.'];
+  const embryoCon = ['배아도 인간이며, 난자를 얻을 때 여성의 권리를 침해함.'];
+  const germlinePro = ['유전자로 인한 질병을 방지하고, 새로운 치료법 개발로 의학적으로 유용함.'];
+  const germlineCon = ['예측할 수 없는 부작용으로 후세대에 영향을 주며, 자녀의 [[자율성]]을 침해함.'];
+
+  const suicideViews = [
+    '<strong>유교</strong> — 부모로부터 물려받은 신체를 훼손하는 것',
+    '<strong>불교</strong> — 불살생(不殺生)의 계율을 어기는 것',
+    '<strong>아퀴나스</strong> — 자연적 성향을 거스르는 것',
+  ];
+  function renderSuicideViews(){
+    const host = document.getElementById('suicide-views');
+    let html = suicideViews.map(t=>`<li>${t}</li>`).join('');
+    html += `<li><strong>${rich('[[칸트]]')}</strong> — 자신의 인격을 한낱 ${makeBlank('수단')}으로 이용하는 것</li>`;
+    host.innerHTML = html;
+  }
+
+  /* ================= reflection textareas persistence ================= */
+  function wireReflections(root){
+    root.querySelectorAll('textarea[data-key]').forEach(ta=>{
+      const key = 'reflect_' + ta.dataset.key;
+      if(store[key]) ta.value = store[key];
+      let timer;
+      ta.addEventListener('input', ()=>{
+        clearTimeout(timer);
+        timer = setTimeout(()=>{
+          store[key] = ta.value; persist();
+          const tag = ta.parentElement.querySelector('.save-tag') || document.getElementById('debate-save-tag');
+          if(tag){ tag.classList.add('show'); setTimeout(()=>tag.classList.remove('show'), 1600); }
+          updateProgress();
+        }, 500);
+      });
+    });
+  }
+
+  function wireSampleToggles(root){
+    root.querySelectorAll('.sample-toggle').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const el = document.getElementById(btn.dataset.target);
+        const showing = el.classList.toggle('show');
+        btn.textContent = showing ? '예시 답안 숨기기' : '예시 답안 보기';
+      });
+    });
+  }
+
+  /* ================= debate role select ================= */
+  function wireRoles(){
+    const cards = document.querySelectorAll('.role-card');
+    const saved = store['debate_role'];
+    cards.forEach(c=>{
+      if(saved && c.dataset.role===saved) c.classList.add('selected');
+      c.addEventListener('click', ()=>{
+        cards.forEach(x=>x.classList.remove('selected'));
+        c.classList.add('selected');
+        store['debate_role'] = c.dataset.role; persist();
+        updateProgress();
+      });
+    });
+  }
+
+  /* ================= fill-in review quiz (tab 3) ================= */
+  const fillReview = [
+    {text:'공자는 죽음보다 현세에서 [[도덕적 삶]]을 사는 것이 중요하다고 보았다.'},
+    {text:'장자는 삶과 죽음을 사계절의 운행과 같은 [[자연]]스러운 현상으로 보았다.'},
+    {text:'플라톤은 죽음을 영혼이 육체를 벗어나 [[이데아계]]로 돌아가는 것이라 보았다.'},
+    {text:'야스퍼스는 죽음이라는 [[한계 상황]]을 직시할 때 참된 실존에 이른다고 하였다.'},
+    {text:'삶의 [[유한함]]이 인생을 더욱 가치 있게 만든다.'},
+    {text:'인공임신중절 반대 입장은 태아도 인간이므로 여성의 선택권보다 [[생명권]]이 우선이라고 본다.'},
+    {text:'안락사 허용 근거는 인간이 [[존엄]]하게 죽을 권리를 지닌다는 것이다.'},
+    {text:'칸트는 자살이 자신의 인격을 한낱 [[수단]]으로 이용하는 것이라고 보았다.'},
+    {text:'뇌사 판정 과정에서는 [[오판]]의 가능성이 존재한다는 반대 의견도 있다.'},
+    {text:'배아 복제 찬성 논거는 배아를 [[난치병]] 치료에 활용할 수 있다는 것이다.'}
+  ];
+  function renderFillReview(){
+    const host = document.getElementById('fillquiz-list');
+    host.innerHTML = fillReview.map((item,i)=>`<div class="fillquiz-item"><span class="fillquiz-num">${i+1}</span>${rich(item.text)}</div>`).join('');
+  }
+  let fillReviewIds = [];
+
+  document.getElementById('fill-reset').addEventListener('click', ()=>{
+    document.querySelectorAll('#fillquiz-list .blank-input').forEach(inp=>{
+      inp.value=''; inp.classList.remove('correct','incorrect');
+      delete store['blank_'+inp.id];
+    });
+    document.querySelectorAll('#fillquiz-list .blank-reveal').forEach(r=>r.textContent='');
+    persist(); updateProgress();
+  });
+
+  /* ================= OX quiz ================= */
+  const oxItems = [
+    {text:'해탈하기 이전까지 불교에서는 삶과 죽음이 끊임없이 반복된다고 본다.', answer:'O',
+      explain:'불교의 윤회설(輪回說)에 따르면 해탈하기 전까지 삶과 죽음은 끊임없이 반복된다.'},
+    {text:'장자는 삶과 죽음을 필연적인 과정으로 본다.', answer:'O',
+      explain:'장자는 기(氣)가 모이고 흩어짐으로 삶과 죽음을 설명하며, 이를 사계절의 운행처럼 자연스럽고 필연적인 과정으로 보았다.'},
+    {text:'플라톤은 죽음 이후 영혼이 육체로부터 해방되어 사물의 본질을 인식할 수 있다고 본다.', answer:'O',
+      explain:'플라톤에게 죽음은 영혼이 육체를 벗어나 이데아계로 돌아가는 것이며, 이때 비로소 순수한 인식(지혜)에 도달할 수 있다.'},
+    {text:'에피쿠로스는 지혜로운 사람이라면 죽음이 즐거운 일임을 깨닫는다고 본다.', answer:'X',
+      explain:'에피쿠로스는 인간이 죽음을 경험할 수 없으므로 두려워할 필요가 없다고 했을 뿐, 죽음이 “즐거운 일”이라고 말하지는 않았다.'},
+    {text:'하이데거는 인간뿐만 아니라 모든 생명체가 죽음을 인지할 수 있는 현존재임을 강조한다.', answer:'X',
+      explain:'현존재(Dasein)는 하이데거가 다른 존재자와 구별하여 오직 인간을 지칭하기 위해 사용한 개념이다.'},
+    {text:'인공임신중절을 허용해야 한다는 입장은 여성의 선택권보다 태아의 생명권을 강조한다.', answer:'X',
+      explain:'반대로, 허용 입장은 여성의 자율권·선택권을 강조하며, 태아의 생명권을 우선시하는 것은 반대 입장이다.'},
+    {text:'안락사는 회복 가능성이 없는 환자가 극심한 고통을 겪는 경우를 전제한다.', answer:'O',
+      explain:'안락사 논의는 일반적으로 회복 가능성이 없고 극심한 고통을 겪는 환자의 상황을 전제로 이루어진다.'},
+    {text:'배아 복제 반대 근거 중 하나는 배아가 잠재적 인간이라는 것이다.', answer:'O',
+      explain:'배아 복제 반대 논거는 배아도 인간(잠재적 인간)이며, 난자를 얻는 과정에서 여성의 권리를 침해한다는 점을 든다.'}
+  ];
+  let oxScore = 0, oxAnswered = 0;
+  function renderOX(){
+    const host = document.getElementById('ox-list');
+    host.innerHTML = oxItems.map((it,i)=>`
+      <div class="ox-item" data-idx="${i}">
+        <div class="ox-text">${i+1}. ${esc(it.text)}</div>
+        <div class="ox-btns">
+          <button class="ox-btn" data-choice="O">O</button>
+          <button class="ox-btn" data-choice="X">X</button>
+        </div>
+        <div class="ox-explain">${esc(it.explain)}</div>
+      </div>`).join('');
+    host.querySelectorAll('.ox-item').forEach(item=>{
+      const idx = +item.dataset.idx;
+      const savedChoice = store['ox_'+idx];
+      if(savedChoice){ applyOxChoice(item, idx, savedChoice, false); }
+      item.querySelectorAll('.ox-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          if(item.dataset.locked) return;
+          applyOxChoice(item, idx, btn.dataset.choice, true);
+        });
+      });
+    });
+    document.getElementById('ox-total').textContent = oxItems.length;
+    recomputeOxScore();
+  }
+  function applyOxChoice(item, idx, choice, countIt){
+    const correct = oxItems[idx].answer;
+    item.dataset.locked = '1';
+    item.querySelectorAll('.ox-btn').forEach(b=>{
+      b.disabled = true;
+      if(b.dataset.choice===choice){
+        b.classList.add(choice===correct?'picked-correct':'picked-wrong');
+      }
+      if(b.dataset.choice===correct){
+        b.classList.add('picked-correct');
+      }
+    });
+    item.querySelector('.ox-explain').classList.add('show');
+    if(countIt){ store['ox_'+idx]=choice; persist(); }
+    recomputeOxScore();
+    updateProgress();
+  }
+  function recomputeOxScore(){
+    let score=0, answered=0;
+    oxItems.forEach((it,i)=>{
+      const c = store['ox_'+i];
+      if(c){ answered++; if(c===it.answer) score++; }
+    });
+    oxScore=score; oxAnswered=answered;
+    document.getElementById('ox-score').textContent = score;
+    document.getElementById('ox-bar').style.width = (oxItems.length? (score/oxItems.length*100):0)+'%';
+  }
+  document.getElementById('ox-reset').addEventListener('click', ()=>{
+    oxItems.forEach((it,i)=>delete store['ox_'+i]);
+    persist();
+    renderOX();
+    updateProgress();
+  });
+
+  /* ================= progress chips ================= */
+  function countBlanksIn(ids){
+    let total=0, done=0;
+    ids.forEach(id=>{
+      const inp = document.getElementById(id);
+      if(inp){ total++; if(inp.classList.contains('correct')) done++; }
+    });
+    return {total, done};
+  }
+  function updateProgress(){
+    // Tab1: philosopher blanks + yuhan blank + 3 reflections + 5 flow reflections
+    const t1BlankIds = ALL_BLANKS.filter(b=>document.querySelector('#panel-t1 #'+b.id)).map(b=>b.id);
+    const t1Blanks = countBlanksIn(t1BlankIds);
+    const t1ReflectKeys = ['wl-q1','wl-q2','wl-q3','flow-1','flow-2','flow-3','flow-4','flow-5'];
+    const t1ReflectDone = t1ReflectKeys.filter(k=>store['reflect_'+k] && store['reflect_'+k].trim().length>0).length;
+    const t1Total = t1Blanks.total + t1ReflectKeys.length;
+    const t1Done = t1Blanks.done + t1ReflectDone;
+    document.getElementById('chip-t1').textContent = `${t1Done}/${t1Total}`;
+
+    // Tab2: blanks in panel-t2 (excluding suicide handled separately already inside panel) + reflections + debate + role
+    const t2BlankIds = ALL_BLANKS.filter(b=>document.querySelector('#panel-t2 #'+b.id)).map(b=>b.id);
+    const t2Blanks = countBlanksIn(t2BlankIds);
+    const t2ReflectKeys = ['gene-open','suicide-q','debate-opinion','debate-learned','debate-feeling','debate-impress'];
+    const t2ReflectDone = t2ReflectKeys.filter(k=>store['reflect_'+k] && store['reflect_'+k].trim().length>0).length;
+    const roleDone = store['debate_role'] ? 1 : 0;
+    const t2Total = t2Blanks.total + t2ReflectKeys.length + 1;
+    const t2Done = t2Blanks.done + t2ReflectDone + roleDone;
+    document.getElementById('chip-t2').textContent = `${t2Done}/${t2Total}`;
+
+    // Tab3: fill review blanks + ox answered
+    const fillIds = ALL_BLANKS.filter(b=>document.querySelector('#fillquiz-list #'+b.id)).map(b=>b.id);
+    const fillState = countBlanksIn(fillIds);
+    document.getElementById('fill-score').textContent = fillState.done;
+    document.getElementById('fill-total').textContent = fillState.total;
+    document.getElementById('fill-bar').style.width = (fillState.total? (fillState.done/fillState.total*100):0)+'%';
+    const t3Total = fillState.total + oxItems.length;
+    const t3Done = fillState.done + oxAnswered;
+    document.getElementById('chip-t3').textContent = `${t3Done}/${t3Total}`;
+  }
+
+  /* ================= init ================= */
+  renderPhilCards();
+  renderYuhanBlank();
+  renderWonderful();
+  renderFlow();
+  renderGloss('gloss-t1', glossT1);
+  renderGloss('gloss-eutha', glossEutha);
+  renderGloss('gloss-t2b', glossT2b);
+  renderList('abortion-pro', abortionPro);
+  renderList('abortion-con', abortionCon);
+  renderList('eutha-pro', euthaPro);
+  renderList('eutha-con', euthaCon);
+  renderSuicideViews();
+  renderList('braindeath-pro', braindeathPro);
+  renderList('braindeath-con', braindeathCon);
+  renderList('embryo-pro', embryoPro);
+  renderList('embryo-con', embryoCon);
+  renderList('germline-pro', germlinePro);
+  renderList('germline-con', germlineCon);
+
+  // mark which blanks belong to the tab-3 fill review (must render after others so IDs are distinct)
+  const beforeFillIds = ALL_BLANKS.map(b=>b.id);
+  renderFillReview();
+  fillReviewIds = ALL_BLANKS.map(b=>b.id).filter(id=>!beforeFillIds.includes(id));
+
+  renderOX();
+
+  wireBlanks(document.body);
+  wireReflections(document.body);
+  wireSampleToggles(document.body);
+  wireRoles();
+  updateProgress();
+
+})();
+</script>
+</body>
+</html>
