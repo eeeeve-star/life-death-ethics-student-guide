@@ -385,7 +385,7 @@
   var app = document.getElementById('app');
 
   var TITLE = '자연과 윤리';
-  var SUBTITLE = '동서양의 자연관과 환경 윤리';
+  var SUBTITLE = '현대사회와 윤리';
 
   var PASSAGE_PARAGRAPHS = [
     '2007년 12월 태안군 앞바다에서 8천여 톤의 원유가 유출되는 사고가 일어났다. 이에 전국 각지에서 어마한 수의 자원봉사자들이 몰려와 직접 기름을 제거하기 시작하였다. 타르로 범벅이 된 바위 구석구석을 닦고, 모래와 흙을 자루에 담아 세척 장소로 옮겼다. 어린아이들까지 고사리손으로 바윗돌에 낀 기름을 닦아 내는 모습은 많은 사람에게 감동을 전해 주었다. 이렇게 전국 각지에서 몰려온 사람들 덕분에 최소 10년이 걸릴 것이라 예상했던 방재 작업은 2달 만에 어느 정도 성과를 이루었다. 본업을 미루고 태안을 찾아 자원봉사에 나선 인원만 123만 명에 달해 세계를 놀라게 하였다. 이들은 왜 자원봉사에 나섰을까? 인간을 위한 것일까, 바다와 갯벌을 위한 것일까?',
@@ -449,6 +449,7 @@
   var state = {
     screen: 'setup', // setup | quiz | result
     difficulty: '보통',
+    questionCount: 5,
     questions: [],
     answers: [],
     current: 0,
@@ -476,9 +477,9 @@
     return a;
   }
 
-  function pickQuizSet(difficulty){
+  function pickQuizSet(difficulty, count){
     var pool = shuffle(QUESTION_BANK[difficulty]);
-    return pool.slice(0, 5).map(function(item){
+    return pool.slice(0, count).map(function(item){
       var order = shuffle([0, 1, 2, 3]);
       var options = order.map(function(i){ return item.options[i]; });
       return {
@@ -491,7 +492,7 @@
   }
 
   function startQuiz(){
-    state.questions = pickQuizSet(state.difficulty);
+    state.questions = pickQuizSet(state.difficulty, state.questionCount);
     state.answers = new Array(state.questions.length).fill(null);
     state.current = 0;
     state.showPassage = false;
@@ -537,11 +538,20 @@
       return '<button type="button" class="diff-pill' + (state.difficulty === d ? ' active' : '') + '" data-diff="' + d + '">' + d + '</button>';
     }).join('');
 
+    var counts = [5, 7, 10];
+    var countRow = counts.map(function(n){
+      return '<button type="button" class="diff-pill' + (state.questionCount === n ? ' active' : '') + '" data-count="' + n + '">' + n + '문제</button>';
+    }).join('');
+
     app.innerHTML =
       '<p class="eyebrow">' + escapeHtml(SUBTITLE) + '</p>' +
-      '<h1 class="title">' + escapeHtml(TITLE) + '<br>5문제에 도전해보세요</h1>' +
-      '<p class="lede">난이도를 고르면 지문 내용만 근거로 만든 객관식 문제 5개가 바로 시작돼요. 지문은 문제를 풀면서 화면에서 바로 확인할 수 있어요.</p>' +
+      '<h1 class="title">' + escapeHtml(TITLE) + '<br>퀴즈에 도전해보세요</h1>' +
+      '<p class="lede">문제 수와 난이도를 고르면 지문 내용만 근거로 만든 객관식 문제가 바로 시작돼요. 지문은 문제를 풀면서 화면에서 바로 확인할 수 있어요.</p>' +
       '<div class="card">' +
+        '<div class="field-block">' +
+          '<label class="field-label">문제 수</label>' +
+          '<div class="diff-row" id="count-row">' + countRow + '</div>' +
+        '</div>' +
         '<div class="field-block">' +
           '<label class="field-label">난이도</label>' +
           '<div class="diff-row" id="diff-row">' + diffRow + '</div>' +
@@ -555,6 +565,15 @@
       if (!btn) return;
       state.difficulty = btn.getAttribute('data-diff');
       diffRowEl.querySelectorAll('.diff-pill').forEach(function(p){
+        p.classList.toggle('active', p === btn);
+      });
+    });
+    var countRowEl = document.getElementById('count-row');
+    countRowEl.addEventListener('click', function(ev){
+      var btn = ev.target.closest('.diff-pill');
+      if (!btn) return;
+      state.questionCount = parseInt(btn.getAttribute('data-count'), 10);
+      countRowEl.querySelectorAll('.diff-pill').forEach(function(p){
         p.classList.toggle('active', p === btn);
       });
     });
