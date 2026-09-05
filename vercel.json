@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/삶과죽음의윤리_학생가이드.html" }
+  ]
+}
