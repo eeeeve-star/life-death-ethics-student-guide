@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>자연과 윤리 - 형성평가</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F2F4F1;
+    --surface:#FFFFFF;
+    --surface-soft:#E9EDE9;
+    --ink:#1C2321;
+    --ink-soft:#5B665F;
+    --border:#DCE3DE;
+    --accent:#1F6F63;
+    --accent-ink:#0E3B34;
+    --accent-soft:#E1EFEB;
+    --good:#2E7D53;
+    --good-soft:#E4F3E9;
+    --bad:#C1443A;
+    --bad-soft:#FBE7E4;
+    --shadow:rgba(28,35,33,0.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141F1B;
+      --surface:#1C2A25;
+      --surface-soft:#233129;
+      --ink:#EAF1EC;
+      --ink-soft:#9FB4AA;
+      --border:#324139;
+      --accent:#63CDB6;
+      --accent-ink:#DFF7F0;
+      --accent-soft:#20342E;
+      --good:#74CE9B;
+      --good-soft:#1E3527;
+      --bad:#E8867B;
+      --bad-soft:#3B2622;
+      --shadow:rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141F1B;
+    --surface:#1C2A25;
+    --surface-soft:#233129;
+    --ink:#EAF1EC;
+    --ink-soft:#9FB4AA;
+    --border:#324139;
+    --accent:#63CDB6;
+    --accent-ink:#DFF7F0;
+    --accent-soft:#20342E;
+    --good:#74CE9B;
+    --good-soft:#1E3527;
+    --bad:#E8867B;
+    --bad-soft:#3B2622;
+    --shadow:rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans KR", "Malgun Gothic", sans-serif;
+    min-height:100dvh;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 56px;
+  }
+  .app{ width:100%; max-width:520px; }
+
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+    margin:0 0 6px;
+  }
+  h1.title{
+    font-family:"Gowun Batang", serif;
+    font-size:clamp(24px,6.5vw,32px);
+    line-height:1.3;
+    margin:0 0 8px;
+    text-wrap:balance;
+  }
+  p.lede{
+    color:var(--ink-soft);
+    margin:0 0 24px;
+    font-size:14.5px;
+    line-height:1.6;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 10px 28px -18px var(--shadow);
+  }
+  .card + .card{ margin-top:16px; }
+
+  label.field-label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:8px;
+  }
+
+  .passage-label-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .field-hint{ font-size:12px; color:var(--ink-soft); }
+  .passage-box{
+    max-height:260px;
+    overflow-y:auto;
+    background:var(--bg);
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+  }
+  .passage-box.expanded{ max-height:none; }
+  .passage-box p{
+    font-size:14px;
+    line-height:1.75;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .passage-toggle-btn{
+    background:none;
+    border:1.5px solid var(--border);
+    color:var(--accent-ink);
+    font-size:12.5px;
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .passage-toggle-btn:hover{ background:var(--accent-soft); border-color:var(--accent); }
+
+  .diff-row{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+  }
+  .diff-pill{
+    flex:1;
+    text-align:center;
+    padding:11px 8px;
+    border-radius:11px;
+    border:1.5px solid var(--border);
+    background:var(--bg);
+    color:var(--ink-soft);
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+    user-select:none;
+  }
+  .diff-pill.active{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+    color:var(--accent-ink);
+  }
+  .diff-pill:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .field-block{ margin-bottom:20px; }
+  .field-block:last-child{ margin-bottom:0; }
+
+  button{ font-family:inherit; }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    font-size:15.5px;
+    font-weight:700;
+    border:1.5px solid transparent;
+    cursor:pointer;
+    min-height:48px;
+  }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn-primary{ background:var(--accent); color:var(--surface); }
+  .btn-primary:disabled{ background:var(--surface-soft); color:var(--ink-soft); cursor:not-allowed; }
+  .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--border); }
+  .btn-ghost:hover{ background:var(--surface-soft); }
+  .btn-row{ display:flex; gap:10px; margin-top:18px; }
+  .btn-row > *{ flex:1; }
+
+  /* quiz */
+  .progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .progress-label{
+    font-family:"IBM Plex Mono", monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+  }
+  .diff-tag{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--accent-ink);
+    background:var(--accent-soft);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+  .progress-track{
+    height:6px;
+    border-radius:999px;
+    background:var(--surface-soft);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    border-radius:999px;
+    transition:width .25s ease;
+  }
+  .quiz-passage-wrap{ margin-bottom:18px; }
+  .question-text{
+    font-size:19px;
+    font-weight:700;
+    line-height:1.5;
+    margin:0 0 20px;
+    text-wrap:balance;
+  }
+  .options{ display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+  .option{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    text-align:left;
+    padding:13px 14px;
+    border-radius:13px;
+    border:1.5px solid var(--border);
+    background:var(--surface);
+    color:var(--ink);
+    font-size:15px;
+    line-height:1.5;
+    cursor:pointer;
+  }
+  .option:hover{ background:var(--surface-soft); }
+  .option:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .option.selected{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+  }
+  .option:disabled{ cursor:default; }
+  .option:disabled:hover{ background:var(--surface); }
+  .option.correct{ border-color:var(--good); background:var(--good-soft); }
+  .option.wrong{ border-color:var(--bad); background:var(--bad-soft); }
+  .option.correct:disabled:hover{ background:var(--good-soft); }
+  .option.wrong:disabled:hover{ background:var(--bad-soft); }
+  .option-mark{
+    flex:0 0 auto;
+    width:22px; height:22px;
+    border-radius:50%;
+    border:1.5px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px; font-weight:600;
+    color:var(--ink-soft);
+  }
+  .option.selected .option-mark{
+    border-color:var(--accent);
+    background:var(--accent);
+    color:var(--surface);
+  }
+  .option.correct .option-mark{
+    border-color:var(--good);
+    background:var(--good);
+    color:var(--surface);
+  }
+  .option.wrong .option-mark{
+    border-color:var(--bad);
+    background:var(--bad);
+    color:var(--surface);
+  }
+  .feedback-box{
+    border-radius:12px;
+    padding:14px 16px;
+    margin:-6px 0 22px;
+    border:1px solid;
+  }
+  .feedback-box.correct{ background:var(--good-soft); border-color:var(--good); }
+  .feedback-box.wrong{ background:var(--bad-soft); border-color:var(--bad); }
+  .feedback-label{ font-weight:700; font-size:14px; margin:0 0 6px; }
+  .feedback-label.correct{ color:var(--good); }
+  .feedback-label.wrong{ color:var(--bad); }
+  .feedback-explain{ font-size:13.5px; line-height:1.6; color:var(--ink); margin:0; }
+  .nav-row{ display:flex; gap:10px; }
+  .nav-row > *{ flex:1; }
+
+  /* result */
+  .score-tile{
+    text-align:center;
+    padding:8px 8px 4px;
+    margin-bottom:8px;
+  }
+  .score-number{
+    font-family:"IBM Plex Mono", monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:44px;
+    font-weight:600;
+    line-height:1;
+    margin:0 0 6px;
+  }
+  .score-number.tier-good{ color:var(--good); }
+  .score-number.tier-mid{ color:var(--ink); }
+  .score-number.tier-bad{ color:var(--bad); }
+  .score-caption{ color:var(--ink-soft); font-size:14px; margin:0; }
+
+  .review-item{
+    padding:16px 16px 16px 18px;
+    border:1px solid var(--border);
+    border-left:4px solid var(--border);
+    border-radius:12px;
+    margin-bottom:12px;
+    background:var(--surface);
+  }
+  .review-item.correct{ border-left-color:var(--good); }
+  .review-item.wrong{ border-left-color:var(--bad); }
+  .review-item:last-child{ margin-bottom:0; }
+  .review-head{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .review-index{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    flex:0 0 auto;
+  }
+  .review-q{ font-weight:700; font-size:15px; line-height:1.5; }
+  .review-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:12px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:999px;
+    margin:2px 6px 2px 0;
+  }
+  .review-chip.correct{ background:var(--good-soft); color:var(--good); }
+  .review-chip.wrong{ background:var(--bad-soft); color:var(--bad); }
+  .review-answers{ font-size:13.5px; color:var(--ink-soft); margin:6px 0; line-height:1.7; }
+  .review-answers b{ color:var(--ink); font-weight:700; }
+  .review-explain{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.6;
+    margin:8px 0 0;
+    padding-top:8px;
+    border-top:1px dashed var(--border);
+  }
+  .review-explain b{ color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+(function(){
+  var app = document.getElementById('app');
+
+  var TITLE = '자연과 윤리';
+  var SUBTITLE = '동서양의 자연관과 환경 윤리';
+
+  var PASSAGE_PARAGRAPHS = [
+    '2007년 12월 태안군 앞바다에서 8천여 톤의 원유가 유출되는 사고가 일어났다. 이에 전국 각지에서 어마한 수의 자원봉사자들이 몰려와 직접 기름을 제거하기 시작하였다. 타르로 범벅이 된 바위 구석구석을 닦고, 모래와 흙을 자루에 담아 세척 장소로 옮겼다. 어린아이들까지 고사리손으로 바윗돌에 낀 기름을 닦아 내는 모습은 많은 사람에게 감동을 전해 주었다. 이렇게 전국 각지에서 몰려온 사람들 덕분에 최소 10년이 걸릴 것이라 예상했던 방재 작업은 2달 만에 어느 정도 성과를 이루었다. 본업을 미루고 태안을 찾아 자원봉사에 나선 인원만 123만 명에 달해 세계를 놀라게 하였다. 이들은 왜 자원봉사에 나섰을까? 인간을 위한 것일까, 바다와 갯벌을 위한 것일까?',
+    '전통적으로 동양에서는 인간과 자연의 조화로운 삶을 강조하였다. 자연과 인간은 상호 의존적인 관계로 서로 긴밀하게 연결되어 있다고 보았다. 유교는 자연과 인간이 하나가 되는 천인합일(天人合一)의 경지를 지향하였다. 자연과 인간을 하나의 유기체로 파악하고, 인간과 만물은 조화를 이루며 더불어 사는 존재라고 보았다. 불교는 연기적 세계관에 따라 인간과 자연을 파악하였다. 하나의 그물망 안에 연결된 만물은 상호 의존하고 있으므로 자타불이(自他不二)의 정신으로 자비를 베풀어야 한다고 주장하였다. 도가는 자연에 대한 인위적인 행위를 자제하고, 자연의 순리에 따라 살아야 한다고 강조하였다. 노자는 무위자연(無爲自然)의 삶을 지향하였고, 장자는 인간을 포함한 만물이 타고난 그대로 모두 평등하므로 자연을 인위적으로 조작해서는 안 된다고 보았다.',
+    '전통적으로 서양에서는 자연을 인간의 목적을 달성하기 위한 수단으로 여겼다. 고대 그리스 사상이나 그리스도교에서는 자연을 규칙적이고 합리적인 것으로 이해하였으며, 인간 중심적 관점에서 바라보았다. 아리스토텔레스는 "식물은 동물을 위해 존재하고, 동물은 인간을 위해 존재한다."라고 말하였으며, 아퀴나스는 "신의 섭리에 따라 동물은 자연의 과정에서 인간이 사용하도록 운명 지어졌다."라고 주장하였다. 이러한 생각은 근대 이후 자연 과학의 발달과 함께 자연을 정복의 대상으로 보는 관점에 영향을 미쳤다.',
+    '[동양의 자연관 원전] 왕수인은 『대학문』에서 "대인(大人)은 천지 만물을 일체로 여긴다. 대인이 천지 만물을 일체로 여길 수 있는 것은 의도적으로 하는 것이 아니라, 그 마음의 인(仁)이 본래 이와 같아서 자연히 천지 만물과 일체가 되는 것이다."라고 하였다. 『화엄경』은 "인드라 하늘에는 진주 그물이 있고, 그 그물은 잘 정돈되어 있어 만일 사람이 어떤 하나의 진주를 주시한다면 그것 속에 다른 모든 것이 반영되어 있는 것을 볼 것이다. 이와 같이 이 세계 내의 각각의 대상들은 단지 그것 자체로서가 아니라 다른 모든 대상들을 서로서로 포함한다."라며 인드라망의 비유로 상호 의존을 설명하였다. 노자는 『도덕경』에서 "사람은 땅을 본받고, 땅은 하늘을 본받고, 하늘은 도를 본받고, 도는 자연을 본받는다."라고 하였다.',
+    '유교, 불교, 도가의 자연관은 각각 차이는 있지만 대체로 인간과 자연의 조화로운 관계를 중시하는 모습을 보여 주었다. 유교는 하늘과 땅을 기계적 물체가 아니라 서로 느끼고 상응하면서 만물을 낳고 기르는 존재, 즉 유기체적 존재로 보았다. 불교는 하나의 작은 티끌에도 온 세계가 나타난다는 화엄의 세계를 인드라망의 비유를 통해 설명하였다. 도가는 아무런 외부적 힘이 관여하지 않은 자연 그대로의 성질, 스스로 그러한 모습[自然]을 본받는 것이 도(道)이며, 그러한 도에 따라 살아갈 것을 제안하였다. 이러한 동양의 자연관은 서양의 인간중심적 자연관이 갖는 문제점을 보완할 수 있다.',
+    '인간중심주의는 도덕적 고려의 대상을 인간으로 한정하고, 인간 이외의 모든 존재는 인간의 목적을 위한 단순한 수단으로 이용될 수 있다고 여긴다. 서양의 근대 사상가들은 인간과 자연의 관계를 이분법적으로 설정하거나 기계론적 입장에서 자연을 바라보고 개발하고자 하였다. 베이컨(1561~1626)은 "자연에 대해 아는 것이 곧 힘이다."라고 주장하며 자연에 관한 지식의 활용을 주장하였다. 데카르트(1596~1650)는 심신 이원론(마음과 몸을 서로 다른 근원을 가진 별개의 실체로 보는 것으로, 마음의 근원은 생각이고 몸의 근원은 크기와 운동이라고 봄)에 입각하여 인간과 자연의 관계를 설명하였다. 이성적인 인간은 생각하는 주체이고, 물질적인 객체로서의 자연은 단순한 기계로 본 것이다. 그는 인류의 복리를 위해 자연을 적극적으로 이용해야 한다고 주장하며, 동물을 포함한 자연을 도덕적 고려의 대상에서 제외하였다. 이러한 서양의 자연관을 강경한 인간중심주의라고 하는데, 오늘날 자원 고갈과 생태계 파괴, 기후 위기 등을 불러온 원인으로 비판받고 있다.',
+    '한편 칸트는 인간 이외의 존재는 이성이 없어 도덕적인 지위를 갖지 못한다고 보았다. 다만 자연을 잔인하게 다루는 것은 인간의 자신에 대한 의무에 어긋난다고 주장하며("자연을 파괴하고자 하는 성향은 도덕성에 기여할 감정을 약화시키거나 제거하기 때문이다.") 자연과 관련한 인간의 간접적 의무를 인정하였다.',
+    '온건한 인간중심주의는 전통적인 인간중심주의가 자연의 개발과 이용에만 초점을 두었다는 반성에서 출발하였다. 이들은 기존의 인간중심주의적 관점을 강경한 입장이라고 비판하며 개발과 보존의 균형을 통해 자연과 인간이 함께 지속 가능할 수 있는 방법을 모색하고자 하였다. 패스모어(1914~2004)는 자연에 대한 인간의 도덕적 책임을 인정하고, 인류의 장기적인 이익과 생존을 위해 자연 친화적인 삶을 살 것을 주장하였다. 그는 "우리 자신이 계승했던 상황보다 지금과 같거나, 한층 더 훌륭한 상황을 우리의 직접적인 자손에게 양도해야 한다."라고 말하며 자연의 보전 문제에 관심을 기울였다. 다만 인간중심주의 사상가들은 대체로 자연 자체의 내재적 가치는 인정하지 않고, 인류의 장기적 이익이라는 관점에서만 자연을 대한다는 공통점이 있다.',
+    '동물중심주의는 도덕적 고려의 대상을 동물에게까지 확대해야 한다고 본다. 대표적인 윤리 사상가로 싱어와 레건이 있다. 싱어는 "중요한 것은 이성을 갖는가 혹은 말할 수 있는가가 아니라 고통을 느낄 수 있는가이다."라는 벤담의 공리주의를 계승하였다. 그는 어떤 존재가 고통을 느낀다면 그 존재가 인간이든 동물이든 관계없이 도덕적 고려의 대상으로 삼아야 한다고 보았다. 이익 평등 고려의 원칙은 한 존재의 고통을 다른 존재의 고통과 동등하게 취급할 것을 요구하기 때문이다. 이를 위반하는 것은 종차별주의(자신이 속한 종의 이익을 다른 종의 이익보다 우선하는 태도를 인종 차별주의·성차별주의에 빗댄 말)에 해당한다고 본 싱어는, 쾌고 감수 능력이 어떤 존재를 도덕적으로 고려할지를 결정하는 유일한 기준이라고 주장하였다.',
+    '레건은 한 살 이상의 포유동물들이 삶의 주체로서 도덕적으로 존중받을 권리가 있다고 주장하였다. 이때 삶의 주체라는 것은 단지 살아 있다는 것, 또는 단지 의식을 갖고 있다는 것 이상을 의미한다. 삶의 주체가 된다는 것은 믿음, 욕구, 지각, 기억, 미래에 대한 의식, 쾌락과 고통 등의 감정을 느낄 수 있다는 것이다. 그는 일부 동물을 자원으로 보는 것이 근본적으로 잘못되었음을 지적하며 무분별한 공장식 축산과 동물 실험 등에 반대하였다. 이후 동물 실험에는 대체(Replacement, 대체 방법 우선 고려), 축소(Reduction, 불가피한 경우 최소한으로 줄임), 개선(Refinement, 최대한 고통을 완화하는 방법으로 실시)이라는 3R 원칙이 강조되었다.',
+    '동물중심주의는 인간의 이윤 추구를 위해 동물을 무분별하게 이용해 온 관행을 비판적으로 성찰하는 계기를 마련해 주었다. 특히 동물 실험에 대한 논쟁에 중요한 윤리적 근거를 마련해 주었다. 그러나 동물의 복지에 초점을 맞춘 논의에만 치중해 환경 문제 전체를 다루지 못한다는 비판도 받는다.',
+    '생명중심주의는 도덕적 고려의 대상을 모든 생명체로 확대해야 한다고 보는 입장이다. 대표적인 윤리 사상가로 슈바이처와 테일러가 있다. 슈바이처(1875~1965)는 인간은 다른 모든 생명 의지에 대해서도 자신의 생명 의지를 대할 때와 마찬가지로 생명에 대해 외경심을 가져야 한다고 주장하였다. 그는 "인간은 다른 모든 생명에 대해 외경심을 가져야 한다. 선이란 생명을 유지하고 촉진하는 것이며, 악이란 생명을 파괴하고 저해하는 것이다. 이것이야말로 도덕의 절대적 기본적인 원리이다."라고 말하였다.',
+    '테일러는 모든 생명체가 자기 보존을 위한 목적 지향적 활동을 하는 목적론적 삶의 중심이 되는 존재라고 보았다. 그는 생명체가 자신의 생존을 유지하고, 종을 재생산하며, 변화하는 환경에 적응하여 생명 활동을 영위한다는 점에 주목하였다. 그래서 그는 모든 생명체를 본래적 가치를 지닌 도덕적 고려의 대상으로 대우해야 한다고 주장하며 생명체에 대한 네 가지 의무를 제시하였다: ① 악행 금지의 의무(어떤 생명체도 해치지 않아야 함), ② 불간섭의 의무(개별 유기체의 자유를 제한하지 말고 생태계에 간섭하지 않아야 함), ③ 성실의 의무(인간의 즐거움을 위해 야생 동물을 사냥하거나 덫을 놓는 등의 기만행위를 해서는 안 됨), ④ 보상적 정의의 의무(위 세 의무를 어겼을 때 이를 보상해야 함).',
+    '생명중심주의는 모든 생명체의 고유한 가치를 일깨워 주는 데 큰 역할을 하였다. 그러나 한편으로는 종이나 생태계와 같이 전체론적 관점에서 환경 문제를 바라보지 못했다는 비판을 받기도 한다.',
+    '생태중심주의는 기존의 자연관들이 개별 생명체의 도덕적 지위를 중시한 것과 달리, 전일론적 관점에서 자연을 바라보고자 한다. 그래서 무생물을 포함한 생태계 전체를 도덕적 고려의 대상으로 여긴다. 대표적인 윤리 사상가로 레오폴드와 네스가 있다. 레오폴드(1887~1948)는 흙, 물, 식물과 동물 등을 포함한 대지를 도덕 공동체의 범위에 포함하는 대지 윤리를 주장하였다. 그는 인간을 대지 공동체의 정복자에서 그 구성원으로 변화시켜야 하고, 공동체의 구성원으로서 인간은 동료인 생명체와 전체 공동체에 대해 존경심을 가져야 한다고 강조하였다. 그는 어떤 것이 생명 공동체의 온전성, 안전성, 아름다움을 보전하는 경향이 있다면 옳고, 그렇지 않다면 그르다고 보았다.',
+    '네스(1912~2009)는 환경 오염과 자원 고갈의 문제에 집중하는 이전의 생태주의를 인간 중심적이라고 비판하면서 근본적인 변화와 실천을 요구하는 심층 생태주의를 주장하였다. 그는 생태계의 위기를 극복하기 위해서는 인간의 세계관과 삶의 방식 자체를 생태 중심적으로 바꾸어야 한다고 주장하였다. 그러면서 그는 자신을 자연이라는 더 큰 전체와의 상호 연관성을 통해 이해하는 큰 자아실현과, 모든 생명체를 상호 연결된 공동체의 평등한 구성원으로 이해하는 생명 중심적 평등을 강조하였다.',
+    '생태중심주의는 생태계와 생명체 전반에 대한 포괄적인 이해를 바탕으로 윤리적 실천을 하고자 노력했다는 점에서 의의가 있다. 하지만 대지 윤리나 심층 생태주의 모두 생명 공동체의 선을 위해 개별 생명, 특히 인간의 희생을 정당화할 위험성이 있다. 또한 생태계의 자연적 사실로부터 생태계의 규범적 가치를 도출함으로써 자연주의적 오류를 범하고 있다는 비판을 받기도 한다.'
+  ];
+
+  var QUESTION_BANK = {
+    '쉬움': [
+      { q: '유교에서 자연과 인간이 하나가 되는 경지를 이르는 말은?', options: ['천인합일(天人合一)', '무위자연(無爲自然)', '자타불이(自他不二)', '심신 이원론'], explain: '유교는 자연과 인간이 하나가 되는 천인합일의 경지를 지향하였다.' },
+      { q: '도가에서 노자가 강조한 삶의 태도는?', options: ['무위자연(無爲自然)', '천인합일(天人合一)', '이익 평등 고려', '대지 윤리'], explain: '노자는 인위적으로 자연에 개입하지 않는 무위자연의 삶을 지향하였다.' },
+      { q: '"식물은 동물을 위해 존재하고, 동물은 인간을 위해 존재한다."라고 말한 사상가는?', options: ['아리스토텔레스', '데카르트', '베이컨', '칸트'], explain: '지문에 따르면 이 말은 아리스토텔레스가 한 말이다.' },
+      { q: '인간중심주의는 도덕적 고려의 대상을 무엇으로 한정하는가?', options: ['인간', '동물', '모든 생명체', '생태계 전체'], explain: '인간중심주의는 도덕적 고려의 대상을 인간으로 한정한다.' },
+      { q: '동물중심주의를 대표하는 사상가로 옳게 짝지어진 것은?', options: ['싱어, 레건', '슈바이처, 테일러', '레오폴드, 네스', '베이컨, 데카르트'], explain: '동물중심주의를 대표하는 사상가로 싱어와 레건이 있다.' },
+      { q: '생명중심주의를 대표하는 사상가는?', options: ['슈바이처, 테일러', '싱어, 레건', '레오폴드, 네스', '베이컨, 칸트'], explain: '생명중심주의를 대표하는 사상가로 슈바이처와 테일러가 있다.' },
+      { q: '생태중심주의를 대표하는 사상가로 옳은 것은?', options: ['레오폴드, 네스', '싱어, 레건', '슈바이처, 테일러', '아퀴나스, 아리스토텔레스'], explain: '생태중심주의를 대표하는 사상가로 레오폴드와 네스가 있다.' },
+      { q: '"자연에 대해 아는 것이 곧 힘이다."라고 주장한 사상가는?', options: ['베이컨', '데카르트', '패스모어', '칸트'], explain: '베이컨은 자연에 대해 아는 것이 곧 힘이라며 자연에 관한 지식의 활용을 주장하였다.' },
+      { q: '동물 실험에 관한 3R 원칙에 해당하지 않는 것은?', options: ['복원(Restoration)', '대체(Replacement)', '축소(Reduction)', '개선(Refinement)'], explain: '3R 원칙은 대체, 축소, 개선이며 복원은 포함되지 않는다.' },
+      { q: '2007년 태안 앞바다 기름 유출 사고 때 자원봉사에 나선 인원은 약 몇 명인가?', options: ['123만 명', '12만 명', '50만 명', '300만 명'], explain: '본업을 미루고 자원봉사에 나선 인원만 123만 명에 달했다.' }
+    ],
+    '보통': [
+      { q: '불교의 연기적 세계관에 따른 인간과 자연의 관계 설명으로 가장 적절한 것은?', options: ['하나의 그물망 안에서 상호 의존한다', '인간이 자연을 지배해야 한다', '만물은 서로 무관하게 독립적으로 존재한다', '자연은 인간의 도구일 뿐이다'], explain: '불교는 하나의 그물망 안에 연결된 만물이 상호 의존한다고 보았다.' },
+      { q: '다음 중 강경한 인간중심주의의 특징으로 옳은 것은?', options: ['자연을 도덕적 고려의 대상에서 제외한다', '동물의 도덕적 지위를 인정한다', '생태계 전체를 도덕 공동체로 본다', '모든 생명체의 내재적 가치를 인정한다'], explain: '강경한 인간중심주의는 동물을 포함한 자연을 도덕적 고려의 대상에서 제외하였다.' },
+      { q: '온건한 인간중심주의(패스모어)가 강경한 인간중심주의를 비판한 지점은?', options: ['자연의 개발과 이용에만 초점을 두었다는 점', '동물의 고통을 고려하지 않는다는 점', '생태계를 하나의 유기체로 본다는 점', '자연에 내재적 가치를 부여한다는 점'], explain: '온건한 인간중심주의는 자연의 개발과 이용에만 초점을 두었다는 반성에서 출발하였다.' },
+      { q: '싱어가 동물을 도덕적으로 고려해야 한다고 본 근거는?', options: ['고통을 느낄 수 있는 능력', '이성적 사고 능력', '언어 사용 능력', '사회적 관계 형성 능력'], explain: '싱어는 쾌고 감수 능력이 도덕적 고려의 유일한 기준이라고 주장하였다.' },
+      { q: '레건이 말한 ‘삶의 주체’의 조건으로 옳지 않은 것은?', options: ['언어로 의사소통할 수 있음', '믿음과 욕구를 가짐', '쾌락과 고통을 느낌', '미래에 대한 의식을 가짐'], explain: '레건은 믿음, 욕구, 지각, 기억, 미래의식, 쾌고 감정 등을 삶의 주체 조건으로 제시했을 뿐 언어 능력은 언급하지 않았다.' },
+      { q: '테일러가 제시한 생명체에 대한 의무가 아닌 것은?', options: ['정복의 의무', '악행 금지의 의무', '불간섭의 의무', '보상적 정의의 의무'], explain: '테일러의 네 가지 의무는 악행 금지, 불간섭, 성실, 보상적 정의의 의무이며 정복의 의무는 없다.' },
+      { q: '레오폴드의 대지 윤리에서 강조한 인간의 역할 변화로 옳은 것은?', options: ['정복자에서 구성원으로', '구성원에서 정복자로', '관찰자에서 지배자로', '소비자에서 생산자로'], explain: '레오폴드는 인간을 대지 공동체의 정복자에서 구성원으로 변화시켜야 한다고 강조하였다.' },
+      { q: '네스의 심층 생태주의가 기존 생태주의를 비판한 이유는?', options: ['환경 문제 해결에 인간 중심적으로 접근해서', '환경 오염 문제를 지나치게 강조해서', '생명체의 개별 가치를 인정해서', '동물 실험을 옹호해서'], explain: '네스는 기존의 생태주의가 인간 중심적이라고 비판하며 심층 생태주의를 주장하였다.' },
+      { q: '칸트가 자연에 대한 간접적 의무를 인정한 이유는?', options: ['자연을 잔인하게 다루는 것이 인간 자신에 대한 의무를 어기기 때문에', '자연에 이성이 있다고 보았기 때문에', '동물도 도덕적 지위를 가지기 때문에', '생태계 전체가 도덕 공동체이기 때문에'], explain: '칸트는 자연을 잔인하게 다루는 것이 인간의 자신에 대한 의무에 어긋난다고 보아 간접적 의무를 인정하였다.' },
+      { q: '동양과 서양의 전통적 자연관을 비교한 설명으로 가장 적절한 것은?', options: ['동양은 상호 의존을, 서양은 자연을 인간 목적의 수단으로 보았다', '서양은 자연과 인간의 조화를, 동양은 자연 정복을 강조했다', '동양과 서양 모두 자연을 수단으로만 여겼다', '동양과 서양 모두 자연과 인간의 조화를 강조했다'], explain: '동양은 인간과 자연의 상호 의존적 관계를, 서양은 자연을 인간 목적을 위한 수단으로 여겼다.' }
+    ],
+    '어려움': [
+      { q: '싱어와 레건의 도덕적 지위 판단 기준의 차이로 옳은 것은?', options: ['싱어는 쾌고 감수 능력을, 레건은 삶의 주체로서의 권리를 기준으로 삼는다', '싱어는 삶의 주체임을, 레건은 쾌고 감수 능력을 기준으로 삼는다', '싱어는 식물까지 도덕적 고려 대상으로 본다', '레건은 종차별주의를 옹호한다'], explain: '싱어는 쾌고 감수 능력을, 레건은 삶의 주체로서 존중받을 권리를 도덕적 지위의 기준으로 삼았다.' },
+      { q: '강경한 인간중심주의와 온건한 인간중심주의의 공통점으로 옳은 것은?', options: ['인류의 이익이라는 관점에서 자연을 대한다', '자연의 내재적 가치를 인정한다', '동물의 도덕적 권리를 인정한다', '생태계 전체를 도덕적으로 고려한다'], explain: '두 입장 모두 자연 자체의 내재적 가치는 인정하지 않고 인류의 장기적 이익이라는 관점에서 자연을 대한다는 공통점이 있다.' },
+      { q: '레오폴드의 대지 윤리와 네스의 심층 생태주의에 공통적으로 제기되는 비판은?', options: ['생명 공동체의 선을 위해 개별 생명, 특히 인간의 희생을 정당화할 위험이 있다', '동물의 고통을 전혀 고려하지 않는다', '자연의 가치를 인간 중심으로만 평가한다', '생태계를 도덕적 고려 대상에서 제외한다'], explain: '대지 윤리와 심층 생태주의 모두 생명 공동체의 선을 위해 개별 생명, 특히 인간의 희생을 정당화할 위험성이 있다는 비판을 받는다.' },
+      { q: '생명중심주의(슈바이처, 테일러)가 받는 비판으로 가장 적절한 것은?', options: ['종이나 생태계 같은 전체론적 관점을 다루지 못한다', '동물의 복지를 지나치게 강조한다', '인간의 이익만을 중시한다', '자연을 정복의 대상으로 본다'], explain: '생명중심주의는 종이나 생태계와 같은 전체론적 관점에서 환경 문제를 바라보지 못했다는 비판을 받는다.' },
+      { q: '『화엄경』의 인드라망 비유가 강조하는 것은?', options: ['만물의 상호 포함과 상호 의존', '개별 존재의 독립성', '인간의 자연 지배', '생명체 간의 위계 질서'], explain: '인드라망 비유는 세계의 각 대상이 서로를 포함하며 상호 의존함을 보여 준다.' },
+      { q: '도가 사상에서 장자가 강조한 내용으로 옳은 것은?', options: ['만물은 타고난 그대로 평등하다', '인간이 만물보다 우월하다', '자연을 인위적으로 개발해야 한다', '인간과 자연은 서로 무관하다'], explain: '장자는 인간을 포함한 만물이 타고난 그대로 모두 평등하다고 보았다.' },
+      { q: '종차별주의(speciesism)의 의미로 가장 적절한 것은?', options: ['자신이 속한 종의 이익을 다른 종보다 우선하는 태도', '인종에 따라 차별하는 태도', '성별에 따라 차별하는 태도', '생태계를 도덕적으로 고려하는 태도'], explain: '종차별주의는 자신이 속한 종의 이익을 다른 종의 이익보다 우선하는 태도를 가리킨다.' },
+      { q: '데카르트의 심신 이원론에 따르면 자연은 어떤 존재로 여겨지는가?', options: ['단순한 기계적 물질', '도덕적 고려의 대상', '인간과 동등한 이성적 주체', '도덕 공동체의 구성원'], explain: '데카르트는 물질적 객체로서의 자연을 단순한 기계로 보았다.' },
+      { q: '아퀴나스의 주장과 가장 유사한 입장은?', options: ['신의 섭리에 따라 자연은 인간을 위해 존재한다', '동물도 삶의 주체로서 권리를 가진다', '생태계 전체가 도덕적 고려 대상이다', '자연에 내재적 가치가 있다'], explain: '아퀴나스는 신의 섭리에 따라 동물이 인간에게 사용되도록 운명 지어졌다고 주장하였다.' },
+      { q: '온건한 인간중심주의와 생명중심주의의 차이로 옳은 것은?', options: ['온건한 인간중심주의는 인류의 장기적 이익을, 생명중심주의는 생명체의 본래적 가치를 근거로 삼는다', '둘 다 인간의 이익만을 근거로 한다', '둘 다 생태계 전체를 도덕적으로 고려한다', '둘 다 동물 실험에 반대한다'], explain: '온건한 인간중심주의는 인류의 장기적 이익을, 생명중심주의(테일러)는 생명체의 본래적 가치를 도덕적 고려의 근거로 삼는다.' }
+    ]
+  };
+
+  var state = {
+    screen: 'setup', // setup | quiz | result
+    difficulty: '보통',
+    questions: [],
+    answers: [],
+    current: 0,
+    showPassage: false
+  };
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  function passageHtml(){
+    return PASSAGE_PARAGRAPHS.map(function(p){
+      return '<p>' + escapeHtml(p) + '</p>';
+    }).join('');
+  }
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function pickQuizSet(difficulty){
+    var pool = shuffle(QUESTION_BANK[difficulty]);
+    return pool.slice(0, 5).map(function(item){
+      var order = shuffle([0, 1, 2, 3]);
+      var options = order.map(function(i){ return item.options[i]; });
+      return {
+        question: item.q,
+        options: options,
+        answerIndex: order.indexOf(0),
+        explanation: item.explain
+      };
+    });
+  }
+
+  function startQuiz(){
+    state.questions = pickQuizSet(state.difficulty);
+    state.answers = new Array(state.questions.length).fill(null);
+    state.current = 0;
+    state.showPassage = false;
+    state.screen = 'quiz';
+    render();
+  }
+
+  function selectOption(i){
+    if (state.answers[state.current] !== null) return;
+    state.answers[state.current] = i;
+    render();
+  }
+  function goPrev(){
+    if (state.current > 0){ state.current--; render(); }
+  }
+  function goNext(){
+    if (state.current < state.questions.length - 1){
+      state.current++;
+      render();
+    } else {
+      state.screen = 'result';
+      render();
+    }
+  }
+  function backToSetup(){
+    state.questions = [];
+    state.answers = [];
+    state.current = 0;
+    state.screen = 'setup';
+    render();
+  }
+  function retrySameQuiz(){
+    startQuiz();
+  }
+  function togglePassage(){
+    state.showPassage = !state.showPassage;
+    render();
+  }
+
+  function renderSetupScreen(){
+    var diffs = ['쉬움','보통','어려움'];
+    var diffRow = diffs.map(function(d){
+      return '<button type="button" class="diff-pill' + (state.difficulty === d ? ' active' : '') + '" data-diff="' + d + '">' + d + '</button>';
+    }).join('');
+
+    app.innerHTML =
+      '<p class="eyebrow">' + escapeHtml(SUBTITLE) + '</p>' +
+      '<h1 class="title">' + escapeHtml(TITLE) + '<br>5문제에 도전해보세요</h1>' +
+      '<p class="lede">난이도를 고르면 지문 내용만 근거로 만든 객관식 문제 5개가 바로 시작돼요. 지문은 문제를 풀면서 화면에서 바로 확인할 수 있어요.</p>' +
+      '<div class="card">' +
+        '<div class="field-block">' +
+          '<label class="field-label">난이도</label>' +
+          '<div class="diff-row" id="diff-row">' + diffRow + '</div>' +
+        '</div>' +
+        '<button type="button" class="btn btn-primary" id="generate-btn">퀴즈 시작하기</button>' +
+      '</div>';
+
+    var diffRowEl = document.getElementById('diff-row');
+    diffRowEl.addEventListener('click', function(ev){
+      var btn = ev.target.closest('.diff-pill');
+      if (!btn) return;
+      state.difficulty = btn.getAttribute('data-diff');
+      diffRowEl.querySelectorAll('.diff-pill').forEach(function(p){
+        p.classList.toggle('active', p === btn);
+      });
+    });
+    document.getElementById('generate-btn').addEventListener('click', function(){
+      startQuiz();
+    });
+  }
+
+  function renderPassageToggle(){
+    return '<div class="quiz-passage-wrap">' +
+      '<button type="button" class="passage-toggle-btn" id="passage-toggle-btn">' + (state.showPassage ? '지문 접기' : '지문 보기') + '</button>' +
+      (state.showPassage ? '<div class="passage-box expanded" style="margin-top:10px;">' + passageHtml() + '</div>' : '') +
+    '</div>';
+  }
+
+  function renderQuizScreen(){
+    var total = state.questions.length;
+    var q = state.questions[state.current];
+    var selected = state.answers[state.current];
+    var answered = selected !== null;
+    var isLast = state.current === total - 1;
+    var pct = Math.round(((state.current) / total) * 100);
+    var isCorrect = answered && selected === q.answerIndex;
+
+    var optionsHtml = q.options.map(function(opt, i){
+      var marks = ['A','B','C','D'];
+      var cls = 'option';
+      if (answered){
+        if (i === q.answerIndex) cls += ' correct';
+        else if (i === selected) cls += ' wrong';
+      } else if (selected === i){
+        cls += ' selected';
+      }
+      return '<button type="button" class="' + cls + '" data-opt="' + i + '"' + (answered ? ' disabled' : '') + '>' +
+        '<span class="option-mark">' + marks[i] + '</span>' +
+        '<span>' + escapeHtml(opt) + '</span>' +
+      '</button>';
+    }).join('');
+
+    var feedbackHtml = answered
+      ? '<div class="feedback-box ' + (isCorrect ? 'correct' : 'wrong') + '">' +
+          '<p class="feedback-label ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '정답이에요!' : '오답이에요') + '</p>' +
+          '<p class="feedback-explain">' + escapeHtml(q.explanation) + '</p>' +
+        '</div>'
+      : '';
+
+    app.innerHTML =
+      '<div class="card">' +
+        '<div class="progress-row">' +
+          '<span class="progress-label">질문 ' + (state.current + 1) + ' / ' + total + '</span>' +
+          '<span class="diff-tag">' + escapeHtml(state.difficulty) + '</span>' +
+        '</div>' +
+        '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+        renderPassageToggle() +
+        '<p class="question-text">' + escapeHtml(q.question) + '</p>' +
+        '<div class="options">' + optionsHtml + '</div>' +
+        feedbackHtml +
+        '<div class="nav-row">' +
+          '<button type="button" class="btn btn-ghost" id="prev-btn"' + (state.current === 0 ? ' disabled' : '') + '>이전</button>' +
+          '<button type="button" class="btn btn-primary" id="next-btn"' + (answered ? '' : ' disabled') + '>' + (isLast ? '결과 보기' : '다음 문제') + '</button>' +
+        '</div>' +
+      '</div>';
+
+    if (!answered){
+      app.querySelectorAll('.option').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          selectOption(parseInt(btn.getAttribute('data-opt'), 10));
+        });
+      });
+    }
+    document.getElementById('passage-toggle-btn').addEventListener('click', togglePassage);
+    document.getElementById('prev-btn').addEventListener('click', goPrev);
+    document.getElementById('next-btn').addEventListener('click', goNext);
+  }
+
+  function renderResultScreen(){
+    var total = state.questions.length;
+    var score = 0;
+    state.questions.forEach(function(q, i){
+      if (state.answers[i] === q.answerIndex) score++;
+    });
+    var tier = score >= Math.ceil(total * 0.8) ? 'tier-good' : (score <= Math.floor(total * 0.4) ? 'tier-bad' : 'tier-mid');
+    var pctText = Math.round((score / total) * 100) + '점';
+
+    var items = state.questions.map(function(q, i){
+      var mine = state.answers[i];
+      var correct = mine === q.answerIndex;
+      var marks = ['A','B','C','D'];
+      return '<div class="review-item ' + (correct ? 'correct' : 'wrong') + '">' +
+        '<div class="review-head">' +
+          '<span class="review-index">Q' + (i + 1) + '</span>' +
+          '<span class="review-q">' + escapeHtml(q.question) + '</span>' +
+        '</div>' +
+        '<span class="review-chip ' + (correct ? 'correct' : 'wrong') + '">' + (correct ? '정답' : '오답') + '</span>' +
+        '<div class="review-answers">' +
+          '내 답: <b>' + marks[mine] + '. ' + escapeHtml(q.options[mine]) + '</b>' +
+          (correct ? '' : '<br>정답: <b>' + marks[q.answerIndex] + '. ' + escapeHtml(q.options[q.answerIndex]) + '</b>') +
+        '</div>' +
+        '<p class="review-explain"><b>해설</b> ' + escapeHtml(q.explanation) + '</p>' +
+      '</div>';
+    }).join('');
+
+    app.innerHTML =
+      '<p class="eyebrow">채점 결과</p>' +
+      '<h1 class="title">"' + escapeHtml(TITLE) + '" 퀴즈 결과</h1>' +
+      '<div class="card">' +
+        '<div class="score-tile">' +
+          '<p class="score-number ' + tier + '">' + score + '/' + total + '</p>' +
+          '<p class="score-caption">' + total + '문제 중 ' + score + '개 정답 · ' + pctText + '</p>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card" style="margin-top:16px;">' + renderPassageToggle() + items + '</div>' +
+      '<div class="btn-row">' +
+        '<button type="button" class="btn btn-primary" id="retry-btn">다시 풀기</button>' +
+        '<button type="button" class="btn btn-ghost" id="reset-btn">난이도 다시 선택</button>' +
+      '</div>';
+
+    var toggleBtn = document.getElementById('passage-toggle-btn');
+    if (toggleBtn) toggleBtn.addEventListener('click', togglePassage);
+    document.getElementById('retry-btn').addEventListener('click', retrySameQuiz);
+    document.getElementById('reset-btn').addEventListener('click', backToSetup);
+  }
+
+  function render(){
+    if (state.screen === 'setup') renderSetupScreen();
+    else if (state.screen === 'quiz') renderQuizScreen();
+    else if (state.screen === 'result') renderResultScreen();
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
