@@ -343,6 +343,10 @@
     font-weight:700;
     font-size:14.5px;
   }
+  .perfect-badge.encourage{
+    background:var(--accent-soft);
+    color:var(--accent-ink);
+  }
 
   .review-item{
     padding:16px 16px 16px 18px;
@@ -570,8 +574,8 @@
 
     app.innerHTML =
       '<p class="eyebrow">' + escapeHtml(SUBTITLE) + ' · ' + escapeHtml(UNIT) + '</p>' +
-      '<h1 class="title">&lt;' + escapeHtml(TITLE) + '&gt; 퀴즈</h1>' +
-      '<p class="lede">문제 수와 난이도를 골라서 바로 풀어보세요. 지문은 문제를 풀면서 화면에서 확인할 수 있어요.</p>' +
+      '<h1 class="title">「' + escapeHtml(TITLE) + '」 퀴즈</h1>' +
+      '<p class="lede">문제 수와 난이도를 골라서 바로 풀어보세요.</p>' +
       '<div class="card">' +
         '<div class="field-block">' +
           '<label class="field-label">문제 수</label>' +
@@ -610,7 +614,7 @@
 
   function renderPassageToggle(){
     return '<div class="quiz-passage-wrap">' +
-      '<button type="button" class="passage-toggle-btn" id="passage-toggle-btn">' + (state.showPassage ? '지문 접기' : '지문 보기') + '</button>' +
+      '<button type="button" class="passage-toggle-btn" id="passage-toggle-btn">' + (state.showPassage ? '교과서 접기' : '교과서 보기') + '</button>' +
       (state.showPassage ? '<div class="passage-box expanded" style="margin-top:10px;">' + passageHtml() + '</div>' : '') +
     '</div>';
   }
@@ -702,9 +706,11 @@
       '</div>';
     }).join('');
 
-    var perfectHtml = score === total
-      ? '<p class="perfect-badge">참 잘했어요! 🎉</p>'
-      : '';
+    var encourageText = score === total ? '참 잘했어요! 🎉'
+      : tier === 'tier-good' ? '잘했어요! 틀린 문제만 다시 확인해볼까요?'
+      : tier === 'tier-mid' ? '좋아요! 틀린 문제를 다시 살펴봐요.'
+      : '지문을 다시 읽고 한 번 더 도전해봐요!';
+    var perfectHtml = '<p class="perfect-badge' + (score === total ? '' : ' encourage') + '">' + encourageText + '</p>';
 
     app.innerHTML =
       '<p class="eyebrow">채점 결과</p>' +
