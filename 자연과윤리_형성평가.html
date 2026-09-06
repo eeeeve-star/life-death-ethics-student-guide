@@ -709,7 +709,7 @@
     var encourageText = score === total ? '참 잘했어요!'
       : tier === 'tier-good' ? '잘했어요! 틀린 문제만 다시 확인해볼까요?'
       : tier === 'tier-mid' ? '좋아요! 틀린 문제를 다시 살펴봐요.'
-      : '지문을 다시 읽고 한 번 더 도전해봐요!';
+      : '한 번 더 도전해봐요!';
     var perfectHtml = '<p class="perfect-badge' + (score === total ? '' : ' encourage') + '">' + encourageText + '</p>';
 
     app.innerHTML =
