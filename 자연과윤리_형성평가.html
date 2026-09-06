@@ -726,7 +726,8 @@
       '<div class="btn-row">' +
         '<button type="button" class="btn btn-primary" id="retry-btn">다시 풀기</button>' +
         '<button type="button" class="btn btn-ghost" id="reset-btn">난이도 다시 선택</button>' +
-      '</div>';
+      '</div>' +
+      '<p class="signature">' + escapeHtml(SIGNATURE) + '</p>';
 
     var toggleBtn = document.getElementById('passage-toggle-btn');
     if (toggleBtn) toggleBtn.addEventListener('click', togglePassage);
