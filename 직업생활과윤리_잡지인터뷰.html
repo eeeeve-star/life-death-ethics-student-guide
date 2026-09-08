@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root{
     --bg1:#fff8ec;
@@ -213,6 +214,9 @@
     font-size:11px; letter-spacing:.05em; color:#b7aec9; font-weight:700;
   }
 
+  .mag-actions{ display:flex; flex-direction:column; gap:10px; }
+  .mag-actions button:disabled{ opacity:.6; cursor:default; }
+
   @media (max-width:480px){
     .magazine-page{ padding:28px 20px 22px; border-radius:0; }
     .mag-headline{ font-size:22px; }
@@ -231,11 +235,11 @@
       <div class="kicker">직업생활과 윤리 · 매거진 인터뷰</div>
       <div class="emoji-big">🎙️</div>
       <h1>미래의 나, 인터뷰</h1>
-      <p class="desc">20년 뒤, 자신의 자리에서<br><b>직업윤리</b>를 실천하며 살아가는 '미래의 나'가 되어<br>인터뷰 질문에 답하면, 나만의 인터뷰 매거진 페이지가 완성돼요!</p>
+      <p class="desc">20년 뒤, <b>직업윤리</b>를 실천하는 '미래의 나'를 만나보세요.<br>인터뷰에 답하며 나만의 미래 이야기를 매거진으로 완성해 보세요!</p>
       <label class="f-label" for="nickInput">지면에 실을 별명</label>
       <input type="text" id="nickInput" placeholder="예: 별빛" maxlength="10">
       <label class="f-label" for="jobInput">미래의 나의 직업</label>
-      <input type="text" id="jobInput" placeholder="예: 소아과 의사" maxlength="16">
+      <input type="text" id="jobInput" placeholder="예: 고등학교 교사" maxlength="16">
       <button class="primary" id="startBtn">인터뷰 시작하기</button>
     </section>
 
@@ -298,7 +302,10 @@
       <span id="magFooterName"></span>
     </div>
 
-    <button class="ghost" id="restartBtn">다시 인터뷰하기</button>
+    <div class="mag-actions" id="magActions">
+      <button class="primary" id="saveImageBtn">📸 사진으로 저장하기</button>
+      <button class="ghost" id="restartBtn">다시 인터뷰하기</button>
+    </div>
     <div class="footer-note">입력한 내용은 저장·전송되지 않습니다.</div>
     <p class="signature">현대사회와 윤리 수강 2학년♥무늬T</p>
   </article>
@@ -631,6 +638,35 @@
     nickInput.value = "";
     jobInput.value = "";
     showScreen(screenStart);
+  });
+
+  document.getElementById("saveImageBtn").addEventListener("click", function(){
+    if(typeof html2canvas === "undefined"){
+      alert("이미지 저장 기능을 불러오지 못했어요. 화면 캡처(스크린샷)로 저장해주세요.");
+      return;
+    }
+    var btn = this;
+    var actions = document.getElementById("magActions");
+    var target = document.getElementById("screen-result");
+    var originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "저장 준비 중...";
+    actions.style.display = "none";
+
+    html2canvas(target, { backgroundColor: "#fffdf8", scale: 2, useCORS: true }).then(function(canvas){
+      actions.style.display = "";
+      btn.disabled = false;
+      btn.textContent = originalText;
+      var link = document.createElement("a");
+      link.download = (nick || "미래의나") + "_인터뷰매거진.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }).catch(function(){
+      actions.style.display = "";
+      btn.disabled = false;
+      btn.textContent = originalText;
+      alert("이미지 저장에 실패했어요. 화면 캡처(스크린샷)로 저장해주세요.");
+    });
   });
 
 })();
