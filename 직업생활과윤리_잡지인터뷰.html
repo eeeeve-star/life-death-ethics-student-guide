@@ -672,7 +672,7 @@
       btn.textContent = originalText;
     }
 
-    html2canvas(target, { backgroundColor: "#fffdf8", scale: 2, useCORS: true }).then(function(canvas){
+    html2canvas(target, { backgroundColor: "#fffdf8", scale: 4, useCORS: true }).then(function(canvas){
       restore();
       var link = document.createElement("a");
       link.download = (nick || "미래의나") + "_인터뷰매거진.png";
