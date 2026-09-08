@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/quiz-natural", "destination": "/자연과윤리_형성평가.html" }
+    { "source": "/quiz-natural", "destination": "/자연과윤리_형성평가.html" },
+    { "source": "/job-interview-ethics", "destination": "/직업생활과윤리_잡지인터뷰.html" }
   ]
 }

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>미래의 나, 인터뷰 — 직업생활과 윤리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#fff8ec;
+    --bg2:#eef1ff;
+    --card:#ffffff;
+    --ink:#2f2a3d;
+    --sub:#8b849c;
+    --navy:#2c3454;
+    --gold:#e0a94a;
+    --gold-deep:#c98f2f;
+    --cream:#fbf3e2;
+    --lilac:#c8b6ff;
+    --sky:#a0d2ff;
+    --mint:#b8f2d6;
+    --rose:#ffb3c6;
+    --shadow:0 10px 30px rgba(80,70,120,0.16);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px 16px;
+  }
+  .app{ width:100%; max-width:460px; }
+  .card{
+    background:var(--card);
+    border-radius:28px;
+    padding:32px 24px;
+    box-shadow:var(--shadow);
+    min-height:520px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute; top:-60px; right:-60px;
+    width:170px; height:170px;
+    background:var(--gold); opacity:0.16; border-radius:50%;
+  }
+  .card::after{
+    content:"";
+    position:absolute; bottom:-70px; left:-50px;
+    width:190px; height:190px;
+    background:var(--navy); opacity:0.10; border-radius:50%;
+  }
+  .screen{ position:relative; z-index:1; display:none; }
+  .screen.active{ display:block; animation:fadeUp .35s ease; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+
+  .kicker{
+    text-align:center; font-size:12px; font-weight:800; letter-spacing:.14em;
+    color:var(--gold-deep); margin-bottom:10px;
+  }
+  .emoji-big{ font-size:52px; text-align:center; margin-bottom:6px; }
+  h1{ font-size:21px; text-align:center; margin:0 0 8px; line-height:1.4; color:var(--navy); }
+  .desc{ text-align:center; color:var(--sub); font-size:13.5px; line-height:1.65; margin-bottom:24px; }
+
+  label.f-label{ display:block; font-size:13.5px; font-weight:700; margin:0 0 6px; color:var(--ink); }
+  input[type="text"]{
+    width:100%; padding:13px 15px; border-radius:14px;
+    border:2px solid #f0e4c8; font-size:15.5px; outline:none;
+    background:var(--cream); color:var(--ink); margin-bottom:16px;
+  }
+  input[type="text"]:focus{ border-color:var(--gold); }
+
+  button.primary{
+    width:100%; padding:15px; border:none; border-radius:16px;
+    background:linear-gradient(135deg,var(--gold-deep),var(--navy));
+    color:#fff; font-size:15.5px; font-weight:700; cursor:pointer;
+    box-shadow:0 8px 18px rgba(201,143,47,0.30);
+  }
+  button.primary:active{ transform:scale(0.98); }
+  button.ghost{
+    width:100%; padding:13px; border-radius:16px; border:2px solid #e6dcc4;
+    background:#fff; color:var(--gold-deep); font-size:14.5px; font-weight:700; cursor:pointer;
+  }
+
+  .progress-wrap{ display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .progress-bar{ flex:1; height:8px; background:#f2ecd9; border-radius:999px; overflow:hidden; }
+  .progress-fill{ height:100%; background:linear-gradient(90deg,var(--gold-deep),var(--navy)); border-radius:999px; transition:width .3s ease; }
+  .progress-text{ font-size:12px; color:var(--sub); white-space:nowrap; font-weight:700; }
+
+  .q-badge{
+    display:inline-block; font-size:11px; font-weight:800; color:#fff;
+    background:var(--navy); padding:4px 10px; border-radius:999px; margin-bottom:10px;
+  }
+  .q-text{ font-size:17.5px; font-weight:700; line-height:1.5; margin-bottom:18px; min-height:64px; color:var(--navy); }
+  .option{
+    display:block; width:100%; text-align:left; padding:14px 16px; margin-bottom:10px;
+    border-radius:16px; border:2px solid #f1eadc; background:#fffdf7; color:var(--ink);
+    font-size:14.5px; line-height:1.5; cursor:pointer; transition:all .15s ease;
+  }
+  .option:hover{ border-color:var(--gold); background:#fff8ea; }
+  .option:active{ transform:scale(0.98); }
+
+  .text-answer{
+    width:100%; padding:13px 15px; border-radius:16px; border:2px solid #f1eadc;
+    font-size:14.5px; line-height:1.6; outline:none; background:#fffdf7; color:var(--ink);
+    resize:vertical; margin-bottom:8px; font-family:inherit;
+  }
+  .text-answer:focus{ border-color:var(--gold); }
+  .text-hint{ font-size:12px; color:#d1495b; margin:-2px 0 10px; font-weight:700; }
+
+  .footer-note{ text-align:center; font-size:11px; color:#b7aec9; margin-top:14px; line-height:1.6; }
+  .signature{ text-align:center; font-size:12.5px; color:var(--sub); margin:8px 0 0; }
+
+  /* ==== 결과: 진짜 잡지 지면 ==== */
+  #magazineWrap{ display:none; width:100%; }
+  .magazine-page{
+    width:100%; max-width:640px; margin:0 auto;
+    background:#fffdf8;
+    border:1px solid #ecdfc0;
+    border-radius:6px;
+    box-shadow:0 24px 60px rgba(60,45,20,0.18);
+    padding:40px 34px 32px;
+    position:relative;
+    animation:fadeUp .4s ease;
+  }
+  .mag-masthead{
+    display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px 14px;
+  }
+  .mag-mast-logo{
+    font-family:"Noto Serif KR", Georgia, serif;
+    font-size:19px; font-weight:800; letter-spacing:.03em; color:var(--navy);
+  }
+  .mag-mast-issue{ font-size:11.5px; font-weight:700; letter-spacing:.08em; color:var(--gold-deep); }
+  .mag-mast-rule{ height:3px; background:linear-gradient(90deg,var(--navy),var(--gold)); margin:10px 0 26px; border-radius:2px; }
+
+  .mag-cover-art{
+    width:118px; height:118px; margin:0 auto 20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 35% 30%, #fff3da, var(--gold) 70%, var(--gold-deep));
+    box-shadow:0 10px 26px rgba(201,143,47,0.35), 0 0 0 6px #fff, 0 0 0 7px #ecdfc0;
+  }
+  .mag-cover-art svg{ width:48px; height:48px; }
+
+  .mag-type-badge{
+    display:block; width:fit-content; margin:0 auto 14px; padding:6px 16px;
+    background:var(--navy); color:var(--gold); font-weight:800; font-size:12.5px;
+    border-radius:999px; letter-spacing:.02em;
+  }
+  .mag-headline{
+    font-family:"Noto Serif KR", Georgia, serif;
+    font-size:27px; font-weight:800; line-height:1.42; text-align:center;
+    color:var(--navy); margin:0 0 10px;
+  }
+  .mag-byline{ text-align:center; font-size:12.5px; color:var(--sub); font-weight:600; margin:0 0 4px; }
+  .mag-sub{ text-align:center; font-size:14px; color:var(--gold-deep); font-weight:700; margin:0 0 26px; }
+
+  .mag-pull-quote{
+    margin:0 0 24px; padding:4px 8px 4px 22px; border-left:4px solid var(--gold);
+    font-family:"Noto Serif KR", Georgia, serif;
+    font-size:17px; font-style:italic; line-height:1.6; color:var(--navy);
+  }
+
+  .mag-desc{
+    background:var(--cream); border-radius:14px; padding:18px 20px; font-size:14px;
+    line-height:1.8; margin-bottom:30px; border:1px solid #f0e4c8;
+  }
+
+  .mag-divider{
+    display:flex; align-items:center; gap:12px; margin:0 0 18px;
+    font-size:12px; font-weight:800; letter-spacing:.22em; color:var(--gold-deep);
+  }
+  .mag-divider::before, .mag-divider::after{ content:""; flex:1; height:1px; background:#e6dcc4; }
+
+  .qa-flow{ display:flex; flex-direction:column; gap:20px; margin-bottom:26px; }
+  .qa-flow-item{ padding-bottom:18px; border-bottom:1px dashed #e9e1cf; }
+  .qa-flow-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .qa-flow-q{ font-size:12.5px; font-weight:800; color:var(--gold-deep); letter-spacing:.02em; margin-bottom:6px; }
+  .qa-flow-a{
+    font-family:"Noto Serif KR", Georgia, serif;
+    font-size:15.5px; line-height:1.7; color:var(--ink); font-style:italic; margin-bottom:8px;
+  }
+  .qa-flow-tag{
+    display:inline-block; font-size:10.5px; font-weight:800;
+    color:var(--navy); background:#eef1ff; padding:3px 10px; border-radius:999px;
+  }
+
+  .closing-quote{ background:#fff7ea; border:1px solid #f0dfb8; border-radius:14px; padding:18px 20px; margin-bottom:26px; }
+  .closing-label{ font-size:12px; font-weight:800; color:var(--gold-deep); margin-bottom:8px; }
+  .closing-text{
+    font-family:"Noto Serif KR", Georgia, serif;
+    font-size:16px; line-height:1.7; font-style:italic; color:var(--ink);
+  }
+
+  .concept-box{ background:#eef4ff; border:1px solid #dbe6ff; border-radius:14px; padding:18px 20px; margin-bottom:24px; }
+  .concept-title{ font-size:12.5px; font-weight:800; color:var(--navy); margin-bottom:10px; }
+  .concept-list{ margin:0; padding-left:18px; font-size:13px; line-height:1.8; color:var(--ink); }
+  .concept-list li.hit{ font-weight:800; color:var(--gold-deep); }
+
+  .mag-page-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding-top:14px; margin-bottom:20px; border-top:1px solid #ecdfc0;
+    font-size:11px; letter-spacing:.05em; color:#b7aec9; font-weight:700;
+  }
+
+  @media (max-width:480px){
+    .magazine-page{ padding:28px 20px 22px; border-radius:0; }
+    .mag-headline{ font-size:22px; }
+    .mag-cover-art{ width:96px; height:96px; }
+    .mag-cover-art svg{ width:40px; height:40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app" id="appWrap">
+  <div class="card">
+
+    <!-- 시작 화면 -->
+    <section class="screen active" id="screen-start">
+      <div class="kicker">직업생활과 윤리 · 매거진 인터뷰</div>
+      <div class="emoji-big">🎙️</div>
+      <h1>미래의 나, 인터뷰</h1>
+      <p class="desc">20년 뒤, 자신의 자리에서<br><b>직업윤리</b>를 실천하며 살아가는 '미래의 나'가 되어<br>인터뷰 질문에 답하면, 나만의 인터뷰 매거진 페이지가 완성돼요!</p>
+      <label class="f-label" for="nickInput">지면에 실을 별명</label>
+      <input type="text" id="nickInput" placeholder="예: 별빛" maxlength="10">
+      <label class="f-label" for="jobInput">미래의 나의 직업</label>
+      <input type="text" id="jobInput" placeholder="예: 소아과 의사" maxlength="16">
+      <button class="primary" id="startBtn">인터뷰 시작하기</button>
+    </section>
+
+    <!-- 질문 화면 -->
+    <section class="screen" id="screen-quiz">
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">1 / 8</div>
+      </div>
+      <div class="q-badge">AI 진행자의 질문</div>
+      <div class="q-text" id="qText"></div>
+      <div id="optionsWrap"></div>
+    </section>
+
+  </div>
+  <div class="footer-note">입력한 내용은 저장·전송되지 않습니다.</div>
+  <p class="signature">현대사회와 윤리 수강 2학년♥무늬T</p>
+</div>
+
+<!-- 결과 화면 (진짜 잡지 지면) -->
+<div class="magazine-wrap" id="magazineWrap">
+  <article class="magazine-page" id="screen-result">
+
+    <div class="mag-masthead">
+      <span class="mag-mast-logo">FUTURE CAREER MAGAZINE</span>
+      <span class="mag-mast-issue">직업생활과 윤리 특집호</span>
+    </div>
+    <div class="mag-mast-rule"></div>
+
+    <div class="mag-cover-art" id="magCoverArt">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="9" y="2" width="6" height="12" rx="3" fill="#fff"/>
+        <path d="M5 11a7 7 0 0 0 14 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <line x1="12" y1="18" x2="12" y2="22" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <line x1="8" y1="22" x2="16" y2="22" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="mag-type-badge" id="magBadge"></div>
+    <h2 class="mag-headline" id="magHeadline"></h2>
+    <p class="mag-byline" id="magByline"></p>
+    <p class="mag-sub" id="magSub"></p>
+
+    <blockquote class="mag-pull-quote" id="magOpening"></blockquote>
+
+    <div class="mag-desc" id="magDesc"></div>
+
+    <div class="mag-divider"><span>INTERVIEW</span></div>
+    <div class="qa-flow" id="qaList"></div>
+
+    <div class="closing-quote" id="closingQuote"></div>
+
+    <div class="concept-box">
+      <div class="concept-title">✅ 이 인터뷰에서 확인한 직업윤리 개념</div>
+      <ul class="concept-list" id="conceptList"></ul>
+    </div>
+
+    <div class="mag-page-footer">
+      <span>직업생활과 윤리 · 매거진 인터뷰</span>
+      <span id="magFooterName"></span>
+    </div>
+
+    <button class="ghost" id="restartBtn">다시 인터뷰하기</button>
+    <div class="footer-note">입력한 내용은 저장·전송되지 않습니다.</div>
+    <p class="signature">현대사회와 윤리 수강 2학년♥무늬T</p>
+  </article>
+</div>
+
+<script>
+(function(){
+  var questions = [
+    {
+      id:"opening",
+      isText:true,
+      q:"인터뷰를 시작하기 전에, 나만의 직업 철학을 한 문장으로 소개해주세요.",
+      placeholder:"예: 저는 '내가 하는 일이 곧 나를 증명한다'는 마음으로 살아왔어요."
+    },
+    {
+      q:"지금의 직업을 선택하게 된 결정적 계기가 무엇이었나요?",
+      opts:[
+        {t:"이 일이 제게 주어진 소명이라 믿고 묵묵히 걸어왔어요.", type:"C"},
+        {t:"제 재능과 전문성을 가장 잘 발휘할 수 있는 길이었어요.", type:"P"},
+        {t:"동료, 사회와 함께 성장할 수 있는 일이라 선택했어요.", type:"S"},
+        {t:"제가 맡은 역할을 다하는 것이 사회 전체에 이롭다고 생각했어요.", type:"R"}
+      ]
+    },
+    {
+      q:"일할 때 가장 중요하게 지키는 원칙은 무엇인가요?",
+      opts:[
+        {t:"하늘이 제게 맡긴 일이라 여기고 정직과 성실을 다합니다.", type:"C"},
+        {t:"제 분야의 전문 지식과 직업적 양심에 따라 판단합니다.", type:"P"},
+        {t:"함께 일하는 사람들의 권리를 존중하고 부당한 차별을 하지 않습니다.", type:"S"},
+        {t:"제 결정이 회사와 사회에 미칠 영향까지 책임지려 합니다.", type:"R"}
+      ]
+    },
+    {
+      q:"함께 일하는 동료들에게 어려움이 생겼을 때, 나는?",
+      opts:[
+        {t:"묵묵히 제 역할에 집중하며 모범을 보입니다.", type:"C"},
+        {t:"전문가로서 정확한 판단 기준을 제시합니다.", type:"P"},
+        {t:"동료들이 목소리를 낼 수 있도록 자리를 만들고 함께 논의합니다.", type:"S"},
+        {t:"제도와 규정을 개선해 같은 문제가 반복되지 않게 합니다.", type:"R"}
+      ]
+    },
+    {
+      q:"부당한 이익을 위해 규정을 어기라는 요구를 받는다면?",
+      opts:[
+        {t:"제 소명을 저버리는 일이므로 단호히 거절합니다.", type:"C"},
+        {t:"전문가로서의 양심을 걸고 거절하고 원칙대로 처리합니다.", type:"P"},
+        {t:"동료들과 이 문제를 공유하고 함께 목소리를 냅니다.", type:"S"},
+        {t:"이 문제가 사회에 미칠 영향을 알리고 책임 있게 대응합니다.", type:"R"}
+      ]
+    },
+    {
+      q:"팀의 성과급을 나눈다면 어떤 기준이 가장 중요할까요?",
+      opts:[
+        {t:"묵묵히 최선을 다한 태도와 성실함을 먼저 봅니다.", type:"C"},
+        {t:"실제로 낸 업적과 능력을 기준으로 나눕니다.", type:"P"},
+        {t:"형편이 어려운 동료의 필요를 먼저 배려합니다.", type:"S"},
+        {t:"모두가 납득할 공정한 기준을 함께 정해 투명하게 나눕니다.", type:"R"}
+      ]
+    },
+    {
+      q:"바쁜 하루 중, 나에게 '좋은 직업생활'이란?",
+      opts:[
+        {t:"내가 좋아하는 이 일을 계속할 수 있다는 것 자체가 행복입니다.", type:"C"},
+        {t:"제 실력이 더 나아지는 걸 느낄 때 가장 보람 있습니다.", type:"P"},
+        {t:"동료들과 함께 웃으며 일할 때 가장 행복합니다.", type:"S"},
+        {t:"제 일이 세상을 조금 더 낫게 만든다고 느낄 때입니다.", type:"R"}
+      ]
+    },
+    {
+      id:"closing",
+      isText:true,
+      q:"마지막으로, 이 인터뷰를 마치며 남기고 싶은 한마디가 있다면 자유롭게 적어주세요.",
+      placeholder:"예: 지금의 저를 만든 건 결국 매일의 작은 성실함이었던 것 같아요."
+    }
+  ];
+
+  var typeInfo = {
+    C:{
+      emoji:"🕯️", title:"소명 실현가",
+      headline:"\"이 일은 제게 주어진 소명이었어요\"",
+      desc:"막스 베버가 말한 <b>프로테스탄트 윤리</b>처럼, 직업을 신이 나에게 맡긴 <b>소명(calling)</b>으로 여기고 근면·검소·정직을 실천하는 유형이에요. 눈앞의 이익보다 '내가 이 일을 하는 이유'를 먼저 생각해요.",
+      concept:"소명으로서의 직업(막스 베버, 프로테스탄트 윤리와 자본주의 정신)"
+    },
+    P:{
+      emoji:"🎓", title:"외길 전문가",
+      headline:"\"제 이름을 걸고 하는 일이니까요\"",
+      desc:"고도의 전문성과 <b>직업적 양심</b>에 따라 판단하고 책임지는 <b>전문직 윤리</b>형이에요. 남다른 능력만큼 더 큰 사회적 책임(노블레스 오블리주)도 자연스럽게 짊어져요.",
+      concept:"전문직 윤리와 직업적 양심(노블레스 오블리주)"
+    },
+    S:{
+      emoji:"🤝", title:"동행하는 협력자",
+      headline:"\"함께 갈 때 더 멀리 갈 수 있어요\"",
+      desc:"근로자의 권리를 존중하고 동료와 <b>연대·협력</b>하는 것을 가장 중요하게 여기는 유형이에요. 단결권·단체교섭권 등 근로자의 정당한 목소리를 지지해요.",
+      concept:"근로자의 권리와 노사 협력(근로 3권)"
+    },
+    R:{
+      emoji:"🧭", title:"책임지는 리더",
+      headline:"\"제 결정이 사회에 미칠 영향까지 생각해요\"",
+      desc:"기업과 조직이 사회에 지는 책임, 즉 <b>기업의 사회적 책임(CSR)</b>과 공정한 분배를 중요하게 여기는 유형이에요. 원칙과 절차를 투명하게 지키는 것을 신뢰의 기본이라고 믿어요.",
+      concept:"기업의 사회적 책임과 분배적 정의"
+    }
+  };
+
+  var comboInfo = {
+    CP:{
+      emoji:"🕯️🎓", title:"소명형 전문가",
+      headline:"\"소명감과 전문성, 둘 다 놓치지 않아요\"",
+      desc:"직업을 <b>소명(calling)</b>으로 여기는 마음과, 전문성에 바탕한 <b>직업적 양심</b>을 함께 지닌 유형이에요. 묵묵함과 전문성이 만나 신뢰를 만들어요."
+    },
+    CS:{
+      emoji:"🕯️🤝", title:"동료를 아끼는 장인",
+      headline:"\"묵묵히, 그러나 함께 걸어가요\"",
+      desc:"직업을 <b>소명</b>으로 여기면서도, 동료의 권리와 <b>연대·협력</b>을 중요하게 여기는 유형이에요. 혼자 잘하는 것보다 함께 가는 길을 택해요."
+    },
+    CR:{
+      emoji:"🕯️🧭", title:"책임감 있는 소명가",
+      headline:"\"제 소명이 사회에도 이롭길 바라요\"",
+      desc:"직업을 <b>소명</b>으로 여기는 태도와, 그 일이 사회에 미칠 영향까지 살피는 <b>사회적 책임감</b>을 함께 갖춘 유형이에요."
+    },
+    PS:{
+      emoji:"🎓🤝", title:"협력하는 전문가",
+      headline:"\"제 전문성은 함께할 때 빛나요\"",
+      desc:"<b>전문직 윤리</b>에 따라 판단하면서도, 동료의 권리를 존중하고 <b>연대·협력</b>하는 유형이에요. 실력과 관계, 둘 다 놓치지 않아요."
+    },
+    PR:{
+      emoji:"🎓🧭", title:"원칙 있는 전문가",
+      headline:"\"제 판단에는 사회적 책임이 따라요\"",
+      desc:"전문성에 바탕한 <b>직업적 양심</b>과, 그 결정이 조직·사회에 미칠 영향을 고려하는 <b>사회적 책임감</b>을 함께 갖춘 유형이에요."
+    },
+    RS:{
+      emoji:"🤝🧭", title:"상생을 이끄는 리더",
+      headline:"\"공정한 절차로 함께 나아가요\"",
+      desc:"근로자의 권리와 <b>연대·협력</b>을 중시하면서, 조직 전체의 <b>사회적 책임과 공정한 분배</b>까지 함께 고민하는 유형이에요."
+    }
+  };
+
+  var allRounderInfo = {
+    emoji:"🧩", title:"올라운드 직업인",
+    headline:"\"어느 한쪽으로 치우치지 않으려 해요\"",
+    desc:"소명 의식, 전문성, 동료와의 연대, 사회적 책임까지 <b>균형 있게</b> 고민하는 유형이에요. 상황에 따라 가장 필요한 가치를 유연하게 선택할 줄 알아요."
+  };
+
+  var allConcepts = [
+    {key:"C", label:"소명으로서의 직업(막스 베버, 프로테스탄트 윤리와 자본주의 정신)"},
+    {key:"P", label:"전문직 윤리와 직업적 양심(노블레스 오블리주)"},
+    {key:"S", label:"근로자의 권리와 노사 협력(근로 3권)"},
+    {key:"R", label:"기업의 사회적 책임과 분배적 정의"}
+  ];
+
+  function hasBatchim(word){
+    var ch = String(word).trim().slice(-1);
+    var code = ch.charCodeAt(0);
+    if(code < 0xAC00 || code > 0xD7A3){ return false; }
+    return (code - 0xAC00) % 28 !== 0;
+  }
+  function josa(word, withBatchim, withoutBatchim){
+    return hasBatchim(word) ? withBatchim : withoutBatchim;
+  }
+
+  var current = 0;
+  var scores = {C:0,P:0,S:0,R:0};
+  var answers = [];
+  var nick = "", job = "";
+
+  var screenStart = document.getElementById("screen-start");
+  var screenQuiz = document.getElementById("screen-quiz");
+  var screenResult = document.getElementById("screen-result");
+  var nickInput = document.getElementById("nickInput");
+  var jobInput = document.getElementById("jobInput");
+  var appWrap = document.getElementById("appWrap");
+  var magazineWrap = document.getElementById("magazineWrap");
+
+  function showScreen(el){
+    [screenStart, screenQuiz, screenResult].forEach(function(s){ s.classList.remove("active"); });
+    el.classList.add("active");
+    var isResult = (el === screenResult);
+    appWrap.style.display = isResult ? "none" : "";
+    magazineWrap.style.display = isResult ? "block" : "none";
+  }
+
+  document.getElementById("startBtn").addEventListener("click", function(){
+    nick = nickInput.value.trim() || "별빛";
+    job = jobInput.value.trim() || "어느 분야의 전문가";
+    current = 0;
+    scores = {C:0,P:0,S:0,R:0};
+    answers = [];
+    showScreen(screenQuiz);
+    renderQuestion();
+  });
+
+  function renderQuestion(){
+    var q = questions[current];
+    document.getElementById("progressText").textContent = (current+1) + " / " + questions.length;
+    document.getElementById("progressFill").style.width = (current/questions.length*100) + "%";
+    document.getElementById("qText").textContent = q.q;
+
+    var wrap = document.getElementById("optionsWrap");
+    wrap.innerHTML = "";
+
+    if(q.isText){
+      var textarea = document.createElement("textarea");
+      textarea.className = "text-answer";
+      textarea.id = "textAnswerInput";
+      textarea.rows = 4;
+      textarea.placeholder = q.placeholder || "";
+      wrap.appendChild(textarea);
+
+      var hint = document.createElement("div");
+      hint.className = "text-hint";
+      hint.id = "textHint";
+      hint.style.display = "none";
+      hint.textContent = "한두 문장이라도 좋으니 나만의 말로 적어볼까요?";
+      wrap.appendChild(hint);
+
+      var nextBtn = document.createElement("button");
+      nextBtn.className = "primary";
+      nextBtn.textContent = (current === questions.length - 1) ? "인터뷰 마치기" : "다음";
+      nextBtn.addEventListener("click", function(){
+        var val = textarea.value.trim();
+        if(!val){
+          hint.style.display = "block";
+          textarea.focus();
+          return;
+        }
+        answers.push({id:q.id, q:q.q, a:val, type:"TEXT"});
+        advance();
+      });
+      wrap.appendChild(nextBtn);
+      textarea.focus();
+    } else {
+      q.opts.forEach(function(opt){
+        var btn = document.createElement("button");
+        btn.className = "option";
+        btn.textContent = opt.t;
+        btn.addEventListener("click", function(){
+          scores[opt.type]++;
+          answers.push({q:q.q, a:opt.t, type:opt.type});
+          advance();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+  }
+
+  function advance(){
+    current++;
+    if(current < questions.length){
+      renderQuestion();
+    } else {
+      document.getElementById("progressFill").style.width = "100%";
+      showResult();
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function computeTiedKeys(){
+    var order = ["C","P","S","R"];
+    var max = Math.max(scores.C, scores.P, scores.S, scores.R);
+    return order.filter(function(k){ return scores[k] === max; });
+  }
+
+  function resolveResultInfo(tiedKeys){
+    if(tiedKeys.length === 1){
+      return { info: typeInfo[tiedKeys[0]], hitKeys: tiedKeys };
+    }
+    if(tiedKeys.length === 2){
+      var pairKey = tiedKeys.slice().sort().join("");
+      var combo = comboInfo[pairKey];
+      if(combo){ return { info: combo, hitKeys: tiedKeys }; }
+    }
+    return { info: allRounderInfo, hitKeys: tiedKeys };
+  }
+
+  function showResult(){
+    var tiedKeys = computeTiedKeys();
+    var resolved = resolveResultInfo(tiedKeys);
+    var info = resolved.info;
+    var hitKeys = resolved.hitKeys;
+
+    document.getElementById("magHeadline").textContent = job + " " + nick + "님, " + info.title + josa(info.title, "을", "를") + " 만나다";
+    document.getElementById("magByline").textContent = "글 · " + nick + " (미래의 " + job + ")";
+    document.getElementById("magSub").textContent = info.headline;
+    document.getElementById("magBadge").textContent = info.emoji + " " + info.title;
+    document.getElementById("magDesc").innerHTML = info.desc;
+    document.getElementById("magFooterName").textContent = nick + " 인터뷰";
+
+    var opening = answers.filter(function(a){ return a.id === "opening"; })[0];
+    var closing = answers.filter(function(a){ return a.id === "closing"; })[0];
+
+    document.getElementById("magOpening").textContent = opening ? ("\"" + opening.a + "\"") : "";
+
+    var closingBox = document.getElementById("closingQuote");
+    closingBox.innerHTML = closing ?
+      '<div class="closing-label">🎤 마지막 한마디</div>' +
+      '<div class="closing-text">"' + escapeHtml(closing.a) + '"</div>' : "";
+
+    var qaList = document.getElementById("qaList");
+    qaList.innerHTML = "";
+    var choiceAnswers = answers.filter(function(a){ return a.type !== "TEXT"; });
+    choiceAnswers.forEach(function(item, idx){
+      var row = document.createElement("div");
+      row.className = "qa-flow-item";
+      row.innerHTML =
+        '<div class="qa-flow-q">Q' + (idx+1) + '. ' + item.q + '</div>' +
+        '<div class="qa-flow-a">"' + escapeHtml(item.a) + '"</div>' +
+        '<div class="qa-flow-tag">' + typeInfo[item.type].concept.split("(")[0].trim() + '</div>';
+      qaList.appendChild(row);
+    });
+
+    var conceptList = document.getElementById("conceptList");
+    conceptList.innerHTML = "";
+    allConcepts.forEach(function(c){
+      var li = document.createElement("li");
+      li.textContent = c.label;
+      if(hitKeys.indexOf(c.key) !== -1){ li.className = "hit"; }
+      conceptList.appendChild(li);
+    });
+
+    showScreen(screenResult);
+  }
+
+  document.getElementById("restartBtn").addEventListener("click", function(){
+    nickInput.value = "";
+    jobInput.value = "";
+    showScreen(screenStart);
+  });
+
+})();
+</script>
+
+</body>
+</html>
