@@ -217,6 +217,9 @@
   .mag-actions{ display:flex; flex-direction:column; gap:10px; }
   .mag-actions button:disabled{ opacity:.6; cursor:default; }
 
+  .magazine-page.capturing .mag-page-footer{ color:#7c7690; }
+  .magazine-page.capturing .signature{ color:#5c556e; font-weight:700; }
+
   @media (max-width:480px){
     .magazine-page{ padding:28px 20px 22px; border-radius:0; }
     .mag-headline{ font-size:22px; }
@@ -235,11 +238,12 @@
       <div class="kicker">직업생활과 윤리 · 매거진 인터뷰</div>
       <div class="emoji-big">🎙️</div>
       <h1>미래의 나, 인터뷰</h1>
-      <p class="desc">20년 뒤, <b>직업윤리</b>를 실천하는 '미래의 나'를 만나보세요.<br>인터뷰에 답하며 나만의 미래 이야기를 매거진으로 완성해 보세요!</p>
+      <p class="desc">20년 뒤, <b>직업윤리</b>를 실천하는 '미래의 나'를 만나보세요.<br>질문에 답하며 나만의 미래 이야기를 매거진으로 완성해 보세요!</p>
       <label class="f-label" for="nickInput">지면에 실을 별명</label>
       <input type="text" id="nickInput" placeholder="예: 별빛" maxlength="10">
       <label class="f-label" for="jobInput">미래의 나의 직업</label>
       <input type="text" id="jobInput" placeholder="예: 고등학교 교사" maxlength="16">
+      <div class="text-hint" id="jobHint" style="display:none;">미래의 나의 직업을 입력해주세요.</div>
       <button class="primary" id="startBtn">인터뷰 시작하기</button>
     </section>
 
@@ -487,8 +491,15 @@
   }
 
   document.getElementById("startBtn").addEventListener("click", function(){
+    var jobVal = jobInput.value.trim();
+    if(!jobVal){
+      document.getElementById("jobHint").style.display = "block";
+      jobInput.focus();
+      return;
+    }
+    document.getElementById("jobHint").style.display = "none";
     nick = nickInput.value.trim() || "별빛";
-    job = jobInput.value.trim() || "어느 분야의 전문가";
+    job = jobVal;
     current = 0;
     scores = {C:0,P:0,S:0,R:0};
     answers = [];
@@ -592,8 +603,9 @@
     var info = resolved.info;
     var hitKeys = resolved.hitKeys;
 
-    document.getElementById("magHeadline").textContent = job + " " + nick + "님, " + info.title + josa(info.title, "을", "를") + " 만나다";
-    document.getElementById("magByline").textContent = "글 · " + nick + " (미래의 " + job + ")";
+    document.getElementById("magHeadline").innerHTML =
+      escapeHtml(job) + " " + escapeHtml(nick) + "님,<br>" + escapeHtml(info.title) + josa(info.title, "을", "를") + " 만나다";
+    document.getElementById("magByline").textContent = "글 · " + nick + " (" + job + ")";
     document.getElementById("magSub").textContent = info.headline;
     document.getElementById("magBadge").textContent = info.emoji + " " + info.title;
     document.getElementById("magDesc").innerHTML = info.desc;
@@ -648,23 +660,32 @@
     var btn = this;
     var actions = document.getElementById("magActions");
     var target = document.getElementById("screen-result");
+    var noteEl = target.querySelector(".footer-note");
     var originalText = btn.textContent;
     btn.disabled = true;
     btn.textContent = "저장 준비 중...";
     actions.style.display = "none";
+    if(noteEl){ noteEl.style.display = "none"; }
+    target.classList.add("capturing");
 
-    html2canvas(target, { backgroundColor: "#fffdf8", scale: 2, useCORS: true }).then(function(canvas){
+    function restore(){
       actions.style.display = "";
+      if(noteEl){ noteEl.style.display = ""; }
+      target.classList.remove("capturing");
       btn.disabled = false;
       btn.textContent = originalText;
+    }
+
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function(){
+      return html2canvas(target, { backgroundColor: "#fffdf8", scale: 2, useCORS: true, logging: false });
+    }).then(function(canvas){
+      restore();
       var link = document.createElement("a");
       link.download = (nick || "미래의나") + "_인터뷰매거진.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
     }).catch(function(){
-      actions.style.display = "";
-      btn.disabled = false;
-      btn.textContent = originalText;
+      restore();
       alert("이미지 저장에 실패했어요. 화면 캡처(스크린샷)로 저장해주세요.");
     });
   });
