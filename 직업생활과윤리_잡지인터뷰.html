@@ -681,7 +681,7 @@
         requestAnimationFrame(function(){ requestAnimationFrame(resolve); });
       });
     }).then(function(){
-      var renderScale = Math.max(2, window.devicePixelRatio || 1);
+      var renderScale = Math.max(3, (window.devicePixelRatio || 1) * 2);
       return html2canvas(target, { backgroundColor: "#fffdf8", scale: renderScale, useCORS: true, logging: false });
     }).then(function(canvas){
       restore();
