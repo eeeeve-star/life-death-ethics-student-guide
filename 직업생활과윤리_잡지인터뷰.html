@@ -676,9 +676,18 @@
       btn.textContent = originalText;
     }
 
-    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function(){
+    var fontLoad = (document.fonts && document.fonts.load)
+      ? Promise.all([
+          document.fonts.load('600 16px "Noto Serif KR"'),
+          document.fonts.load('800 16px "Noto Serif KR"')
+        ]).catch(function(){})
+      : Promise.resolve();
+
+    fontLoad.then(function(){
+      return (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    }).then(function(){
       return new Promise(function(resolve){
-        requestAnimationFrame(function(){ requestAnimationFrame(resolve); });
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ setTimeout(resolve, 150); }); });
       });
     }).then(function(){
       var renderScale = Math.max(3, (window.devicePixelRatio || 1) * 2);
