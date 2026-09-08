@@ -217,9 +217,6 @@
   .mag-actions{ display:flex; flex-direction:column; gap:10px; }
   .mag-actions button:disabled{ opacity:.6; cursor:default; }
 
-  .magazine-page.capturing .mag-page-footer{ color:#7c7690; }
-  .magazine-page.capturing .signature{ color:#5c556e; font-weight:700; }
-
   @media (max-width:480px){
     .magazine-page{ padding:28px 20px 22px; border-radius:0; }
     .mag-headline{ font-size:22px; }
@@ -662,28 +659,20 @@
     var target = document.getElementById("screen-result");
     var noteEl = target.querySelector(".footer-note");
     var originalText = btn.textContent;
+
     btn.disabled = true;
-    btn.textContent = "저장 준비 중...";
+    btn.textContent = "저장 중...";
     actions.style.display = "none";
     if(noteEl){ noteEl.style.display = "none"; }
-    target.classList.add("capturing");
 
     function restore(){
       actions.style.display = "";
       if(noteEl){ noteEl.style.display = ""; }
-      target.classList.remove("capturing");
       btn.disabled = false;
       btn.textContent = originalText;
     }
 
-    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function(){
-      return new Promise(function(resolve){
-        requestAnimationFrame(function(){ requestAnimationFrame(resolve); });
-      });
-    }).then(function(){
-      var renderScale = Math.max(3, (window.devicePixelRatio || 1) * 2);
-      return html2canvas(target, { backgroundColor: "#fffdf8", scale: renderScale, useCORS: true, logging: false });
-    }).then(function(canvas){
+    html2canvas(target, { backgroundColor: "#fffdf8", scale: 2, useCORS: true }).then(function(canvas){
       restore();
       var link = document.createElement("a");
       link.download = (nick || "미래의나") + "_인터뷰매거진.png";
