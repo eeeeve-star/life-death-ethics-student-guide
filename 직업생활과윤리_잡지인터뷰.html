@@ -663,15 +663,18 @@
     btn.textContent = "저장 중...";
     actions.style.display = "none";
     if(noteEl){ noteEl.style.display = "none"; }
+    var originalAnimation = target.style.animation;
+    target.style.animation = "none";
 
     function restore(){
       actions.style.display = "";
       if(noteEl){ noteEl.style.display = ""; }
+      target.style.animation = originalAnimation;
       btn.disabled = false;
       btn.textContent = originalText;
     }
 
-    html2canvas(target, { backgroundColor: "#fffdf8", scale: 4, useCORS: true }).then(function(canvas){
+    html2canvas(target, { backgroundColor: "#fffdf8", scale: 2, useCORS: true }).then(function(canvas){
       restore();
       var link = document.createElement("a");
       link.download = (nick || "미래의나") + "_인터뷰매거진.png";
