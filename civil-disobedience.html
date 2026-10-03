@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>시민불복종</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=Gaegu:wght@700&display=swap">
+<style>
+  :root{
+    --bg:#E3F4EA;
+    --hero-a:#C5EBD4;
+    --surface:#FFFFFF;
+    --surface-2:#EDF6F0;
+    --ink:#1F2A24;
+    --ink-soft:#4E5E55;
+    --ink-faint:#7A8A80;
+    --line:#CFE5D7;
+    --line-strong:#AFCFBC;
+    --theme:#2E8B57; --theme-ink:#1E6B41; --theme-soft:#D7EFE0;
+
+    --locke:#2BB3A3;  --locke-ink:#167267;  --locke-soft:#DFF3F0;
+    --thoreau:#4CAF50; --thoreau-ink:#2C7230; --thoreau-soft:#E4F3E5;
+    --rawls:#8B6FD6;  --rawls-ink:#5A3FA3;  --rawls-soft:#EEE9FA;
+    --singer:#F39C34; --singer-ink:#A85A08; --singer-soft:#FDEFDC;
+    --dworkin:#3F51B5; --dworkin-ink:#2E3C8C; --dworkin-soft:#E5E8F7;
+
+    --blank:#D42020;
+    --blank-soft:#FDE6E6;
+    --good:#2E7D53; --good-soft:#E3F3E9;
+    --bad:#C1443A;  --bad-soft:#FBE7E4;
+    --shadow:0 1px 2px rgba(36,35,42,.05), 0 10px 28px -16px rgba(36,35,42,.22);
+    --illo-bg:#FFFFFF;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1D16; --hero-a:#173A28; --surface:#17291F; --surface-2:#1E3428; --ink:#E8F2EC; --ink-soft:#AFC4B7; --ink-faint:#80978A;
+      --line:#2A4234; --line-strong:#3B5A48;
+      --theme:#5CC98A; --theme-ink:#A9E8C3; --theme-soft:#1D3A2A;
+      --locke:#5FD3C5;  --locke-ink:#A6EDE4;  --locke-soft:#18332F;
+      --thoreau:#7BCB7E; --thoreau-ink:#BBE8BD; --thoreau-soft:#1C3220;
+      --rawls:#AB95EA;  --rawls-ink:#D7CCF8;  --rawls-soft:#2A2342;
+      --singer:#F6B565; --singer-ink:#FBD7A6; --singer-soft:#3A2A16;
+      --dworkin:#8F9DEA; --dworkin-ink:#CBD2F7; --dworkin-soft:#222846;
+      --blank:#FF7A7A; --blank-soft:#3D2022;
+      --good:#74CE9B; --good-soft:#1D3527; --bad:#EE8A7F; --bad-soft:#3D2522;
+      --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 30px -14px rgba(0,0,0,.6);
+      --illo-bg:#F4F1EA;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1D16; --hero-a:#173A28; --surface:#17291F; --surface-2:#1E3428; --ink:#E8F2EC; --ink-soft:#AFC4B7; --ink-faint:#80978A;
+    --line:#2A4234; --line-strong:#3B5A48;
+    --theme:#5CC98A; --theme-ink:#A9E8C3; --theme-soft:#1D3A2A;
+    --locke:#5FD3C5;  --locke-ink:#A6EDE4;  --locke-soft:#18332F;
+    --thoreau:#7BCB7E; --thoreau-ink:#BBE8BD; --thoreau-soft:#1C3220;
+    --rawls:#AB95EA;  --rawls-ink:#D7CCF8;  --rawls-soft:#2A2342;
+    --singer:#F6B565; --singer-ink:#FBD7A6; --singer-soft:#3A2A16;
+    --dworkin:#8F9DEA; --dworkin-ink:#CBD2F7; --dworkin-soft:#222846;
+    --blank:#FF7A7A; --blank-soft:#3D2022;
+    --good:#74CE9B; --good-soft:#1D3527; --bad:#EE8A7F; --bad-soft:#3D2522;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 30px -14px rgba(0,0,0,.6);
+    --illo-bg:#F4F1EA;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; scroll-padding-top:70px;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:linear-gradient(180deg, var(--hero-a) 0, var(--bg) 620px) no-repeat, var(--bg); color:var(--ink);
+    font-family:"Noto Sans KR","Malgun Gothic",sans-serif;
+    font-size:16.5px; line-height:1.7;
+    -webkit-font-smoothing:antialiased; word-break:keep-all; overflow-wrap:break-word;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.display{ font-family:"Gowun Batang","Malgun Gothic",serif; letter-spacing:-.01em; text-wrap:balance; }
+  .mono{ font-family:"IBM Plex Mono","Noto Sans KR",monospace; }
+  button{ font-family:inherit; }
+  img{ max-width:100%; }
+
+  /* theme wrappers */
+  .t-locke{ --accent:var(--locke); --accent-ink:var(--locke-ink); --accent-soft:var(--locke-soft); }
+  .t-thoreau{ --accent:var(--thoreau); --accent-ink:var(--thoreau-ink); --accent-soft:var(--thoreau-soft); }
+  .t-rawls{ --accent:var(--rawls); --accent-ink:var(--rawls-ink); --accent-soft:var(--rawls-soft); }
+  .t-singer{ --accent:var(--singer); --accent-ink:var(--singer-ink); --accent-soft:var(--singer-soft); }
+  .t-dworkin{ --accent:var(--dworkin); --accent-ink:var(--dworkin-ink); --accent-soft:var(--dworkin-soft); }
+
+  /* worksheet blank */
+  .blank{ font-weight:700; }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 20px 80px; }
+
+  /* ---------- top bar ---------- */
+  .topbar{ position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .topbar-inner{ max-width:920px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:12px; }
+  .topbar-title{ font-size:14px; font-weight:700; color:var(--theme-ink); white-space:nowrap; }
+  .topnav{ display:flex; gap:2px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-mask-image:linear-gradient(90deg,#000 92%,transparent); mask-image:linear-gradient(90deg,#000 92%,transparent); }
+  .topnav::-webkit-scrollbar{ display:none; }
+  .topnav a{ font-size:14px; color:var(--ink-soft); text-decoration:none; padding:6px 10px; border-radius:999px; white-space:nowrap; }
+  .topnav a:hover{ background:var(--surface-2); color:var(--ink); }
+  .topnav a:focus-visible, .theme-btn:focus-visible{ outline:2px solid var(--theme); outline-offset:2px; }
+  .theme-btn{ flex:0 0 auto; border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); border-radius:999px; width:38px; height:38px; cursor:pointer; font-size:17px; line-height:1; }
+  @media (max-width:560px){ .topbar-title{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:52px 0 44px; }
+  .hero-tag{ display:inline-flex; gap:8px; font-size:13px; font-weight:700; color:var(--ink-soft); background:var(--surface); border:1px solid var(--line); padding:5px 13px; border-radius:999px; margin-bottom:20px; }
+  .hero h1{ font-size:clamp(32px,6.4vw,50px); line-height:1.2; margin:0 0 16px; }
+  .hero h1 .q{ color:var(--theme-ink); }
+  .lede{ font-size:17.5px; color:var(--ink-soft); max-width:62ch; margin:0 0 30px; }
+  .seals{ display:flex; gap:12px; flex-wrap:wrap; }
+  .seal{ width:108px; height:108px; border-radius:50%; border:2px dashed var(--accent); color:var(--accent-ink); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transform:rotate(var(--rot,-5deg)); background:color-mix(in srgb, var(--accent-soft) 55%, transparent); line-height:1.3; }
+  .seal b{ font-family:"Gowun Batang",serif; font-size:18px; }
+  .seal span{ font-size:12.5px; font-weight:500; }
+  @media (max-width:560px){ .seal{ width:88px; height:88px; } .seal b{ font-size:16px; } .seal span{ font-size:11.5px; } }
+
+  /* ---------- scenes ---------- */
+  .scene{ padding:56px 0; border-top:1px solid var(--line); }
+  .eyebrow{ font-family:"IBM Plex Mono","Noto Sans KR",monospace; font-size:13px; font-weight:600; letter-spacing:.06em; color:var(--theme-ink); display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .eyebrow .num{ display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:7px; background:var(--theme); color:#fff; font-size:12px; }
+  .scene h2{ font-size:clamp(26px,4.4vw,32px); margin:0 0 12px; line-height:1.3; }
+  .scene > p, .intro-p{ color:var(--ink-soft); max-width:66ch; margin:0 0 20px; }
+  .scene > p b, .intro-p b{ color:var(--ink); }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:var(--shadow); }
+  @media (max-width:560px){ .card{ padding:20px 18px; } }
+  .stack > * + *{ margin-top:16px; }
+
+  .note{ display:flex; gap:12px; align-items:flex-start; background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:16px 18px; color:var(--ink-soft); font-size:16px; }
+  .note .ic{ font-size:20px; line-height:1.4; flex:0 0 auto; }
+  .note b{ color:var(--ink); }
+
+  /* ---------- situation ---------- */
+  .situation{ border-left:5px solid var(--rawls); }
+  .situation .kicker{ font-size:13.5px; font-weight:700; color:var(--rawls-ink); margin-bottom:6px; }
+  .situation h3{ font-size:22px; margin:0 0 10px; }
+  .situation p{ margin:0 0 14px; }
+  .opt-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .opt{ display:flex; gap:12px; align-items:flex-start; text-align:left; width:100%; border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); border-radius:13px; padding:13px 16px; font-size:16px; line-height:1.55; cursor:pointer; transition:border-color .15s, background .15s; }
+  .opt:hover{ border-color:var(--rawls); background:var(--rawls-soft); }
+  .opt:focus-visible{ outline:2px solid var(--rawls); outline-offset:2px; }
+  .opt.chosen{ border-color:var(--rawls); background:var(--rawls-soft); font-weight:700; }
+  .opt .lbl{ flex:0 0 auto; width:26px; height:26px; border-radius:50%; border:1.5px solid var(--line-strong); display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--ink-soft); margin-top:1px; }
+  .opt.chosen .lbl{ background:var(--rawls); border-color:var(--rawls); color:var(--surface); }
+  .reveal{ display:none; margin-top:16px; padding:16px 18px; border-radius:14px; background:var(--rawls-soft); border:1px solid color-mix(in srgb, var(--rawls) 40%, transparent); }
+  .reveal.show{ display:block; animation:fadein .25s ease; }
+  .reveal .h{ font-weight:700; color:var(--rawls-ink); margin-bottom:4px; }
+  .reveal p{ margin:0; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .bridge{ margin-top:18px; }
+  .bridge summary{ cursor:pointer; font-weight:700; color:var(--ink-soft); font-size:15.5px; padding:4px 0; }
+  .bridge .body{ margin-top:10px; }
+
+  /* ---------- definition ---------- */
+  .def{ text-align:center; padding:28px 24px; border:2px solid var(--ink); }
+  .def .lab{ font-size:14px; font-weight:700; color:var(--ink-faint); margin-bottom:8px; }
+  .def .txt{ font-family:"Gowun Batang",serif; font-size:clamp(20px,3.4vw,25px); font-weight:700; line-height:1.55; margin:0; }
+  .def .txt mark{ background:linear-gradient(transparent 60%, var(--rawls-soft) 60%); color:inherit; }
+  .def-parts{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+  @media (max-width:640px){ .def-parts{ grid-template-columns:1fr; } }
+  .def-part{ background:var(--surface-2); border-radius:12px; padding:14px 16px; }
+  .def-part .k{ font-size:13.5px; font-weight:700; color:var(--ink-faint); margin-bottom:2px; }
+  .def-part .v{ font-size:16px; }
+
+  /* ---------- thinker cards ---------- */
+  .tcard{ background:var(--surface); border:1px solid var(--line); border-top:5px solid var(--accent); border-radius:18px; padding:24px; box-shadow:var(--shadow); }
+  @media (max-width:560px){ .tcard{ padding:20px 18px; } }
+  .thead{ display:flex; gap:16px; align-items:center; margin-bottom:14px; }
+  .avatar{ flex:0 0 auto; width:84px; height:84px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:#fff; display:flex; align-items:center; justify-content:center; }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .avatar.initial{ background:var(--accent); color:#fff; font-family:"Gowun Batang",serif; font-size:36px; font-weight:700; }
+  .avatar.cartoon img{ object-fit:cover; object-position:50% 4%; transform:scale(1.9); transform-origin:50% 8%; }
+  .tname{ font-family:"Gowun Batang",serif; font-size:26px; font-weight:700; color:var(--accent-ink); line-height:1.2; }
+  .tmeta{ font-size:13.5px; color:var(--ink-faint); margin-top:2px; }
+  .kw{ display:inline-block; margin-top:8px; font-size:14.5px; font-weight:700; color:var(--accent-ink); background:var(--accent-soft); padding:4px 12px; border-radius:999px; }
+  .tcard p{ margin:0 0 12px; }
+  .quote{ margin:16px 0 0; padding:16px 18px 14px; background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 12px 12px 0; font-family:"Gowun Batang",serif; font-size:17px; line-height:1.8; }
+  .quote p{ margin:0 0 6px; }
+  .quote cite{ display:block; font-family:"Noto Sans KR",sans-serif; font-style:normal; font-size:14px; font-weight:700; color:var(--accent-ink); text-align:right; }
+  .side-note{ font-size:14.5px; color:var(--ink-soft); background:var(--surface-2); border-radius:10px; padding:10px 14px; margin-top:12px; }
+
+  .locke-grid{ display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:start; }
+  @media (max-width:560px){ .locke-grid{ grid-template-columns:1fr; } }
+
+  .tgrid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:760px){ .tgrid{ grid-template-columns:1fr; } }
+
+  /* cartoon with bubbles */
+  .trio{ display:grid; grid-template-columns:minmax(0,400px) 1fr; gap:24px; align-items:center; margin-bottom:22px; }
+  @media (max-width:720px){ .trio{ grid-template-columns:1fr; } }
+  .trio-fig{ position:relative; container-type:inline-size; background:var(--illo-bg); border-radius:18px; border:1px solid var(--line); overflow:hidden; max-width:400px; margin:0 auto; width:100%; }
+  .trio-fig img{ display:block; width:100%; height:auto; }
+  .bub{ position:absolute; transform:translate(-50%,-50%); width:28%; text-align:center; font-weight:900; line-height:1.25; word-break:keep-all; font-size:14px; font-size:clamp(11px, 4.6cqw, 19px); }
+  .bub.b1{ left:18.6%; top:27.5%; color:#2C7230; }
+  .bub.b2{ left:53.7%; top:14.2%; color:#5A3FA3; }
+  .bub.b3{ left:81.6%; top:31.5%; color:#A85A08; width:25%; }
+  .trio-side h3{ font-size:22px; margin:0 0 10px; }
+  .trio-side p{ margin:0 0 10px; color:var(--ink-soft); }
+  .trio-side ul{ margin:0; padding-left:20px; }
+  .trio-side li{ margin-bottom:6px; }
+
+  .dw-fig{ float:right; width:120px; margin:0 0 8px 14px; background:var(--illo-bg); border-radius:14px; border:1px solid var(--line); }
+  @media (max-width:420px){ .dw-fig{ width:96px; } }
+
+  .vs{ display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:stretch; margin-top:18px; }
+  .vs > .side{ border-radius:14px; padding:16px 18px; background:var(--accent-soft); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+  .vs .side .who{ font-weight:700; color:var(--accent-ink); margin-bottom:4px; }
+  .vs .mid{ align-self:center; font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--ink-faint); }
+  @media (max-width:620px){ .vs{ grid-template-columns:1fr; } .vs .mid{ text-align:center; } }
+
+  /* deepen / answers */
+  .deepen{ margin-top:16px; border:1px dashed var(--line-strong); border-radius:14px; background:var(--surface); }
+  .deepen summary{ list-style:none; cursor:pointer; padding:14px 18px; display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px; color:var(--ink); }
+  .deepen summary::-webkit-details-marker{ display:none; }
+  .deepen summary::before{ content:"＋"; font-family:"IBM Plex Mono",monospace; color:var(--rawls); font-weight:700; }
+  .deepen[open] summary::before{ content:"－"; }
+  .deepen summary .badge{ font-size:12px; background:var(--surface-2); color:var(--ink-soft); padding:2px 9px; border-radius:999px; font-weight:700; margin-left:auto; white-space:nowrap; }
+  .deepen .body{ padding:0 18px 18px; color:var(--ink-soft); }
+  .deepen .body p{ margin:0 0 10px; }
+  .deepen .body b{ color:var(--ink); }
+  .ans-row{ padding:10px 0; border-top:1px solid var(--line); }
+  .ans-row:first-child{ border-top:none; }
+  .ans-row .who{ font-weight:700; }
+
+  textarea.memo{ width:100%; min-height:88px; resize:vertical; border:1.5px solid var(--line-strong); background:var(--bg); color:var(--ink); border-radius:12px; padding:12px 14px; font:inherit; font-size:16px; line-height:1.6; }
+  textarea.memo:focus{ outline:2px solid var(--rawls); outline-offset:1px; border-color:transparent; }
+  .memo-hint{ font-size:13px; color:var(--ink-faint); margin-top:4px; }
+
+  /* ---------- Rawls conditions (flip) ---------- */
+  .flip-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:14px; margin-top:6px; }
+  .flip{ perspective:1100px; border:0; padding:0; background:none; text-align:left; cursor:pointer; color:inherit; width:100%; }
+  .flip:focus-visible{ outline:2px solid var(--rawls); outline-offset:3px; border-radius:16px; }
+  .flip-inner{ display:grid; transition:transform .5s cubic-bezier(.3,.7,.3,1); transform-style:preserve-3d; }
+  .flip.on .flip-inner{ transform:rotateY(180deg); }
+  .face{ grid-area:1/1; -webkit-backface-visibility:hidden; backface-visibility:hidden; border-radius:16px; padding:20px; min-height:178px; display:flex; flex-direction:column; }
+  .front{ background:var(--surface); border:1.5px solid var(--rawls); box-shadow:var(--shadow); }
+  .back{ background:var(--rawls-soft); border:1.5px solid var(--rawls); transform:rotateY(180deg); }
+  .face .n{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px; color:var(--rawls-ink); }
+  .front .ttl{ font-family:"Gowun Batang",serif; font-size:24px; font-weight:700; margin:6px 0 4px; line-height:1.3; }
+  .front .q{ color:var(--ink-soft); font-size:15.5px; }
+  .front .tap{ margin-top:auto; font-size:13.5px; color:var(--ink-faint); padding-top:8px; }
+  .back .ttl{ font-weight:700; color:var(--rawls-ink); margin:4px 0 6px; font-size:17px; }
+  .back p{ margin:0; font-size:16px; }
+  .flip-tools{ display:flex; gap:10px; flex-wrap:wrap; margin:0 0 14px; }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--accent, var(--rawls)); color:#fff; border:1.5px solid transparent; border-radius:999px; padding:10px 20px; font-size:15.5px; font-weight:700; cursor:pointer; min-height:44px; }
+  .btn:hover{ filter:brightness(1.05); }
+  .btn:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .btn.ghost{ background:transparent; color:var(--accent-ink, var(--rawls-ink)); border-color:var(--accent, var(--rawls)); }
+  :root[data-theme="dark"] .btn:not(.ghost){ color:#17161B; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn:not(.ghost){ color:#17161B; } }
+
+  /* ---------- judge ---------- */
+  .case-tabs{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+  @media (max-width:700px){ .case-tabs{ grid-template-columns:1fr 1fr; } }
+  .case-tab{ border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); border-radius:14px; padding:8px; cursor:pointer; text-align:left; display:flex; flex-direction:column; gap:6px; }
+  .case-tab img{ width:100%; aspect-ratio:206/124; object-fit:cover; border-radius:9px; display:block; }
+  .case-tab .nm{ font-size:14.5px; font-weight:700; line-height:1.35; padding:0 2px; }
+  .case-tab .sc{ font-size:12.5px; font-weight:700; color:var(--ink-faint); padding:0 2px; font-family:"IBM Plex Mono","Noto Sans KR",monospace; }
+  .case-tab.done .sc{ color:var(--rawls-ink); }
+  .case-tab[aria-selected="true"]{ border-color:var(--rawls); background:var(--rawls-soft); box-shadow:0 0 0 2px var(--rawls) inset; }
+  .case-tab:focus-visible{ outline:2px solid var(--rawls); outline-offset:2px; }
+
+  .case-body{ display:grid; grid-template-columns:240px 1fr; gap:20px; }
+  @media (max-width:700px){ .case-body{ grid-template-columns:1fr; } }
+  .case-photo{ width:100%; max-width:300px; border-radius:12px; display:block; }
+  .case-cap{ font-size:13.5px; color:var(--ink-faint); margin-top:6px; }
+  .case-title{ font-family:"Gowun Batang",serif; font-size:22px; font-weight:700; margin:0 0 6px; line-height:1.35; }
+  .case-desc{ margin:0 0 10px; }
+  .case-point{ font-size:15px; background:var(--surface-2); border-radius:10px; padding:10px 14px; color:var(--ink-soft); }
+  .case-point b{ color:var(--ink); }
+
+  .checks{ margin-top:18px; display:flex; flex-direction:column; gap:8px; }
+  .chk{ display:flex; gap:12px; align-items:flex-start; border:1.5px solid var(--line-strong); border-radius:12px; padding:12px 14px; cursor:pointer; background:var(--surface); transition:background .15s, border-color .15s; }
+  .chk:hover{ border-color:var(--rawls); }
+  .chk input{ appearance:none; -webkit-appearance:none; flex:0 0 auto; width:24px; height:24px; border:2px solid var(--line-strong); border-radius:7px; margin:1px 0 0; display:grid; place-content:center; cursor:pointer; background:var(--surface); }
+  .chk input::after{ content:""; width:12px; height:7px; border-left:3px solid #fff; border-bottom:3px solid #fff; transform:rotate(-45deg) translate(1px,-1px); opacity:0; }
+  .chk input:checked{ background:var(--rawls); border-color:var(--rawls); }
+  .chk input:checked::after{ opacity:1; }
+  .chk input:focus-visible{ outline:2px solid var(--rawls); outline-offset:2px; }
+  .chk:has(input:checked){ background:var(--rawls-soft); border-color:var(--rawls); }
+  .chk .ct{ font-weight:700; }
+  .chk .cq{ display:block; font-size:15px; color:var(--ink-soft); }
+
+  .verdict{ margin-top:16px; border-radius:14px; padding:16px 18px; border:1.5px solid var(--rawls); background:var(--surface); }
+  .meter{ display:flex; gap:6px; margin:8px 0 10px; }
+  .meter span{ flex:1; height:8px; border-radius:4px; background:var(--line-strong); }
+  .meter span.on{ background:var(--rawls); }
+  .verdict .vh{ font-weight:700; font-size:17px; color:var(--rawls-ink); }
+  .verdict p{ margin:6px 0 0; }
+  .verdict .missing{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .verdict .missing span{ font-size:13.5px; font-weight:700; padding:3px 10px; border-radius:999px; background:var(--surface-2); color:var(--ink-soft); }
+
+  .board{ margin-top:20px; }
+  .board h3{ font-size:19px; margin:0 0 10px; }
+  .board-row{ display:grid; grid-template-columns:150px 1fr 54px; gap:12px; align-items:center; padding:8px 0; border-top:1px solid var(--line); font-size:15px; }
+  .board-row:first-of-type{ border-top:none; }
+  .board-row .bar{ height:10px; border-radius:5px; background:var(--surface-2); overflow:hidden; }
+  .board-row .bar i{ display:block; height:100%; background:var(--rawls); border-radius:5px; transition:width .3s; }
+  .board-row .v{ font-family:"IBM Plex Mono",monospace; font-weight:600; text-align:right; color:var(--ink-soft); }
+  @media (max-width:480px){ .board-row{ grid-template-columns:110px 1fr 44px; font-size:14px; } }
+
+  /* debate */
+  .debate{ border-left:5px solid var(--bad); }
+  .debate .kicker{ font-size:13.5px; font-weight:700; color:var(--bad); margin-bottom:4px; }
+  .debate h3{ font-size:22px; margin:0 0 10px; }
+  .vote-row{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 4px; }
+  .vote{ flex:1 1 140px; border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); border-radius:12px; padding:11px 12px; font-size:16px; font-weight:700; cursor:pointer; }
+  .vote:hover{ border-color:var(--ink-soft); }
+  .vote[aria-pressed="true"]{ border-color:var(--ink); background:var(--surface-2); box-shadow:0 0 0 2px var(--ink) inset; }
+  .vote:focus-visible{ outline:2px solid var(--rawls); outline-offset:2px; }
+  .lenses{ display:none; margin-top:14px; }
+  .lenses.show{ display:grid; gap:10px; animation:fadein .25s ease; }
+  .lens{ border-radius:12px; padding:12px 16px; background:var(--accent-soft); border-left:4px solid var(--accent); font-size:16px; }
+  .lens .who{ font-weight:700; color:var(--accent-ink); }
+
+  /* ---------- meaning & limits ---------- */
+  .ml{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:640px){ .ml{ grid-template-columns:1fr; } }
+  .ml .box{ border-radius:18px; padding:22px; border:1.5px solid; }
+  .ml .box h3{ font-size:22px; margin:0 0 10px; }
+  .ml .box ul{ margin:0; padding-left:20px; }
+  .ml .box li{ margin-bottom:6px; }
+  .ml .plus{ background:var(--good-soft); border-color:color-mix(in srgb, var(--good) 45%, transparent); }
+  .ml .plus h3{ color:var(--good); }
+  .ml .minus{ background:var(--bad-soft); border-color:color-mix(in srgb, var(--bad) 45%, transparent); }
+  .ml .minus h3{ color:var(--bad); }
+  .ml-why{ font-size:15px; color:var(--ink-soft); margin-top:10px; }
+  .ml-concl{ margin-top:16px; text-align:center; border:2px solid var(--ink); border-radius:18px; padding:18px 20px; background:var(--surface); }
+  .ml-concl .k{ font-size:14px; font-weight:700; color:var(--ink-faint); }
+  .ml-concl .v{ font-family:"Gowun Batang",serif; font-size:clamp(19px,3vw,23px); font-weight:700; line-height:1.5; }
+
+  /* ---------- quiz ---------- */
+  .score-bar{ position:sticky; top:62px; z-index:5; display:flex; align-items:center; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:10px 16px; box-shadow:var(--shadow); margin-bottom:16px; }
+  .score-bar .lbl{ font-weight:700; font-size:15px; white-space:nowrap; }
+  .score-bar .num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:18px; color:var(--rawls-ink); }
+  .score-bar .track{ flex:1; height:8px; border-radius:4px; background:var(--surface-2); overflow:hidden; }
+  .score-bar .track i{ display:block; height:100%; width:0; background:var(--good); transition:width .3s; }
+  .score-bar button{ border:1px solid var(--line-strong); background:var(--surface); color:var(--ink-soft); border-radius:999px; padding:5px 12px; font-size:13.5px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .qlist{ display:flex; flex-direction:column; gap:14px; }
+  .qcard{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
+  .qcard .qn{ font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--ink-faint); margin-bottom:6px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .qcard .qn .src{ font-family:"Noto Sans KR",sans-serif; font-size:12px; font-weight:700; background:var(--surface-2); color:var(--ink-soft); padding:2px 9px; border-radius:999px; }
+  .qcard .qtext{ font-size:17px; font-weight:700; line-height:1.6; margin-bottom:12px; }
+  .qopts{ display:flex; flex-wrap:wrap; gap:8px; }
+  .qopt{ flex:1 1 90px; border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); border-radius:11px; padding:9px 8px; font-size:16px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:7px; }
+  .qopt .dot{ width:10px; height:10px; border-radius:50%; background:var(--accent); flex:0 0 auto; }
+  .qopt:hover:not(:disabled){ border-color:var(--accent); background:var(--accent-soft); }
+  .qopt:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .qopt:disabled{ cursor:default; opacity:.55; }
+  .qopt.correct{ opacity:1; border-color:var(--good); background:var(--good-soft); color:var(--good); }
+  .qopt.wrong{ opacity:1; border-color:var(--bad); background:var(--bad-soft); color:var(--bad); }
+  .qfb{ display:none; margin-top:12px; padding:12px 14px; border-radius:12px; font-size:15.5px; }
+  .qfb.show{ display:block; animation:fadein .2s ease; }
+  .qfb.correct{ background:var(--good-soft); border:1px solid var(--good); }
+  .qfb.wrong{ background:var(--bad-soft); border:1px solid var(--bad); }
+  .qfb .h{ font-weight:700; margin-bottom:2px; }
+  .qfb.correct .h{ color:var(--good); }
+  .qfb.wrong .h{ color:var(--bad); }
+  .qdone{ display:none; margin-top:16px; text-align:center; padding:18px; border-radius:16px; background:var(--good-soft); border:1.5px solid var(--good); font-weight:700; font-size:17px; }
+  .qdone.show{ display:block; }
+
+  /* ---------- flowchart ---------- */
+  .fc{ display:flex; flex-direction:column; align-items:stretch; }
+  .fc-node{ background:var(--surface); border:2px solid var(--accent, var(--ink)); border-radius:16px; padding:16px 18px; text-align:center; max-width:640px; margin:0 auto; width:100%; }
+  .fc-node .tag{ display:inline-block; font-size:12.5px; font-weight:700; color:var(--accent-ink, var(--ink)); background:var(--accent-soft, var(--surface-2)); padding:2px 10px; border-radius:999px; margin-bottom:6px; }
+  .fc-node h4{ font-size:19px; margin:0 0 4px; color:var(--accent-ink, var(--ink)); }
+  .fc-node p{ margin:0; font-size:15px; color:var(--ink-soft); }
+  .fc-down{ display:flex; justify-content:center; padding:4px 0; }
+  .fc-down svg{ display:block; }
+  .fc-branch, .fc-merge{ width:100%; height:40px; display:block; }
+  .fc-cols{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .fc-col{ background:var(--accent-soft); border-top:5px solid var(--accent); border-radius:14px; padding:14px 12px; text-align:center; }
+  .fc-col h4{ font-size:18px; margin:0 0 6px; color:var(--accent-ink); }
+  .fc-col .k{ font-size:14.5px; font-weight:700; margin-bottom:4px; }
+  .fc-col p{ margin:0; font-size:14px; color:var(--ink-soft); line-height:1.55; }
+  .fc-conds{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:10px; }
+  .fc-conds span{ font-size:14.5px; font-weight:700; padding:5px 12px; border-radius:999px; background:var(--rawls-soft); color:var(--rawls-ink); border:1px solid color-mix(in srgb, var(--rawls) 45%, transparent); }
+  .fc-two{ display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:640px; margin:0 auto; width:100%; }
+  .fc-two .b{ border-radius:14px; padding:14px; text-align:center; border:2px solid; }
+  .fc-two .b h4{ margin:0 0 4px; font-size:18px; }
+  .fc-two .b p{ margin:0; font-size:15px; }
+  .fc-two .plus{ background:var(--good-soft); border-color:var(--good); } .fc-two .plus h4{ color:var(--good); }
+  .fc-two .minus{ background:var(--bad-soft); border-color:var(--bad); } .fc-two .minus h4{ color:var(--bad); }
+  .fc-end{ border:2px solid var(--ink); border-radius:999px; padding:14px 22px; text-align:center; font-weight:700; max-width:640px; margin:0 auto; background:var(--surface); }
+  .fc-only-mobile{ display:none; }
+  @media (max-width:760px){
+    .fc-cols{ grid-template-columns:1fr 1fr; }
+    .fc-branch, .fc-merge{ display:none; }
+    .fc-only-mobile{ display:flex; }
+  }
+  @media (max-width:440px){
+    .fc-cols{ grid-template-columns:1fr; }
+    .fc-two{ grid-template-columns:1fr; }
+    .fc-end{ border-radius:18px; }
+  }
+
+  footer{ margin-top:40px; padding-top:22px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:14px; text-align:center; }
+  footer .signature{ font-family:"Gaegu",cursive; font-weight:700; font-size:21px; color:var(--theme-ink); margin-top:8px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-title">시민불복종</span>
+    <nav class="topnav" aria-label="섹션 이동">
+      <a href="#open">상황</a>
+      <a href="#meaning">의미·로크</a>
+      <a href="#thinkers">사상가</a>
+      <a href="#conditions">롤스 5조건</a>
+      <a href="#judge">판정단</a>
+      <a href="#limits">의의·한계</a>
+      <a href="#quiz">퀴즈</a>
+      <a href="#recap">흐름도</a>
+    </nav>
+    <button class="theme-btn" id="theme-btn" type="button" aria-label="라이트/다크 모드 바꾸기">◐</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <span class="hero-tag">현대사회와 윤리 · 시민불복종 사상가 비교</span>
+    <h1>부정의한 법도<br><span class="q">지켜야 할까?</span></h1>
+    <p class="lede">법을 지키는 것은 시민의 기본이에요. 그런데 그 법이 누가 봐도 정의롭지 못하다면 어떨까요? 로크의 저항권에서 출발해 소로·롤스·싱어·드워킨이 이 질문에 어떻게 답했는지 따라가 보고, 역사 속 사례를 직접 판정해 봅시다.</p>
+    <div class="seals" aria-hidden="true">
+      <div class="seal t-locke" style="--rot:-6deg"><b>로크</b><span>저항권</span></div>
+      <div class="seal t-thoreau" style="--rot:4deg"><b>소로</b><span>법보다 양심</span></div>
+      <div class="seal t-rawls" style="--rot:-3deg"><b>롤스</b><span>다수의 정의관</span></div>
+      <div class="seal t-singer" style="--rot:6deg"><b>싱어</b><span>이익 &gt; 손해</span></div>
+      <div class="seal t-dworkin" style="--rot:-5deg"><b>드워킨</b><span>헌법 정신</span></div>
+    </div>
+  </header>
+
+  <!-- ================= 0. OPEN ================= -->
+  <section class="scene" id="open">
+    <div class="eyebrow"><span class="num">0</span>오늘의 상황</div>
+    <h2>여러분이라면 어떻게 할까요?</h2>
+
+    <div class="card situation">
+      <div class="kicker">가상 상황</div>
+      <h3>&lsquo;2학년은 점심시간에 도서관 출입 금지&rsquo;</h3>
+      <p>어느 날 학교에 새 규칙이 붙었어요. &ldquo;점심시간 도서관은 1·3학년만 이용할 수 있다.&rdquo; 정해진 절차를 거쳐 만든 규칙이라지만, 2학년만 이유 없이 빠졌어요. 여러분은 2학년이고, 오늘 점심에도 도서관에서 책을 읽고 싶어요. 어떻게 하겠어요?</p>
+      <p style="font-size:15px;color:var(--ink-soft)">※ 학교 규칙은 국가의 법과 다르지만, &lsquo;부정의한 규칙을 어떻게 대할까?&rsquo;를 생각해 보는 연습이에요.</p>
+      <div class="opt-list" id="sit-opts">
+        <button class="opt" type="button" data-k="a"><span class="lbl">A</span><span>마음에 들지 않아도 규칙은 규칙이니 그대로 지킨다.</span></button>
+        <button class="opt" type="button" data-k="b"><span class="lbl">B</span><span>학생회 건의, 서명 운동처럼 정해진 방법으로 규칙을 바꾸려고 노력한다.</span></button>
+        <button class="opt" type="button" data-k="c"><span class="lbl">C</span><span>건의가 받아들여지지 않자, 이유를 공개적으로 밝히고 도서관에 들어가며 그에 따른 벌점도 받아들인다.</span></button>
+        <button class="opt" type="button" data-k="d"><span class="lbl">D</span><span>선생님이 안 계실 때만 몰래 들어간다.</span></button>
+      </div>
+      <div class="reveal" id="sit-reveal" aria-live="polite"></div>
+    </div>
+
+  </section>
+
+  <!-- ================= 1. MEANING + LOCKE ================= -->
+  <section class="scene" id="meaning">
+    <div class="eyebrow"><span class="num">1</span>시민불복종의 의미</div>
+    <h2>시민불복종이란 무엇일까?</h2>
+    <p>만일 국가권력이 부정의한 법을 지킬 것을 강요하거나 정의롭지 못한 정책을 실시한다면 우리는 어떻게 행동해야 할까요? 시민불복종은 이렇게 정의할 수 있어요.</p>
+
+    <div class="card def">
+      <div class="lab">시민불복종</div>
+      <p class="txt"><mark>정의롭지 못한 법이나 정책을 변화시키려는 목적</mark>을 가지고<br><mark>의도적으로 법을 위반</mark>하는 행위</p>
+    </div>
+    <div class="def-parts">
+      <div class="def-part"><div class="k">누가</div><div class="v">시민이 &mdash; <b>시민의 참여 방법 중 하나</b></div></div>
+      <div class="def-part"><div class="k">왜</div><div class="v">정의롭지 못한 법·정책을 <b>바꾸기 위해</b></div></div>
+      <div class="def-part"><div class="k">어떻게</div><div class="v">알면서 <b>일부러</b> 법을 어긴다</div></div>
+    </div>
+
+    <div class="tcard t-locke" style="margin-top:22px">
+      <div class="locke-grid">
+        <div class="avatar" style="width:104px;height:104px"><img src="img/democ/locke.png" alt="로크 초상"></div>
+        <div>
+          <div class="tname">로크 <span class="kw" style="vertical-align:middle;margin:0 0 0 6px">저항권</span></div>
+          <div class="tmeta">근대 사회 계약론자 · 시민불복종의 뿌리</div>
+          <p style="margin-top:10px">국민의 뜻에 반하는 국가권력의 행사에 대해서는 저항할 수 있다는 <b>저항권</b> 개념은 근대 사상가 <span class="blank">로크</span>에서부터 시작하였어요. 그는 계약을 통해 자연권을 양도받은 국가가 시민들을 제대로 보호하지 못한다면, 시민들은 <b>계약을 파기하고 자기방어를 할 수 있다</b>고 주장하였어요.</p>
+        </div>
+      </div>
+      <blockquote class="quote">
+        <p>내 생명과 재산을 보호받기 위해서는 자연 상태에서 가졌던 평등, 자유 및 집행권을 입법부가 처리할 수 있도록 사회의 수중에 양도해야 해. 그러나 정부가 이를 지키지 못하면 저항권을 행사할 수 있어.</p>
+        <cite>&mdash; 로크</cite>
+      </blockquote>
+      <div class="side-note">➜ 이 저항권은 이후 <b>시민불복종 운동에 영향</b>을 주었어요.</div>
+    </div>
+
+    <div class="note" style="margin-top:16px"><span class="ic">🧭</span><div>시민불복종은 <b>개인의 양심, 사회 정의, 공익의 실현</b> 등과 관련하여 다양한 입장이 있어요. 다음 장에서 네 사상가의 입장을 비교해 봅시다.</div></div>
+  </section>
+
+  <!-- ================= 2. THINKERS ================= -->
+  <section class="scene" id="thinkers">
+    <div class="eyebrow"><span class="num">2</span>사상가별 정당화 근거</div>
+    <h2>언제 법을 어겨도 될까? 네 가지 대답</h2>
+    <p>시민불복종에 대한 현대적 논의는 소로에서부터 시작해요. 같은 &lsquo;시민불복종&rsquo;이라도 무엇을 기준으로 정당화하는지가 사람마다 달라요.</p>
+
+    <div class="trio">
+      <figure class="trio-fig" style="margin:0">
+        <img src="img/democ/thinkers3_cartoon.png" alt="소로, 롤스, 싱어가 탁자에 둘러앉아 토론하는 만화. 왼쪽 수염 난 사람이 소로, 가운데가 롤스, 오른쪽이 싱어" width="600" height="680">
+        <span class="bub b1">법보다<br>양심</span>
+        <span class="bub b2">다수의<br>정의관</span>
+        <span class="bub b3">이익이<br>더 큰 경우</span>
+      </figure>
+      <div class="trio-side">
+        <h3>&ldquo;부정의한 법을 지켜야 할까?&rdquo;</h3>
+        <p>소로·롤스·싱어가 한자리에 모였어요. 말풍선 속 한 마디가 각자의 기준입니다.</p>
+        <ul>
+          <li><b style="color:var(--thoreau-ink)">소로</b> &mdash; 법보다 개인의 <span class="blank">양심</span></li>
+          <li><b style="color:var(--rawls-ink)">롤스</b> &mdash; <span class="blank">다수</span>의 정의관, 최후의 수단</li>
+          <li><b style="color:var(--singer-ink)">싱어</b> &mdash; 손해보다 <span class="blank">이익</span>이 클 때, 성공 가능성</li>
+          <li><b style="color:var(--dworkin-ink)">드워킨</b> &mdash; 헌법 정신, 자율적 판단</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tgrid">
+      <!-- 소로 -->
+      <article class="tcard t-thoreau">
+        <div class="thead">
+          <div class="avatar initial" aria-hidden="true">소</div>
+          <div>
+            <div class="tname">소로</div>
+            <div class="tmeta">Thoreau, H. D. · 1817~1862 · 미국</div>
+            <span class="kw">법보다 양심</span>
+          </div>
+        </div>
+        <p>국가의 시민이기 이전에 먼저 인간이어야 하기 때문에, <b>법보다는 개인의 <span class="blank">양심</span>을 따라야 한다</b>고 보았어요. 그래서 부정의한 법을 거부하는 것은 <b>도덕적으로 정당</b>하다고 주장하였어요.</p>
+        <blockquote class="quote">
+          <p>시민이 한순간이라도 혹은 아주 적은 정도라도 자신의 양심을 입법자에게 맡겨야만 하는가? 그렇다면 사람들은 왜 양심을 가지고 있는가? 우리는 먼저 인간이어야 하고, 그다음에 국민이어야 한다고 나는 생각한다. 법에 대한 존경심보다는 먼저 정의에 대한 존경심을 기르는 것이 바람직하다. 내가 떠맡을 권리가 있는 나의 유일한 책무는, 어떤 때이고 간에 내가 옳다고 생각하는 일을 행하는 일이다.</p>
+          <cite>&mdash; 소로, 『시민의 불복종』</cite>
+        </blockquote>
+        <div class="side-note">📌 『시민불복종』 등을 저술했어요. 멕시코 전쟁에 반대하며 인두세(人頭稅) 납부를 거부한 죄로 투옥당했어요.</div>
+      </article>
+
+      <!-- 롤스 -->
+      <article class="tcard t-rawls">
+        <div class="thead">
+          <div class="avatar"><img src="img/democ/rawls.png" alt="롤스 초상"></div>
+          <div>
+            <div class="tname">롤스</div>
+            <div class="tmeta">Rawls, J. · 1921~2002</div>
+            <span class="kw">다수의 정의관 · 최후의 수단</span>
+          </div>
+        </div>
+        <p>개인의 양심보다 <b><span class="blank">다수</span>의 정의관</b>에 초점을 맞추었어요. 어떤 법률이나 명령이 정의의 원칙을 심각하게 위반할 경우 <b>최후의 수단</b>으로 시민불복종을 할 수 있다고 주장하였어요.</p>
+        <blockquote class="quote">
+          <p>시민불복종은 어느 정도 정의로운 민주 체제에서 법률이나 정책 또는 명령이 정의의 원칙을 어겼을 경우에 … 항거자가 다수의 정의감에 호소하는 정치적 행위이다. … 직접적으로 법이나 명령을 바꾸는 혁명적인 행위와는 구별된다. 그리고 정의의 원칙을 벗어나면 안 되기 때문에 처벌을 감수해야 하며 비폭력을 전제로 해야 한다.</p>
+          <cite>&mdash; 롤스, 『정의론』</cite>
+        </blockquote>
+      </article>
+
+      <!-- 싱어 -->
+      <article class="tcard t-singer">
+        <div class="thead">
+          <div class="avatar"><img src="img/democ/singer.png" alt="싱어 초상"></div>
+          <div>
+            <div class="tname">싱어</div>
+            <div class="tmeta">Singer, P. · 공리주의</div>
+            <span class="kw">이익 &gt; 손해 · 성공 가능성</span>
+          </div>
+        </div>
+        <p>공리주의적 입장에서, 시민불복종이 산출할 손해보다 <b><span class="blank">이익</span>이 더 큰 경우</b>에 <b>성공 가능성</b>을 고려하여 이루어져야 한다고 주장하였어요. 부정의한 법과 정책을 바꾸는 것은 <b>민주적 의사 결정을 복원하는 시도</b>라고 보았어요.</p>
+        <blockquote class="quote">
+          <p>우리가 중단시키려고 하는 악의 크기와 우리의 행위가 가져올 법과 민주주의에 대한 존중심의 감소 정도를 저울질해 봐야 한다. … 우리는 또, 우리의 행위가 목표 달성에 실패하여 반작용을 불러일으킴으로써 다른 수단으로 성공할 가능성을 감소시킬 가능성도 고려해 봐야 한다. 시민불복종은 민주주의적인 의사 결정을 좌절시킨다기보다는 복원하려는 시도이다.</p>
+          <cite>&mdash; 싱어, 『실천윤리학』</cite>
+        </blockquote>
+      </article>
+
+      <!-- 드워킨 -->
+      <article class="tcard t-dworkin">
+        <div class="thead">
+          <div class="avatar initial" aria-hidden="true">드</div>
+          <div>
+            <div class="tname">드워킨</div>
+            <div class="tmeta">Dworkin, R. · 1931~2013</div>
+            <span class="kw">헌법 정신 · 자율적 판단</span>
+          </div>
+        </div>
+        <img class="dw-fig" src="img/democ/dworkin_cartoon.png" alt="드워킨이 손을 들어 확성기로 의견을 외치는 두 학생을 가리키는 만화">
+        <p><b>헌법 정신에 어긋나는 법</b>에 대해 <b>자신의 자율적인 판단</b>에 따라 시민불복종을 할 수 있다고 주장했어요.</p>
+        <p style="color:var(--ink-soft)">기준이 &lsquo;개인의 양심&rsquo;(소로)이나 &lsquo;다수의 정의관&rsquo;(롤스)이 아니라, <b style="color:var(--ink)">헌법 정신</b>이라는 점이 특징이에요.</p>
+      </article>
+    </div>
+
+    <div class="t-thoreau" style="margin-top:22px">
+      <div class="vs">
+        <div class="side t-rawls"><div class="who">롤스</div>합법적인 수단을 모두 써 본 뒤 <b>최후의 수단</b>으로만 시민불복종을 할 수 있다.</div>
+        <div class="mid">VS</div>
+        <div class="side t-thoreau"><div class="who">소로</div>부정의한 법이 개선될 때까지 기다리면 부정의가 지속될 수 있으므로, <b>양심에 따른 즉각적인 저항</b>을 해야 한다.</div>
+      </div>
+    </div>
+
+    <details class="deepen">
+      <summary>세 사람의 차이 한 번 더 정리하기</summary>
+      <div class="body">
+        <p><b>소로</b>는 부정의한 법에 대해서는 양심에 따라 <b>즉각</b> 시민불복종에 임할 것을 주장하였다. 반면 <b>롤스</b>는 거의 정의로운 민주주의 정치체제 안에서 일부 부정의한 법이 공공의 정의관을 심각하게 해칠 경우에 <b>최후의 수단</b>으로 시민불복종을 할 수 있다고 주장하였다. <b>싱어</b>는 시민불복종을 하기 전에 시민불복종의 <b>이익과 손해, 성공 가능성</b> 등을 고려해야 한다고 주장하였다.</p>
+      </div>
+    </details>
+
+
+  </section>
+
+  <!-- ================= 3. RAWLS CONDITIONS ================= -->
+  <section class="scene t-rawls" id="conditions">
+    <div class="eyebrow"><span class="num">3</span>롤스가 제시한 정당화 조건</div>
+    <h2>시민불복종이 정당하려면? 다섯 가지 조건</h2>
+    <p>시민불복종은 의도적으로 국가의 법이나 정책을 위반하는 행위예요. 그래서 롤스는 시민불복종이 정당성을 인정받으려면 다음 조건을 충족해야 한다고 보았어요. <b>카드를 눌러 뒤집어 보세요.</b></p>
+
+    <div class="flip-tools">
+      <button class="btn ghost" type="button" id="flip-all">모두 뒤집기</button>
+      <button class="btn ghost" type="button" id="flip-none">모두 앞면으로</button>
+    </div>
+
+    <div class="flip-grid" id="flip-grid">
+      <button class="flip" type="button" aria-pressed="false">
+        <span class="flip-inner">
+          <span class="face front"><span class="n">조건 1</span><span class="ttl"><span class="blank">목적</span>의 정당성</span><span class="q">누구를 위한 행동인가요?</span><span class="tap">눌러서 설명 보기 ↻</span></span>
+          <span class="face back"><span class="n">조건 1</span><span class="ttl">목적이 정당해야 한다</span><p><b>사적인 이익</b>이 아니라 <b>공공의 이익</b>을 증대하기 위해서 이루어져야 해요.</p></span>
+        </span>
+      </button>
+      <button class="flip" type="button" aria-pressed="false">
+        <span class="flip-inner">
+          <span class="face front"><span class="n">조건 2</span><span class="ttl">비폭력</span><span class="q">어떤 방법을 썼나요?</span><span class="tap">눌러서 설명 보기 ↻</span></span>
+          <span class="face back"><span class="n">조건 2</span><span class="ttl">비폭력적이어야 한다</span><p><b>폭력</b>을 사용하는 행위는 <b>정당성을 얻기 어렵기</b> 때문이에요.</p></span>
+        </span>
+      </button>
+      <button class="flip" type="button" aria-pressed="false">
+        <span class="flip-inner">
+          <span class="face front"><span class="n">조건 3</span><span class="ttl">최후의 수단</span><span class="q">다른 방법은 다 써 봤나요?</span><span class="tap">눌러서 설명 보기 ↻</span></span>
+          <span class="face back"><span class="n">조건 3</span><span class="ttl">최후의 수단이어야 한다</span><p><b>합법적인 수단을 모두 사용</b>한 후, 그래도 바뀌지 않는 경우 <b>마지막 수단</b>으로 사용해야 해요.</p></span>
+        </span>
+      </button>
+      <button class="flip" type="button" aria-pressed="false">
+        <span class="flip-inner">
+          <span class="face front"><span class="n">조건 4</span><span class="ttl">공개성</span><span class="q">숨어서 했나요, 드러내고 했나요?</span><span class="tap">눌러서 설명 보기 ↻</span></span>
+          <span class="face back"><span class="n">조건 4</span><span class="ttl">공개적이어야 한다</span><p>공익을 위해 법을 어긴다면 <b>모든 사람들에게 공개적으로 밝힐 수 있어야</b> 해요.</p></span>
+        </span>
+      </button>
+      <button class="flip" type="button" aria-pressed="false">
+        <span class="flip-inner">
+          <span class="face front"><span class="n">조건 5</span><span class="ttl">처벌 감수</span><span class="q">법을 어긴 책임은 어떻게 지나요?</span><span class="tap">눌러서 설명 보기 ↻</span></span>
+          <span class="face back"><span class="n">조건 5</span><span class="ttl">처벌을 감수해야 한다</span><p>사회 정의 실현의 의도를 가지고 있더라도 <b>위법 행위에 대한 처벌을 받아들여야</b> 해요.</p></span>
+        </span>
+      </button>
+    </div>
+
+    <div class="note" style="margin-top:18px"><span class="ic">💡</span><div><b>처음 상황의 C를 다시 볼까요?</b> &lsquo;건의가 받아들여지지 않자(최후의 수단), 이유를 공개적으로 밝히고(공개성), 벌점도 받아들인다(처벌 감수)&rsquo; &mdash; 롤스가 말한 조건과 많이 겹치죠. 반면 D처럼 <b>몰래</b> 어기는 것은 공개성과 처벌 감수를 갖추지 못해요.</div></div>
+    <div class="note t-thoreau" style="margin-top:12px;background:var(--thoreau-soft);border-color:color-mix(in srgb,var(--thoreau) 40%,transparent)"><span class="ic">✋</span><div><b style="color:var(--thoreau-ink)">다른 의견도 있어요.</b> 최후의 수단 여부에 대해 <b>소로</b>는, 부정의한 법이 개선될 때까지 기다리면 부정의가 지속될 수 있으므로 <b>양심에 따른 즉각적인 저항</b>을 주장하였어요.</div></div>
+  </section>
+
+  <!-- ================= 4. JUDGE ================= -->
+  <section class="scene t-rawls" id="judge">
+    <div class="eyebrow"><span class="num">4</span>시민불복종 판정단</div>
+    <h2>역사 속 시민불복종, 롤스의 기준으로 판정해 보자</h2>
+    <p>역사 속 네 사례예요. 사례를 고르고, <b>롤스의 다섯 조건 중 충족한다고 생각하는 것에 체크</b>하세요. 정답은 정해져 있지 않아요 &mdash; 내 판단과 그 근거를 친구들과 비교해 보는 것이 목표예요.</p>
+
+    <div class="case-tabs" role="tablist" aria-label="사례 선택" id="case-tabs"></div>
+
+    <div class="card" id="case-panel" role="tabpanel" aria-live="polite">
+      <div class="case-body">
+        <div>
+          <img class="case-photo" id="case-photo" src="img/democ/gandhi.jpg" alt="">
+          <div class="case-cap" id="case-cap"></div>
+        </div>
+        <div>
+          <h3 class="case-title" id="case-title"></h3>
+          <p class="case-desc" id="case-desc"></p>
+          <div class="case-point" id="case-point"></div>
+        </div>
+      </div>
+
+      <div class="checks" id="checks"></div>
+
+      <div class="verdict" id="verdict"></div>
+    </div>
+
+    <div class="card board">
+      <h3>우리 판정 한눈에 보기</h3>
+      <div id="board"></div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn ghost" type="button" id="judge-reset">판정 모두 지우기</button>
+      </div>
+    </div>
+
+
+    <div class="card debate" style="margin-top:22px">
+      <div class="kicker">함께 생각해 보기</div>
+      <h3>폭력을 사용한 시민불복종이 정당화될 수 있을까?</h3>
+      <p style="margin:0 0 4px;color:var(--ink-soft)">먼저 내 입장을 고르면, 사상가들의 관점이 생각의 단서로 열려요.</p>
+      <div class="vote-row" id="vote-row">
+        <button class="vote" type="button" data-v="yes" aria-pressed="false">정당화될 수 있다</button>
+        <button class="vote" type="button" data-v="no" aria-pressed="false">정당화될 수 없다</button>
+        <button class="vote" type="button" data-v="unsure" aria-pressed="false">경우에 따라 다르다</button>
+      </div>
+      <div class="lenses" id="lenses">
+        <div class="lens t-rawls"><span class="who">롤스의 렌즈</span> &mdash; 시민불복종은 <b>비폭력을 전제</b>로 해야 해요. 폭력을 사용하는 행위는 정당성을 얻기 어렵다고 보았어요. 또 시민불복종은 법을 직접 바꾸는 <b>혁명적인 행위와는 구별</b>된다고 했어요.</div>
+        <div class="lens t-singer"><span class="who">싱어의 렌즈</span> &mdash; 막으려는 악의 크기와 법·민주주의에 대한 존중심이 줄어드는 정도를 <b>저울질</b>해야 해요. 행동이 <b>반작용</b>을 불러 다른 수단으로 성공할 가능성까지 줄이지는 않을지도 따져 봐야 해요.</div>
+        <div class="lens t-thoreau"><span class="who">소로의 렌즈</span> &mdash; 소로는 법보다 <b>양심</b>을 따르고 <b>즉각 저항</b>해야 한다고 했어요. 그렇다면 양심에 따른 행동이라는 이유만으로 어떤 수단이든 괜찮을까요?</div>
+        <div class="lens" style="--accent:var(--bad);--accent-ink:var(--bad);--accent-soft:var(--bad-soft)"><span class="who">함께 생각할 점</span> &mdash; 시민불복종은 법과 제도를 어기는 행위라서 시민들의 <b>준법 의식</b>을 약화하고 <b>사회의 존립</b> 자체를 위협할 수도 있어요. 폭력이 더해지면 이 위험은 어떻게 될까요?</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5. MEANING & LIMITS ================= -->
+  <section class="scene" id="limits">
+    <div class="eyebrow"><span class="num">5</span>의의와 한계</div>
+    <h2>시민불복종, 양날의 칼</h2>
+    <p>시민불복종은 불의한 법과 정책을 개선하려는 노력이지만, 법을 어긴다는 점에서 조심해야 할 부분도 있어요.</p>
+    <div class="ml">
+      <div class="box plus">
+        <h3>👍 의의</h3>
+        <ul>
+          <li>불의한 법과 정책을 <b>개선</b>하려는 노력</li>
+          <li><b>인권 신장</b>에 기여</li>
+          <li><b>민주주의의 발전</b>에 기여</li>
+        </ul>
+      </div>
+      <div class="box minus">
+        <h3>⚠️ 한계</h3>
+        <ul>
+          <li>시민들의 <span class="blank">준법 의식</span>을 약화할 수 있음</li>
+          <li><b>사회의 존립 자체</b>를 위협할 수 있음</li>
+        </ul>
+        <div class="ml-why">왜? 시민불복종은 사회의 법과 제도를 <b>어기는</b> 행위이기 때문이에요.</div>
+      </div>
+    </div>
+    <div class="ml-concl">
+      <div class="k">그래서</div>
+      <div class="v">시민불복종은 사회 정의를 실현하는 방향으로<br>심사숙고해서 이루어져야 한다.</div>
+    </div>
+  </section>
+
+  <!-- ================= 6. QUIZ ================= -->
+  <section class="scene" id="quiz">
+    <div class="eyebrow"><span class="num">6</span>확인 퀴즈</div>
+    <h2>이 주장, 누가 했을까?</h2>
+    <p>주장을 읽고 사상가를 골라 보세요. 고르는 즉시 정답과 해설이 나와요.</p>
+
+    <div class="score-bar">
+      <span class="lbl">맞힌 문제</span>
+      <span class="num" id="score-num">0 / 6</span>
+      <span class="track" aria-hidden="true"><i id="score-track"></i></span>
+      <button type="button" id="quiz-reset">다시 풀기</button>
+    </div>
+    <div class="qlist" id="qlist"></div>
+    <div class="qdone" id="qdone" aria-live="polite"></div>
+  </section>
+
+  <!-- ================= 7. RECAP ================= -->
+  <section class="scene" id="recap">
+    <div class="eyebrow"><span class="num">7</span>흐름도</div>
+    <h2>흐름으로 다시 보기</h2>
+    <p>저항권에서 시작해 시민불복종의 의미, 정당화 근거, 조건, 의의와 한계까지 한 번에 정리해요.</p>
+
+    <div class="fc">
+      <div class="fc-node t-locke">
+        <span class="tag">출발점</span>
+        <h4>로크의 저항권</h4>
+        <p>국가가 시민을 제대로 보호하지 못하면 계약을 파기하고 자기방어 가능 → 시민불복종 운동에 영향</p>
+      </div>
+      <div class="fc-down"><svg width="20" height="28" aria-hidden="true"><path d="M10 0 V18" stroke="var(--ink-soft)" stroke-width="2.5"/><polygon points="3,17 17,17 10,28" fill="var(--ink-soft)"/></svg></div>
+
+      <div class="fc-node">
+        <span class="tag">의미</span>
+        <h4>시민불복종</h4>
+        <p>정의롭지 못한 법·정책을 변화시키려는 목적으로 의도적으로 법을 위반하는 행위 (시민의 참여 방법 중 하나)</p>
+      </div>
+
+      <svg class="fc-branch" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M500 0 V16 M125 16 H875 M125 16 V32 M375 16 V32 M625 16 V32 M875 16 V32" stroke="var(--ink-soft)" stroke-width="2.5" fill="none" vector-effect="non-scaling-stroke"/>
+        <polygon points="117,30 133,30 125,40" fill="var(--ink-soft)"/>
+        <polygon points="367,30 383,30 375,40" fill="var(--ink-soft)"/>
+        <polygon points="617,30 633,30 625,40" fill="var(--ink-soft)"/>
+        <polygon points="867,30 883,30 875,40" fill="var(--ink-soft)"/>
+      </svg>
+      <div class="fc-down fc-only-mobile"><svg width="20" height="28" aria-hidden="true"><path d="M10 0 V18" stroke="var(--ink-soft)" stroke-width="2.5"/><polygon points="3,17 17,17 10,28" fill="var(--ink-soft)"/></svg></div>
+
+      <div class="fc-cols">
+        <div class="fc-col t-thoreau"><h4>소로</h4><div class="k">법보다 양심</div><p>부정의한 법 거부는 도덕적으로 정당<br>→ 즉각적인 저항</p></div>
+        <div class="fc-col t-rawls"><h4>롤스</h4><div class="k">다수의 정의관</div><p>정의의 원칙을 심각하게 위반할 때<br>→ 최후의 수단</p></div>
+        <div class="fc-col t-singer"><h4>싱어</h4><div class="k">이익 &gt; 손해</div><p>성공 가능성 고려<br>→ 민주적 의사 결정 복원</p></div>
+        <div class="fc-col t-dworkin"><h4>드워킨</h4><div class="k">헌법 정신</div><p>헌법 정신에 어긋나는 법<br>→ 자율적 판단</p></div>
+      </div>
+
+      <svg class="fc-merge" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M375 0 V14 H500 V30" stroke="var(--rawls)" stroke-width="2.5" fill="none" vector-effect="non-scaling-stroke"/>
+        <polygon points="492,29 508,29 500,40" fill="var(--rawls)"/>
+      </svg>
+      <div class="fc-down fc-only-mobile"><svg width="20" height="28" aria-hidden="true"><path d="M10 0 V18" stroke="var(--rawls)" stroke-width="2.5"/><polygon points="3,17 17,17 10,28" fill="var(--rawls)"/></svg></div>
+
+      <div class="fc-node t-rawls">
+        <span class="tag">롤스가 구체화</span>
+        <h4>시민불복종의 정당화 조건</h4>
+        <div class="fc-conds"><span>① 목적의 정당성</span><span>② 비폭력</span><span>③ 최후의 수단</span><span>④ 공개성</span><span>⑤ 처벌 감수</span></div>
+      </div>
+      <div class="fc-down"><svg width="20" height="28" aria-hidden="true"><path d="M10 0 V18" stroke="var(--ink-soft)" stroke-width="2.5"/><polygon points="3,17 17,17 10,28" fill="var(--ink-soft)"/></svg></div>
+
+      <div class="fc-two">
+        <div class="b plus"><h4>의의</h4><p>인권 신장 · 민주주의 발전</p></div>
+        <div class="b minus"><h4>한계</h4><p>준법 의식 약화 · 사회 존립 위협</p></div>
+      </div>
+      <div class="fc-down"><svg width="20" height="28" aria-hidden="true"><path d="M10 0 V18" stroke="var(--ink-soft)" stroke-width="2.5"/><polygon points="3,17 17,17 10,28" fill="var(--ink-soft)"/></svg></div>
+
+      <div class="fc-end">사회 정의를 실현하는 방향으로 심사숙고해서!</div>
+    </div>
+  </section>
+
+  <footer>
+    <div>현대사회와 윤리 · 시민불복종 사상가 비교</div>
+    <div class="signature">♥무늬T♥</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // ---------- safe storage ----------
+  var KEY = 'civil-disobedience-v1';
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ store = {}; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+  // ---------- theme ----------
+  var root = document.documentElement;
+  try { var th = localStorage.getItem('cd-theme'); if(th === 'light' || th === 'dark') root.setAttribute('data-theme', th); } catch(e){}
+  document.getElementById('theme-btn').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    if(!cur){ cur = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('cd-theme', next); } catch(e){}
+  });
+
+  // ---------- situation ----------
+  var SIT = {
+    a:{h:'규칙을 지키기로 했군요.', t:'규칙과 법을 지키는 것은 질서를 위해 꼭 필요해요. 그런데 그 규칙이 누군가를 이유 없이 차별하는 부정의한 것이라면, 지키기만 하는 것으로 충분할까요? 이 질문에서 시민불복종 논의가 시작돼요.'},
+    b:{h:'정해진 방법을 먼저 택했군요.', t:'정해진 절차로 바꾸려는 노력은 가장 먼저 시도해야 할 방법이에요. 롤스도 합법적인 수단을 모두 써 본 뒤에야 시민불복종을 할 수 있다고(최후의 수단) 보았어요. 그런데 그래도 바뀌지 않는다면?'},
+    c:{h:'시민불복종과 같은 구조예요.', t:'부정의한 규칙을 바꾸려는 목적으로, 일부러 규칙을 어기면서도 공개적으로 행동하고 벌을 받아들였죠. 롤스가 말한 정당화 조건과 많이 겹쳐요. 아래에서 하나씩 확인해 봅시다.'},
+    d:{h:'규칙을 어겼지만, 시민불복종이라고 하기는 어려워요.', t:'몰래 어기는 것은 규칙을 바꾸려는 공적인 목적보다는 자기 편의에 가깝고, 공개적으로 밝히지도, 벌을 감수하지도 않아요. 시민불복종과 단순한 위반은 무엇이 다를까요?'}
+  };
+  var sitOpts = document.getElementById('sit-opts');
+  var sitReveal = document.getElementById('sit-reveal');
+  function showSit(k){
+    Array.prototype.forEach.call(sitOpts.querySelectorAll('.opt'), function(b){ b.classList.toggle('chosen', b.getAttribute('data-k') === k); });
+    sitReveal.innerHTML = '<div class="h">' + SIT[k].h + '</div><p>' + SIT[k].t + '</p>';
+    sitReveal.classList.add('show');
+  }
+  sitOpts.addEventListener('click', function(e){
+    var b = e.target.closest('.opt'); if(!b) return;
+    var k = b.getAttribute('data-k'); store.sit = k; save(); showSit(k);
+  });
+  if(store.sit && SIT[store.sit]) showSit(store.sit);
+
+  // ---------- memos ----------
+  store.memo = store.memo || {};
+  Array.prototype.forEach.call(document.querySelectorAll('textarea[data-store]'), function(t){
+    var k = t.getAttribute('data-store');
+    if(store.memo[k]) t.value = store.memo[k];
+    t.addEventListener('input', function(){ store.memo[k] = t.value; save(); });
+  });
+
+  // ---------- flip cards ----------
+  var flips = document.querySelectorAll('#flip-grid .flip');
+  function setFlip(b, on){ b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  Array.prototype.forEach.call(flips, function(b){
+    b.addEventListener('click', function(){ setFlip(b, !b.classList.contains('on')); });
+  });
+  document.getElementById('flip-all').addEventListener('click', function(){ Array.prototype.forEach.call(flips, function(b){ setFlip(b, true); }); });
+  document.getElementById('flip-none').addEventListener('click', function(){ Array.prototype.forEach.call(flips, function(b){ setFlip(b, false); }); });
+
+  // ---------- judge ----------
+  var CONDS = [
+    {t:'목적의 정당성', q:'사적인 이익이 아니라 공공의 이익을 위한 것이었나?'},
+    {t:'비폭력', q:'폭력을 사용하지 않았나?'},
+    {t:'최후의 수단', q:'합법적인 수단을 모두 써 본 뒤였나?'},
+    {t:'공개성', q:'모든 사람에게 공개적으로 밝히고 행동했나?'},
+    {t:'처벌 감수', q:'법을 어긴 데 대한 처벌을 받아들였나?'}
+  ];
+  var CASES = [
+    {id:'gandhi', img:'img/democ/gandhi.jpg', tab:'간디의 소금법 폐지 운동', cap:'▲ 인도(간디의 소금법 폐지 운동)',
+     title:'인도 · 간디의 소금법 폐지 운동',
+     alt:'간디와 사람들이 줄지어 걸어가는 흑백 사진',
+     desc:'영국의 식민 지배를 받던 인도에서는 소금을 마음대로 만들거나 팔 수 없게 하고 세금을 매기는 법(소금법)이 있었어요. 1930년, 간디는 사람들과 함께 먼 길을 걸어 바닷가로 가서 직접 소금을 만들어 이 법을 공개적으로 어겼어요. 간디는 비폭력을 강조했고, 많은 사람이 체포되었어요.',
+     point:'<b>생각해 보자</b> · 롤스는 시민불복종을 &lsquo;어느 정도 정의로운 민주 체제&rsquo;에서의 행위로 보았어요. 식민 지배라는 상황은 이 판단에 어떤 영향을 줄까요?'},
+    {id:'april19', img:'img/democ/april19.jpg', tab:'4·19 혁명', cap:'▲ 대한민국(4·19 혁명)',
+     title:'대한민국 · 4·19 혁명',
+     alt:'4·19 혁명 당시 거리에 모인 학생과 시민들 사진',
+     desc:'1960년 3·15 부정 선거에 항의하여 학생과 시민들이 거리로 나섰어요. 결국 당시 정부가 물러났어요. 오늘날 대한민국 헌법 전문은 &lsquo;불의에 항거한 4·19 민주 이념&rsquo;을 계승한다고 밝히고 있어요.',
+     point:'<b>생각해 보자</b> · 롤스는 시민불복종을 법이나 명령을 직접 바꾸는 <b>혁명적인 행위와 구별</b>했어요. 4·19는 시민불복종에 가까울까요, 로크가 말한 저항권의 행사에 가까울까요?'},
+    {id:'umbrella', img:'img/democ/umbrella.jpg', tab:'홍콩 우산 혁명', cap:'▲ 홍콩(민주화 시위 - 우산 혁명)',
+     title:'홍콩 · 민주화 시위 (우산 혁명)',
+     alt:'우산을 든 시민들이 거리를 메운 홍콩 우산 혁명 사진',
+     desc:'2014년 홍콩에서 행정 수장 선거 후보를 제한하는 결정에 반대하며, 학생과 시민들이 진정한 보통 선거를 요구하면서 도심 도로를 오랫동안 점거했어요. 경찰의 최루액을 우산으로 막아 내면서 &lsquo;우산 혁명&rsquo;이라는 이름이 붙었어요.',
+     point:'<b>생각해 보자</b> · 도로 점거는 많은 시민의 생활에 불편을 주기도 해요. 싱어처럼 <b>이익과 손해, 성공 가능성</b>을 저울질한다면 어떻게 판단할 수 있을까요?'},
+    {id:'king', img:'img/democ/king.jpg', tab:'킹 목사의 흑인 차별 철폐 운동', cap:'▲ 미국(마틴 루터 킹 목사의 흑인 차별 철폐 운동)',
+     title:'미국 · 마틴 루터 킹 목사의 흑인 차별 철폐 운동',
+     alt:'킹 목사와 사람들이 팔짱을 끼고 행진하는 사진',
+     desc:'1950~60년대 미국 남부에는 버스·식당·학교 등에서 흑인을 차별하는 법과 제도가 있었어요. 킹 목사와 시민들은 버스 승차 거부, 행진, 연좌 농성 등 비폭력 방법으로 차별에 맞섰고, 킹 목사는 여러 차례 체포·투옥되었어요. 이 운동은 차별을 금지하는 법이 만들어지는 데 큰 영향을 주었어요.',
+     point:'<b>생각해 보자</b> · 다섯 조건 가운데 이 사례에서 가장 두드러지는 조건은 무엇인가요?'}
+  ];
+  store.judge = store.judge || {};
+  var curCase = store.curCase && CASES.some(function(c){ return c.id === store.curCase; }) ? store.curCase : 'gandhi';
+  var tabsEl = document.getElementById('case-tabs');
+  var checksEl = document.getElementById('checks');
+
+  function caseState(id){
+    var s = store.judge[id];
+    if(!s || !s.length){ s = [false,false,false,false,false]; }
+    return s;
+  }
+  function judged(id){ return !!store.judge[id]; }
+  function count(id){ return caseState(id).filter(Boolean).length; }
+
+  function renderTabs(){
+    tabsEl.innerHTML = '';
+    CASES.forEach(function(c){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'case-tab' + (judged(c.id) ? ' done' : '');
+      b.setAttribute('role','tab');
+      b.setAttribute('aria-selected', c.id === curCase ? 'true' : 'false');
+      b.innerHTML = '<img src="' + c.img + '" alt="" loading="lazy"><span class="nm">' + c.tab + '</span><span class="sc">' + (judged(c.id) ? '체크 ' + count(c.id) + ' / 5' : '아직 판정 전') + '</span>';
+      b.addEventListener('click', function(){ curCase = c.id; store.curCase = c.id; save(); renderAll(); });
+      tabsEl.appendChild(b);
+    });
+  }
+
+  function renderCase(){
+    var c = CASES.filter(function(x){ return x.id === curCase; })[0];
+    var ph = document.getElementById('case-photo');
+    ph.src = c.img; ph.alt = c.alt;
+    document.getElementById('case-cap').textContent = c.cap;
+    document.getElementById('case-title').textContent = c.title;
+    document.getElementById('case-desc').innerHTML = c.desc;
+    document.getElementById('case-point').innerHTML = c.point;
+    var st = caseState(c.id);
+    checksEl.innerHTML = '';
+    CONDS.forEach(function(cd, i){
+      var lab = document.createElement('label');
+      lab.className = 'chk';
+      lab.innerHTML = '<input type="checkbox"' + (st[i] ? ' checked' : '') + '><span><span class="ct">' + (i+1) + '. ' + cd.t + '</span><span class="cq">' + cd.q + '</span></span>';
+      lab.querySelector('input').addEventListener('change', function(ev){
+        var s = caseState(c.id).slice();
+        s[i] = ev.target.checked;
+        store.judge[c.id] = s; save();
+        renderTabs(); renderVerdict(); renderBoard();
+      });
+      checksEl.appendChild(lab);
+    });
+    renderVerdict();
+  }
+
+  function renderVerdict(){
+    var c = CASES.filter(function(x){ return x.id === curCase; })[0];
+    var st = caseState(c.id);
+    var n = st.filter(Boolean).length;
+    var v = document.getElementById('verdict');
+    var meter = '<div class="meter">' + CONDS.map(function(_, i){ return '<span class="' + (st[i] ? 'on' : '') + '"></span>'; }).join('') + '</div>';
+    var missing = CONDS.filter(function(_, i){ return !st[i]; }).map(function(cd){ return '<span>' + cd.t + '</span>'; }).join('');
+    var head, body;
+    if(!judged(c.id)){
+      head = '조건을 하나씩 따져 보며 체크해 보세요.';
+      body = '<p>체크할수록 아래 막대가 채워져요. 확신이 없는 조건은 비워 두고, 왜 망설였는지 이야기해 보면 좋아요.</p>';
+    } else if(n === 5){
+      head = '내 판단: 롤스의 다섯 조건을 모두 충족한다';
+      body = '<p>롤스의 기준으로 정당한 시민불복종이라고 판단했군요. 친구들도 같은 판단일까요? 각 조건을 충족한다고 본 <b>근거</b>를 사례 속 사실로 말해 보세요.</p>';
+    } else if(n === 0){
+      head = '내 판단: 충족한 조건이 없다';
+      body = '<p>다섯 조건 모두 부족하다고 보았군요. 그렇다면 이 사례는 어떤 이유로 역사 속에서 의미 있게 평가받을까요? 소로나 싱어의 기준으로 보면 판단이 달라질지 친구와 이야기해 보세요.</p>';
+    } else {
+      head = '내 판단: 5개 중 ' + n + '개 조건을 충족한다';
+      body = '<p>부족하다고 본 조건이 있네요. 왜 그렇게 판단했는지 근거를 말해 보고, 롤스와 다른 기준(소로의 양심, 싱어의 이익과 손해)으로 보면 결론이 바뀌는지 친구와 이야기해 보세요.</p><div class="missing">' + missing + '</div>';
+    }
+    v.innerHTML = '<div class="vh">' + head + '</div>' + meter + body;
+  }
+
+  function renderBoard(){
+    var bd = document.getElementById('board');
+    bd.innerHTML = CASES.map(function(c){
+      var n = count(c.id);
+      return '<div class="board-row"><span>' + c.tab.replace('의 흑인 차별 철폐 운동',' 운동').replace('의 소금법 폐지 운동',' 소금법 운동') + '</span><span class="bar"><i style="width:' + (judged(c.id) ? n*20 : 0) + '%"></i></span><span class="v">' + (judged(c.id) ? n + '/5' : '–') + '</span></div>';
+    }).join('');
+  }
+  function renderAll(){ renderTabs(); renderCase(); renderBoard(); }
+  document.getElementById('judge-reset').addEventListener('click', function(){
+    store.judge = {}; save(); renderAll();
+  });
+  renderAll();
+
+  // ---------- violence debate ----------
+  var voteRow = document.getElementById('vote-row');
+  function setVote(v){
+    Array.prototype.forEach.call(voteRow.querySelectorAll('.vote'), function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-v') === v ? 'true' : 'false'); });
+    document.getElementById('lenses').classList.add('show');
+  }
+  voteRow.addEventListener('click', function(e){
+    var b = e.target.closest('.vote'); if(!b) return;
+    store.vote = b.getAttribute('data-v'); save(); setVote(store.vote);
+  });
+  if(store.vote) setVote(store.vote);
+
+  // ---------- quiz ----------
+  var WHO = {
+    locke:{n:'로크', c:'t-locke'}, thoreau:{n:'소로', c:'t-thoreau'}, rawls:{n:'롤스', c:'t-rawls'},
+    singer:{n:'싱어', c:'t-singer'}, dworkin:{n:'드워킨', c:'t-dworkin'}
+  };
+  var ORDER = ['locke','thoreau','rawls','singer','dworkin'];
+  var QUIZ = [
+    {q:'우리는 먼저 인간이어야 하고, 그다음에 국민이어야 한다. 법에 대한 존경심보다는 먼저 정의에 대한 존경심을 기르는 것이 바람직하다.', a:'thoreau',
+     e:'소로의 『시민의 불복종』 속 말이에요. 국가의 시민이기 이전에 인간이므로, 법보다 개인의 양심을 따라야 한다고 보았어요.'},
+    {q:'시민불복종은 공동체 구성원들이 합의한 원칙을 심각하게 위반한 법이나 정책을 변화시킬 목적으로 행해지는 것이다.', a:'rawls',
+     e:'롤스는 개인의 양심보다 다수의 정의관에 초점을 맞추어, 정의의 원칙을 심각하게 위반한 법에 대해 시민불복종을 할 수 있다고 보았어요.'},
+    {q:'우리가 중단시키려는 악의 크기와 우리의 행위가 가져올 법과 민주주의에 대한 존중심의 감소 정도를 저울질해 보고 불복종 여부를 판단해야 한다.', a:'singer',
+     e:'싱어는 공리주의적 입장에서 시민불복종이 산출할 손해보다 이익이 더 큰지, 성공 가능성은 있는지를 따져야 한다고 했어요.'},
+    {q:'계약을 통해 자연권을 양도받은 국가가 시민을 제대로 보호하지 못한다면, 시민들은 계약을 파기하고 자기방어를 할 수 있다.', a:'locke',
+     e:'로크의 저항권 사상이에요. 국민의 뜻에 반하는 국가권력에 저항할 수 있다는 이 생각은 이후 시민불복종 운동에 영향을 주었어요.'},
+    {q:'헌법 정신에 어긋나는 법에 대해서는 자신의 자율적인 판단에 따라 시민불복종을 할 수 있다.', a:'dworkin',
+     e:'드워킨의 주장이에요. 판단의 기준이 &lsquo;헌법 정신&rsquo;이라는 점이 특징이에요.'},
+    {q:'시민불복종은 소수자가 다수자의 정의감에 호소하는 정치적 행위로, 혁명적인 행위와는 구별되며 처벌을 감수하고 비폭력을 전제로 해야 한다.', a:'rawls',
+     e:'롤스의 『정의론』 속 생각이에요. 그래서 롤스는 비폭력, 처벌 감수 등을 정당화 조건으로 제시했어요.'}
+  ];
+  store.quiz = store.quiz || {};
+  var qlist = document.getElementById('qlist');
+
+  function renderScore(){
+    var answered = 0, right = 0;
+    QUIZ.forEach(function(item, i){ var r = store.quiz[i]; if(r){ answered++; if(r === item.a) right++; } });
+    document.getElementById('score-num').textContent = right + ' / ' + QUIZ.length;
+    document.getElementById('score-track').style.width = (right / QUIZ.length * 100) + '%';
+    var done = document.getElementById('qdone');
+    if(answered === QUIZ.length){
+      done.textContent = right === QUIZ.length ? '🎉 모두 정답! 사상가별 정당화 근거를 확실히 구분하고 있어요.' : '모든 문제를 풀었어요. ' + right + '문제 정답! 틀린 문제의 해설을 다시 읽고 흐름도로 정리해 보세요.';
+      done.classList.add('show');
+    } else { done.classList.remove('show'); }
+  }
+
+  function applyAnswer(card, item, pick, i){
+    var btns = card.querySelectorAll('.qopt');
+    Array.prototype.forEach.call(btns, function(b){
+      var w = b.getAttribute('data-w');
+      b.disabled = true;
+      if(w === item.a) b.classList.add('correct');
+      else if(w === pick) b.classList.add('wrong');
+    });
+    var ok = pick === item.a;
+    var fb = card.querySelector('.qfb');
+    fb.className = 'qfb show ' + (ok ? 'correct' : 'wrong');
+    fb.innerHTML = '<div class="h">' + (ok ? '정답이에요! ' : '아쉬워요. 정답은 ' + WHO[item.a].n + '예요. ') + '</div>' + item.e;
+  }
+
+  function renderQuiz(){
+    qlist.innerHTML = '';
+    QUIZ.forEach(function(item, i){
+      var card = document.createElement('div');
+      card.className = 'qcard';
+      card.innerHTML = '<div class="qn">Q' + (i+1) + (item.src ? '<span class="src">' + item.src + '</span>' : '') + '</div>' +
+        '<div class="qtext">&ldquo;' + item.q + '&rdquo;</div>' +
+        '<div class="qopts">' + ORDER.map(function(w){ return '<button type="button" class="qopt ' + WHO[w].c + '" data-w="' + w + '"><span class="dot"></span>' + WHO[w].n + '</button>'; }).join('') + '</div>' +
+        '<div class="qfb" aria-live="polite"></div>';
+      card.querySelector('.qopts').addEventListener('click', function(e){
+        var b = e.target.closest('.qopt'); if(!b || b.disabled) return;
+        var pick = b.getAttribute('data-w');
+        store.quiz[i] = pick; save();
+        applyAnswer(card, item, pick, i);
+        renderScore();
+      });
+      if(store.quiz[i]) applyAnswer(card, item, store.quiz[i], i);
+      qlist.appendChild(card);
+    });
+    renderScore();
+  }
+  document.getElementById('quiz-reset').addEventListener('click', function(){
+    store.quiz = {}; save(); renderQuiz();
+  });
+  renderQuiz();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>누가 한 말일까?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#FFF0DC;
+    --bg-top:#FFDCAA;
+    --surface:#FFFFFF;
+    --surface-soft:#FCEBD6;
+    --ink:#2A1E12;
+    --ink-soft:#6E5A44;
+    --border:#F0D8B6;
+    --accent:#C9650A;
+    --accent-ink:#6B3505;
+    --accent-soft:#FFE6C7;
+    --good:#2E7D53;
+    --good-soft:#E4F3E9;
+    --bad:#C1443A;
+    --bad-soft:#FBE7E4;
+    --blank:#D12A2A;
+    --shadow:rgba(90,50,10,0.14);
+    --tint:92%;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1E160C;
+      --bg-top:#3A2510;
+      --surface:#2A1F12;
+      --surface-soft:#33271A;
+      --ink:#F6EBDD;
+      --ink-soft:#C4AE93;
+      --border:#4A3826;
+      --accent:#F5A04A;
+      --accent-ink:#FFE8CC;
+      --accent-soft:#3A2A17;
+      --good:#74CE9B;
+      --good-soft:#1E3527;
+      --bad:#E8867B;
+      --bad-soft:#3B2622;
+      --blank:#FF8A80;
+      --shadow:rgba(0,0,0,0.4);
+      --tint:80%;
+    }
+    :root:not([data-theme="light"]) .tc{ --tcx:color-mix(in srgb, var(--tc) 72%, #ffffff); }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1E160C;
+      --bg-top:#3A2510;
+      --surface:#2A1F12;
+      --surface-soft:#33271A;
+      --ink:#F6EBDD;
+      --ink-soft:#C4AE93;
+      --border:#4A3826;
+      --accent:#F5A04A;
+      --accent-ink:#FFE8CC;
+      --accent-soft:#3A2A17;
+      --good:#74CE9B;
+      --good-soft:#1E3527;
+      --bad:#E8867B;
+      --bad-soft:#3B2622;
+      --blank:#FF8A80;
+      --shadow:rgba(0,0,0,0.4);
+    --tint:80%;
+  }
+  :root[data-theme="dark"] .tc{ --tcx:color-mix(in srgb, var(--tc) 72%, #ffffff); }
+  /* --tc = 사상가 고정 색, --tcx = 화면에 쓰는 색(다크 모드에서 밝은 톤) */
+  .tc{ --tcx:var(--tc); }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    background:var(--bg) linear-gradient(180deg, var(--bg-top) 0, var(--bg) 360px) no-repeat;
+    color:var(--ink);
+    font-family:"Noto Sans KR", "Malgun Gothic", sans-serif;
+    font-size:16px;
+    min-height:100dvh;
+    display:flex;
+    justify-content:center;
+    padding:24px 16px 48px;
+    overflow-x:hidden;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  .app{ width:100%; max-width:640px; }
+  button{ font-family:inherit; color:inherit; }
+  [hidden]{ display:none !important; }
+
+  /* top bar */
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:18px; min-height:40px; }
+  .back-btn, .theme-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:999px; padding:8px 14px; font-size:14px; font-weight:700;
+    cursor:pointer; color:var(--ink);
+  }
+  .theme-btn{ padding:8px 12px; margin-left:auto; }
+  .back-btn:hover, .theme-btn:hover{ background:var(--surface-soft); }
+  .back-btn:focus-visible, .theme-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .theme-btn svg{ width:18px; height:18px; }
+
+  .eyebrow{
+    font-size:13px; letter-spacing:.02em; color:var(--accent);
+    font-weight:700; margin:0 0 6px;
+  }
+  h1.title{
+    font-family:"Gowun Batang", serif;
+    font-size:clamp(30px,8vw,40px);
+    line-height:1.25; margin:0 0 10px; text-wrap:balance;
+  }
+  h2.sub{
+    font-family:"Gowun Batang", serif;
+    font-size:clamp(22px,6vw,26px);
+    line-height:1.3; margin:0 0 6px;
+  }
+  p.lede{ color:var(--ink-soft); margin:0 0 22px; font-size:16px; line-height:1.7; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 10px 28px -18px var(--shadow);
+  }
+  .card + .card{ margin-top:16px; }
+  .section-label{ display:block; font-size:14px; font-weight:700; margin:0 0 10px; }
+  .hint{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin:8px 0 0; }
+
+  /* pills */
+  .pill-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .pill{
+    flex:1 1 0; min-width:0;
+    text-align:center; padding:11px 8px; border-radius:12px;
+    border:1.5px solid var(--border); background:var(--bg);
+    color:var(--ink-soft); font-size:15px; font-weight:700; cursor:pointer; line-height:1.35; word-break:keep-all;
+  }
+  .pill small{ display:block; font-weight:500; font-size:12.5px; margin-top:2px; }
+  .pill.active{ border-color:var(--accent); background:var(--accent-soft); color:var(--accent-ink); }
+  .pill:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* roster */
+  .roster{ display:grid; grid-template-columns:repeat(auto-fill, minmax(76px,1fr)); gap:12px 6px; margin-top:16px; }
+  .roster-item{ display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; }
+  .roster-item span{ font-size:13px; letter-spacing:-.02em; font-weight:700; color:var(--ink); text-align:center; line-height:1.2; word-break:keep-all; }
+
+  /* avatar */
+  .avatar{
+    --size:48px;
+    width:var(--size); height:var(--size); flex:0 0 auto;
+    border-radius:50%; position:relative; overflow:hidden;
+    background:var(--tcx);
+    box-shadow:0 0 0 3px var(--tcx);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:900; font-size:calc(var(--size) * .5);
+    font-family:"Gowun Batang", serif;
+  }
+  .avatar.has-img{ background:#fff; }
+  .avatar img{ position:absolute; display:block; max-width:none; }
+  .avatar img.full{ inset:0; width:100%; height:100%; object-fit:cover; }
+
+  /* mode cards */
+  .modes{ display:grid; gap:12px; }
+  .mode-btn{
+    display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+    padding:16px; border-radius:16px; border:1.5px solid var(--border);
+    background:var(--surface); cursor:pointer;
+    box-shadow:0 10px 28px -20px var(--shadow);
+  }
+  .mode-btn:hover{ background:var(--surface-soft); }
+  .mode-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .mode-ico{
+    width:52px; height:52px; border-radius:14px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .mode-ico svg{ width:28px; height:28px; }
+  .mode-btn b.mt{ display:block; font-size:18px; margin-bottom:3px; }
+  .mode-btn span.desc{ display:block; font-size:14.5px; color:var(--ink-soft); line-height:1.55; word-break:keep-all; }
+  .mode-btn .chev{ margin-left:auto; color:var(--ink-soft); font-size:22px; }
+
+  /* buttons */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; padding:14px 16px; border-radius:12px;
+    font-size:16px; font-weight:700; border:1.5px solid transparent;
+    cursor:pointer; min-height:50px;
+  }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn-primary{ background:var(--accent); color:var(--surface); }
+  .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--border); }
+  .btn-ghost:hover{ background:var(--surface-soft); }
+  .btn-row{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+  .btn-row > *{ flex:1 1 140px; }
+  .signature{ text-align:center; font-size:13px; color:var(--ink-soft); margin:28px 0 0; }
+
+  /* blank words (학습지 빈칸 정답) */
+  b.blank{ color:var(--blank); font-weight:900; }
+
+  /* stats */
+  .stats{ display:flex; gap:8px; margin-bottom:14px; }
+  .stat{
+    flex:1; background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:8px 10px; text-align:center;
+  }
+  .stat small{ display:block; font-size:12px; color:var(--ink-soft); font-weight:700; }
+  .stat strong{
+    font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums;
+    font-size:20px; font-weight:600;
+  }
+
+  /* memory grid */
+  .grid{
+    display:grid; gap:8px;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+  }
+  .tile{
+    display:block; perspective:900px; aspect-ratio:3/4; width:100%;
+    border:0; padding:0; background:none; cursor:pointer; min-width:0;
+    border-radius:12px;
+  }
+  .tile:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; }
+  .tile-inner{
+    display:block; position:relative; width:100%; height:100%;
+    transition:transform .45s cubic-bezier(.2,.7,.3,1);
+    transform-style:preserve-3d;
+  }
+  .tile.up .tile-inner{ transform:rotateY(180deg); }
+  .face{
+    position:absolute; inset:0; border-radius:12px; overflow:hidden;
+    -webkit-backface-visibility:hidden; backface-visibility:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:6px;
+  }
+  .face.back{
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,.22) 0 18%, transparent 19%),
+      linear-gradient(140deg, #F7B042 0%, #E07B12 55%, #E5609A 100%);
+    color:#fff; font-family:"Gowun Batang", serif; font-weight:700; font-size:clamp(24px,7vw,34px);
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.35);
+  }
+  .face.front{
+    transform:rotateY(180deg);
+    background:var(--surface);
+    border:2px solid var(--border);
+  }
+  .face.front.person{
+    background:color-mix(in srgb, var(--tcx) 16%, var(--surface));
+    border-color:var(--tcx);
+    gap:6px;
+  }
+  .face.front.person .avatar{ --size:clamp(40px,12vw,64px); }
+  .face.front.person .nm{ font-weight:900; font-size:clamp(14px,3.8vw,17px); line-height:1.2; text-align:center; }
+  .face.front.person .nm.long{ font-size:clamp(10.5px,2.6vw,14px); letter-spacing:-.04em; }
+  .face.front.quote{ justify-content:center; align-items:stretch; padding:10px 6px 6px; }
+  .face.front.quote .qm{ position:absolute; top:2px; left:5px; font-family:"Gowun Batang", serif; font-size:22px; line-height:1; color:var(--border); }
+  .face.front.quote .qt{
+    font-family:"Gowun Batang", serif; font-size:clamp(12px,3.2vw,14px); line-height:1.45;
+    display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+    word-break:normal; overflow-wrap:anywhere;
+  }
+  .tile.matched .face.front{ border-color:var(--tcx); border-width:3px; }
+  .tile.matched .face.front.quote{ background:color-mix(in srgb, var(--tcx) 10%, var(--surface)); }
+  .tile.matched{ cursor:default; }
+  .tile.shake .tile-inner{ animation:shake .35s; }
+  @keyframes shake{ 0%,100%{ translate:0; } 25%{ translate:-4px; } 75%{ translate:4px; } }
+
+  .reader{
+    margin-top:14px; min-height:96px;
+    background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 16px;
+  }
+  .reader .r-label{ font-size:13px; font-weight:700; color:var(--ink-soft); margin:0 0 6px; }
+  .reader .r-quote{ font-family:"Gowun Batang", serif; font-size:17px; line-height:1.7; margin:0; }
+  .reader .r-src{ font-size:13.5px; color:var(--ink-soft); margin:8px 0 0; }
+  .reader.ok{ border-color:var(--good); background:var(--good-soft); }
+  .reader.no{ border-color:var(--bad); background:var(--bad-soft); }
+
+  /* quiz */
+  .progress-track{ height:6px; border-radius:999px; background:var(--surface-soft); overflow:hidden; margin-bottom:16px; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:999px; transition:width .25s ease; }
+  .combo{
+    display:inline-block; font-size:13px; font-weight:900; padding:3px 10px; border-radius:999px;
+    background:var(--accent-soft); color:var(--accent-ink);
+  }
+  .combo.hot{ background:#FFE9C7; color:#9A4A00; }
+  :root[data-theme="dark"] .combo.hot{ background:#4A3315; color:#FFD8A0; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .combo.hot{ background:#4A3315; color:#FFD8A0; } }
+  .quote-card{
+    position:relative;
+    background:var(--surface); border:1px solid var(--border); border-radius:18px;
+    padding:26px 22px 22px; margin-bottom:16px;
+    box-shadow:0 10px 28px -18px var(--shadow);
+  }
+  .quote-card .big-q{
+    position:absolute; top:6px; left:14px; font-family:"Gowun Batang", serif;
+    font-size:48px; line-height:1; color:var(--border);
+  }
+  .quote-card p{ font-family:"Gowun Batang", serif; font-size:clamp(18px,4.8vw,21px); line-height:1.75; margin:0; position:relative; word-break:keep-all; overflow-wrap:anywhere; }
+  .quote-card .q-kind{ display:inline-block; margin-top:12px; font-size:12.5px; font-weight:700; color:var(--ink-soft); background:var(--surface-soft); padding:3px 10px; border-radius:999px; }
+  .options{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .opt{
+    display:flex; align-items:center; gap:10px; min-width:0;
+    padding:12px; border-radius:14px; border:1.5px solid var(--border);
+    background:var(--surface); cursor:pointer; text-align:left;
+    font-size:17px; font-weight:700;
+  }
+  .opt .avatar{ --size:40px; }
+  .opt:hover{ background:var(--surface-soft); }
+  .opt:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .opt:disabled{ cursor:default; }
+  .opt:disabled:hover{ background:var(--surface); }
+  .opt.correct{ border-color:var(--good); background:var(--good-soft); }
+  .opt.wrong{ border-color:var(--bad); background:var(--bad-soft); }
+  .opt.dim{ opacity:.55; }
+  .opt.correct:disabled:hover{ background:var(--good-soft); }
+  .opt.wrong:disabled:hover{ background:var(--bad-soft); }
+  .feedback{
+    border-radius:14px; padding:14px 16px; margin-bottom:16px;
+    border:1px solid; border-left-width:5px;
+  }
+  .feedback.correct{ background:var(--good-soft); border-color:var(--good); }
+  .feedback.wrong{ background:var(--bad-soft); border-color:var(--bad); }
+  .fb-head{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .fb-head .avatar{ --size:38px; }
+  .fb-title{ font-weight:900; font-size:17px; }
+  .fb-title.correct{ color:var(--good); }
+  .fb-title.wrong{ color:var(--bad); }
+  .fb-pts{ margin-left:auto; font-family:"IBM Plex Mono", monospace; font-weight:600; color:var(--good); }
+  .fb-text{ font-size:15px; line-height:1.65; margin:0; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .chip{
+    font-size:13px; font-weight:700; padding:4px 10px; border-radius:999px;
+    background:color-mix(in srgb, var(--tcx) 16%, var(--surface)); color:var(--ink);
+    border:1px solid color-mix(in srgb, var(--tcx) 55%, transparent);
+  }
+  .src{ font-size:13.5px; color:var(--ink-soft); margin:10px 0 0; }
+
+  /* result */
+  .score-tile{ text-align:center; padding:6px 6px 2px; }
+  .score-number{
+    font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums;
+    font-size:48px; font-weight:600; line-height:1; margin:6px 0 8px; color:var(--accent);
+  }
+  .score-caption{ color:var(--ink-soft); font-size:15px; margin:0; line-height:1.6; }
+  .cheer{
+    margin:16px 0 0; padding:14px 16px; border-radius:14px;
+    background:var(--accent-soft); color:var(--accent-ink);
+    font-size:16px; font-weight:700; line-height:1.6; text-align:center;
+  }
+  .cheer .sig{ display:block; margin-top:6px; font-weight:700; font-size:14px; }
+  .review{ margin-top:6px; }
+  .review-item{
+    padding:12px 14px; border:1px solid var(--border); border-left:5px solid var(--tcx);
+    border-radius:12px; margin-top:10px; background:var(--surface);
+  }
+  .review-item .ri-head{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; font-weight:900; font-size:15px; margin-bottom:6px; }
+  .review-item .ri-head .avatar{ --size:28px; box-shadow:0 0 0 2px var(--tcx); }
+  .review-item .ri-mark{ margin-left:auto; font-size:13px; font-weight:700; }
+  .review-item .ri-mark.ok{ color:var(--good); }
+  .review-item .ri-mark.no{ color:var(--bad); }
+  .review-item p{ font-family:"Gowun Batang", serif; margin:0; font-size:15.5px; line-height:1.65; }
+  .review-item .src{ margin-top:6px; font-size:13px; }
+
+  /* dex */
+  .dex-total{ display:flex; align-items:center; gap:12px; }
+  .dex-bar{ flex:1; height:10px; border-radius:999px; background:var(--surface-soft); overflow:hidden; }
+  .dex-bar i{ display:block; height:100%; background:var(--accent); border-radius:999px; }
+  .dex-total strong{ font-family:"IBM Plex Mono", monospace; font-size:16px; }
+  .dex-person{ border-top:5px solid var(--tcx); }
+  .dex-head{ display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+  .dex-head .avatar{ --size:56px; }
+  .dex-head h3{ margin:0; font-family:"Gowun Batang", serif; font-size:22px; }
+  .dex-head .meta{ font-size:13.5px; color:var(--ink-soft); margin-top:2px; line-height:1.5; }
+  .dex-count{ margin-left:auto; font-family:"IBM Plex Mono", monospace; font-weight:600; font-size:15px; color:var(--ink-soft); white-space:nowrap; }
+  .dex-count.full{ color:var(--good); }
+  .dex-card{
+    margin-top:10px; padding:12px 14px; border-radius:12px;
+    background:color-mix(in srgb, var(--tcx) 9%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--tcx) 40%, transparent);
+  }
+  .dex-card p{ font-family:"Gowun Batang", serif; font-size:16px; line-height:1.7; margin:0; }
+  .dex-card .src{ margin-top:6px; font-size:13px; }
+  .dex-card.locked{
+    background:var(--bg); border:1.5px dashed var(--border); color:var(--ink-soft);
+    font-size:14px; font-weight:700; text-align:center;
+  }
+  .unit-tag{ display:inline-block; font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--surface-soft); color:var(--ink-soft); margin-right:6px; vertical-align:1px; }
+
+  .toast{
+    position:fixed; left:50%; bottom:22px; transform:translateX(-50%);
+    background:var(--ink); color:var(--bg); padding:10px 18px; border-radius:999px;
+    font-weight:700; font-size:14.5px; box-shadow:0 10px 30px -10px rgba(0,0,0,.4);
+    z-index:10; max-width:calc(100% - 32px); text-align:center;
+  }
+  .fade-in{ animation:fadeIn .3s ease both; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+
+  @media (max-width:420px){
+    body{ padding:16px 16px 40px; }
+    .card{ padding:18px; }
+    .grid{ gap:6px; }
+    .options{ grid-template-columns:1fr; }
+    .opt{ padding:10px 12px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tile-inner{ transition:none; }
+    .tile.shake .tile-inner{ animation:none; }
+    .fade-in{ animation:none; }
+    .progress-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  'use strict';
+  var app = document.getElementById('app');
+  var IMG = 'img/democ/';
+  var SIGN = '♥무늬T♥';
+
+  /* ---------- 사상가 (고정 색: 공통 규칙 표) ---------- */
+  var T = {
+    aristotle:{ name:'아리스토텔레스', c:'#A1887F', img:{src:'aristotle.png'},
+      kw:['사회적·정치적 동물','인간의 본성','분배적·교정적 정의 구분'] },
+    hobbes:{ name:'홉스', c:'#5B8DEF', img:{src:'hobbes.png'},
+      kw:['만인의 만인에 대한 투쟁','자기 보존','사회 계약'] },
+    locke:{ name:'로크', c:'#2BB3A3', img:{src:'locke.png'},
+      kw:['생명·재산 보호','저항권','사회 계약'] },
+    rousseau:{ name:'루소', c:'#F2795B', img:{src:'rousseau.png'},
+      kw:['사유 재산과 불평등','사회 계약','사형 찬성(살인자는 국가의 적)'] },
+    macintyre:{ name:'매킨타이어', c:'#E0A526', img:{src:'macintyre.png'}, book:'『덕의 상실』',
+      kw:['공동체주의','공동체의 역사 속 정체성','책임과 의무'] },
+    rawls:{ name:'롤스', c:'#8B6FD6', img:{src:'rawls.png'}, book:'『정의론』', years:'1921~2002',
+      about:'미국의 현대 철학자·윤리학자, ‘공정으로서의 정의’',
+      kw:['다수의 정의관','최후의 수단·처벌 감수','원초적 입장·무지의 베일','차등·기회균등의 원칙'] },
+    thoreau:{ name:'소로', c:'#4CAF50', img:{src:'thinkers3_cartoon.png', w:'430%', l:'-55%', t:'-208%'}, book:'『시민의 불복종』', years:'1817~1862',
+      about:'미국 사상가이자 문학가, 인두세 납부를 거부해 투옥',
+      kw:['법보다 양심','먼저 인간, 그다음 국민','즉각적인 저항'] },
+    singer:{ name:'싱어', c:'#F39C34', img:{src:'singer.png'}, book:'『실천윤리학』',
+      kw:['공리주의','손해보다 이익이 클 때','성공 가능성 고려','민주적 의사 결정 복원'] },
+    dworkin:{ name:'드워킨', c:'#3F51B5', img:{src:'dworkin_cartoon.png', w:'330%', l:'-62%', t:'-17%'}, years:'1931~2013',
+      kw:['헌법 정신','자율적인 판단'] },
+    niebuhr:{ name:'니부어', c:'#8D6E63', book:'『도덕적 인간과 비도덕적 사회』', years:'1892~1971',
+      about:'미국의 신학자이자 사회 윤리학자',
+      kw:['집단의 이기심','개인 윤리 + 사회 윤리','정치적 강제력'] },
+    nozick:{ name:'노직', c:'#E5609A', img:{src:'nozick.png'}, years:'1938~2002',
+      about:'자유 지상주의, ‘소유권으로서의 정의’',
+      kw:['소유 권리론','취득·양도·교정의 원칙','최소 국가론'] },
+    sandel:{ name:'샌델', c:'#607D8B', book:'『공정하다는 착각』',
+      kw:['능력주의 비판','재능의 우연성(운)','롤스 계승'] },
+    kant:{ name:'칸트', c:'#3A6EA5', img:{src:'kant.png'}, book:'『윤리 형이상학』',
+      kw:['응보주의','동등성의 원리','사형 찬성'] },
+    bentham:{ name:'벤담', c:'#7FA33A',
+      kw:['공리주의','처벌은 사회에 필요한 악','범죄 예방·교화'] },
+    beccaria:{ name:'베카리아', c:'#20A4C4', img:{src:'beccaria_cartoon.png', w:'300%', l:'-100%', t:'-22%'}, book:'『범죄와 형벌』', years:'1738~1794',
+      kw:['사형 폐지','종신 노역형','고통의 지속성'] }
+  };
+  var ORDER = ['aristotle','hobbes','locke','rousseau','macintyre','rawls','thoreau','singer','dworkin',
+               'niebuhr','nozick','sandel','kant','bentham','beccaria'];
+
+  /* ---------- 말 카드 (교과서·인물과 고전 문장 기반) ----------
+     u: '02' 시민성과 윤리 / '03' 사회 정의와 윤리
+     【 】 = 학습지 빈칸 정답 단어 */
+  var KIND = { q:'교과서 인용', b:'교과서 말풍선', c:'인물과 고전', d:'교과서 서술' };
+  var CARDS = [
+    {id:'ar1', w:'aristotle', u:'02', k:'d', t:'인간은 사회적·정치적 동물이다.'},
+    {id:'ar2', w:'aristotle', u:'02', k:'d', t:'국가는 인간의 【본성】에 의해 자연스럽게 형성된 것이므로 정당성을 갖는다.'},
+    {id:'ar3', w:'aristotle', u:'03', k:'d', t:'분배적 정의는 구성원의 가치와 기여도에 따른 비례적 분배로 실현되고, 교정적 정의는 이익과 손해의 불균형을 바로잡아 실현된다.'},
+
+    {id:'ho1', w:'hobbes', u:'02', k:'b', t:'자연 상태는 ‘만인의 만인에 대한 투쟁’ 상태야.'},
+    {id:'ho2', w:'hobbes', u:'02', k:'b', t:'자기 보존을 위해서 【계약】을 맺고 국가를 형성하게 돼.'},
+
+    {id:'lo1', w:'locke', u:'02', k:'b', t:'내 생명과 재산을 보호받기 위해서는 자연 상태에서 가졌던 평등, 자유 및 집행권을 입법부가 처리할 수 있도록 사회의 수중에 양도해야 해.'},
+    {id:'lo2', w:'locke', u:'02', k:'b', t:'정부가 생명과 재산을 지키지 못하면 저항권을 행사할 수 있어.'},
+    {id:'lo3', w:'locke', u:'02', k:'d', t:'계약을 통해 자연권을 양도받은 국가가 시민들을 제대로 보호하지 못한다면, 시민들은 계약을 파기하고 자기방어를 할 수 있다.'},
+
+    {id:'ro1', w:'rousseau', u:'02', k:'b', t:'평화로운 자연 상태에서 사유 재산이 증가함에 따라 점차 불평등과 예속 상태에 놓이게 돼. 이를 벗어나기 위해 사회 계약을 맺고 국가를 형성하게 돼.'},
+    {id:'ro2', w:'rousseau', u:'03', k:'d', t:'타인을 희생하여 생존하려는 살인자는 마땅히 자신의 생명을 희생해야 한다.'},
+    {id:'ro3', w:'rousseau', u:'03', k:'d', t:'법을 집행할 때 살인자는 시민이라기보다는 적으로서 간주해야 하며, 추방이나 죽음에 의해 국가로부터 분리되어야 한다.'},
+
+    {id:'ma1', w:'macintyre', u:'02', k:'b', s:'『덕의 상실』', t:'나의 정체성은 공동체의 역사 속에서 만들어집니다. 따라서 공동체 구성원으로서 책임과 의무를 다해야 합니다.'},
+    {id:'ma2', w:'macintyre', u:'02', k:'b', s:'『덕의 상실』', t:'나는 나의 가족, 나의 도시, 나의 부족, 나의 민족으로부터 다양한 빚과 유산, 정당한 기대와 의무를 물려받습니다.'},
+
+    {id:'ra1', w:'rawls', u:'02', k:'b', s:'『정의론』', t:'모든 사람은 기본적 자유를 누릴 수 있는 평등한 권리를 가져야 합니다. 다수의 이익을 위해 개인의 기본적 자유가 침해되는 것은 허용되지 않습니다.'},
+    {id:'ra2', w:'rawls', u:'02', k:'c', s:'『정의론』', t:'시민불복종은 소수자가 【다수】자의 정의감에 호소하여 정의의 원칙에 따라 법을 바꾸도록 하는 행위이다. 그리고 처벌을 감수해야 하며 비폭력을 전제로 해야 한다.'},
+    {id:'ra3', w:'rawls', u:'03', k:'d', t:'사회적·경제적 불평등은 최소 수혜자에게 최대의 이익이 보장되고, 불평등의 계기가 되는 사회적 지위가 모든 사람에게 개방될 때 정당화될 수 있다.'},
+    {id:'ra4', w:'rawls', u:'03', k:'d', t:'원초적 입장에서 사람들은 자신의 재능, 출신, 성별, 사회적 상황을 알지 못하는 무지의 베일을 쓰고 정의의 원칙에 합의한다.'},
+
+    {id:'th1', w:'thoreau', u:'02', k:'c', s:'『시민의 불복종』', t:'우리는 먼저 인간이어야 하고, 그다음에 국민이어야 한다고 나는 생각한다.'},
+    {id:'th2', w:'thoreau', u:'02', k:'c', s:'『시민의 불복종』', t:'법에 대한 존경심보다는 먼저 정의에 대한 존경심을 기르는 것이 바람직하다.'},
+    {id:'th3', w:'thoreau', u:'02', k:'c', s:'『시민의 불복종』', t:'시민이 한순간이라도 혹은 아주 적은 정도라도 자신의 【양심】을 입법자에게 맡겨야만 하는가? 그렇다면 사람들은 왜 【양심】을 가지고 있는가?'},
+
+    {id:'si1', w:'singer', u:'02', k:'c', s:'『실천윤리학』', t:'우리가 중단시키려고 하는 악의 크기와 우리의 행위가 가져올 법과 민주주의에 대한 존중심의 감소 정도를 저울질해 봐야 한다.'},
+    {id:'si2', w:'singer', u:'02', k:'c', s:'『실천윤리학』', t:'시민불복종은 민주주의적인 의사 결정을 좌절시킨다기보다는 복원하려는 시도이다.'},
+    {id:'si3', w:'singer', u:'02', k:'d', t:'시민불복종은 산출할 손해보다 【이익】이 더 큰 경우에, 성공 가능성을 고려하여 이루어져야 한다.'},
+
+    {id:'dw1', w:'dworkin', u:'02', k:'d', t:'헌법 정신에 어긋나는 법에 대해서는 시민불복종을 할 수 있다.'},
+    {id:'dw2', w:'dworkin', u:'02', k:'d', t:'헌법 정신에 어긋나는 법에 대한 시민불복종은 자신의 자율적인 판단에 따라 할 수 있다.'},
+
+    {id:'ni1', w:'niebuhr', u:'03', k:'d', t:'도덕적인 개인일지라도 【집단】에 소속되면 이기심을 조절하는 힘이 떨어져 비도덕적인 행동을 하기 쉽다.'},
+    {id:'ni2', w:'niebuhr', u:'03', k:'d', t:'집단 사이의 갈등은 힘의 불균형으로 인해 발생하기 때문에 개인 윤리만으로는 해결하는 데 한계가 있다.'},
+    {id:'ni3', w:'niebuhr', u:'03', k:'d', t:'사회 정의를 실현하려면 양심과 이타성을 강조하는 개인 윤리적 방법과 정치적 강제력을 동원하는 사회 윤리적 방법이 모두 필요하다.'},
+
+    {id:'no1', w:'nozick', u:'03', k:'d', t:'재화의 취득과 양도의 절차가 정당하다면 그 소유물에 대해 개인이 절대적인 권리를 갖는다.'},
+    {id:'no2', w:'nozick', u:'03', k:'d', t:'국가는 개인의 소유를 절도·사기로부터 보호하고 국방을 담당하는 역할 정도만 해야 한다.'},
+    {id:'no3', w:'nozick', u:'03', k:'d', t:'정당한 노동을 통해 얻은 소유물과 자유롭게 양도한 소유물에 대해 정당한 소유 권리를 가진다. 그 과정에서 부정의가 발생한다면 이를 교정해야 한다.'},
+
+    {id:'sa1', w:'sandel', u:'03', k:'q', s:'『공정하다는 착각』', t:'능력주의의 이상이 재능의 우연성을 외면함으로써, 또한 노력의 중요성을 과장함으로써 도덕적 흠을 갖는다.'},
+    {id:'sa2', w:'sandel', u:'03', k:'q', s:'『공정하다는 착각』', t:'재능과 노력을 보상하는 체제라고 생각하는 건, 승자들이 승리를 오직 자기 노력의 결과라고 여기게끔 한다. 그리고 그보다 운이 나빴던 사람들을 깔보도록 한다.'},
+
+    {id:'ka1', w:'kant', u:'03', k:'q', s:'『윤리 형이상학』', t:'시민 사회가 모든 구성원의 동의로써 해체될 때조차도 감옥에 있는 마지막 살인자는 반드시 처형되어야 한다.'},
+    {id:'ka2', w:'kant', u:'03', k:'d', t:'형벌은 어떤 다른 선을 촉진하기 위한 수단으로 가해져서는 안 되며, 언제나 범죄를 저질렀다는 오직 그 이유만으로 부과되어야 한다.'},
+    {id:'ka3', w:'kant', u:'03', k:'d', t:'이성적이고 자율적인 존재인 인간은 자신의 행위에 책임을 져야 하므로, 범죄 행위에 대한 대가로 응분의 처벌을 받는 것이 마땅하다.'},
+    {id:'ka4', w:'kant', u:'03', k:'d', t:'【동등성】의 원리에 따라 살인자에 대한 사형은 정당하며, 사형 이외의 형벌은 정의에 부합하지 않는다.'},
+
+    {id:'be1', w:'bentham', u:'03', k:'d', t:'처벌 그 자체는 고통을 증진하기 때문에 악하다고 볼 수 있지만, 이를 통해 사회적 이익이 증진되기 때문에 사회에 필요한 악이다.'},
+    {id:'be2', w:'bentham', u:'03', k:'d', t:'처벌은 범죄 예방과 범죄자 교화를 통해 사회의 이익을 증진하는 수단이다.'},
+
+    {id:'bc1', w:'beccaria', u:'03', k:'c', t:'국가라 할지라도 국민의 한 생명을 빼앗을 권리는 없다.'},
+    {id:'bc2', w:'beccaria', u:'03', k:'c', s:'『범죄와 형벌』', t:'사형은 우리를 더 낫게 한 적이 없는 무익한 형벌이다. 사람이 무슨 권리로 자기 이웃의 목을 벨 수 있단 말인가.'},
+    {id:'bc3', w:'beccaria', u:'03', k:'c', s:'『범죄와 형벌』', t:'인간의 정신에 가장 큰 영향을 미치는 것은 고통의 강렬함이 아니라 고통이 지속되는 정도다. 범죄자의 죽음은 끔찍하지만 순간적인 광경에 지나지 않는다.'},
+    {id:'bc4', w:'beccaria', u:'03', k:'d', t:'형벌은 타인의 범죄를 【억제】하기에 충분한 정도의 강도만을 가져야 한다. 한순간에 강렬한 인상만을 주는 사형보다 오랫동안 고통의 본보기가 되는 종신 노역형이 범죄 예방에 부합한다.'}
+  ];
+  var CARD_BY_ID = {};
+  CARDS.forEach(function(c){ CARD_BY_ID[c.id] = c; });
+
+  var SCOPES = {
+    '02':{ label:'Ⅳ-02', name:'시민성과 윤리' },
+    '03':{ label:'Ⅳ-03', name:'사회 정의와 윤리' },
+    'all':{ label:'전체', name:'Ⅳ-02 + Ⅳ-03' }
+  };
+
+  /* ---------- 저장 (localStorage는 try/catch) ---------- */
+  var KEY = 'whoSaid.v1';
+  function load(){
+    try{ var raw = localStorage.getItem(KEY); if(raw){ var o = JSON.parse(raw); if(o && typeof o === 'object') return o; } }catch(e){}
+    return {};
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+  var store = load();
+  if(!Array.isArray(store.got)) store.got = [];
+  if(!store.scope || !SCOPES[store.scope]) store.scope = 'all';
+  if(store.pairs !== 6 && store.pairs !== 8) store.pairs = 6;
+  function collect(id){
+    if(store.got.indexOf(id) === -1){ store.got.push(id); save(); return true; }
+    return false;
+  }
+
+  /* ---------- 테마 ---------- */
+  var root = document.documentElement;
+  if(store.theme === 'light' || store.theme === 'dark') root.setAttribute('data-theme', store.theme);
+  function isDark(){
+    var t = root.getAttribute('data-theme');
+    if(t) return t === 'dark';
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function toggleTheme(){
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    store.theme = next; save();
+    var b = document.querySelector('.theme-btn'); if(b) b.outerHTML = themeBtn();
+  }
+  var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+  function themeBtn(){
+    var d = isDark();
+    return '<button type="button" class="theme-btn" data-act="theme" aria-label="' + (d ? '밝은 화면으로' : '어두운 화면으로') + '">' + (d ? SUN : MOON) + '<span>' + (d ? '밝게' : '어둡게') + '</span></button>';
+  }
+
+  /* ---------- 유틸 ---------- */
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  function rich(s){ return esc(s).replace(/【(.+?)】/g, '<b class="blank">$1</b>'); }
+  function plain(s){ return String(s).replace(/[【】]/g, ''); }
+  function shuffle(a){ a = a.slice(); for(var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function cardsIn(scope){ return CARDS.filter(function(c){ return scope === 'all' || c.u === scope; }); }
+  function thinkersIn(scope){
+    var seen = {};
+    cardsIn(scope).forEach(function(c){ seen[c.w] = true; });
+    return ORDER.filter(function(k){ return seen[k]; });
+  }
+  function srcLine(c){
+    return (c.s ? c.s + ' · ' : '') + KIND[c.k] + ' (' + SCOPES[c.u].label + ')';
+  }
+  function tcStyle(k){ return 'style="--tc:' + T[k].c + '"'; }
+  function avatar(k, size){
+    var p = T[k], st = '--tc:' + p.c + ';' + (size ? '--size:' + size + 'px;' : '');
+    if(p.img){
+      var im = p.img, inner;
+      if(im.w){
+        inner = '<img src="' + IMG + im.src + '" alt="" style="width:' + im.w + ';left:' + im.l + ';top:' + im.t + '" loading="lazy">';
+      }else{
+        inner = '<img class="full" src="' + IMG + im.src + '" alt="" loading="lazy">';
+      }
+      return '<span class="avatar tc has-img" style="' + st + '" role="img" aria-label="' + esc(p.name) + '">' + inner + '</span>';
+    }
+    return '<span class="avatar tc" style="' + st + '" role="img" aria-label="' + esc(p.name) + '">' + esc(p.name.charAt(0)) + '</span>';
+  }
+  function chips(k){
+    return '<div class="chips">' + T[k].kw.map(function(w){ return '<span class="chip tc" ' + tcStyle(k) + '>' + esc(w) + '</span>'; }).join('') + '</div>';
+  }
+  var toastTimer = null;
+  function toast(msg){
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.hidden = true; }, 1800);
+  }
+  function fmtTime(sec){ var m = Math.floor(sec / 60), s = sec % 60; return m + ':' + (s < 10 ? '0' : '') + s; }
+  function topbar(back){
+    return '<div class="topbar">' + (back ? '<button type="button" class="back-btn" data-act="home">← 처음으로</button>' : '') + themeBtn() + '</div>';
+  }
+  function footer(){ return '<p class="signature">' + SIGN + '</p>'; }
+
+  var timers = [];
+  function clearTimers(){ timers.forEach(function(t){ clearInterval(t); clearTimeout(t); }); timers = []; }
+  function later(fn, ms){ var t = setTimeout(fn, ms); timers.push(t); return t; }
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* =========================================================
+     홈
+     ========================================================= */
+  var ICON_MEM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="8" height="12" rx="2"/><rect x="13" y="7" width="8" height="12" rx="2"/><path d="M7 9.5v3M15.5 11.5h3"/></svg>';
+  var ICON_QUIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>';
+  var ICON_DEX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v16H5.5A1.5 1.5 0 0 0 4 20.5z"/><path d="M4 20.5A1.5 1.5 0 0 0 5.5 22H19v-3M8 7h7M8 10.5h5"/></svg>';
+
+  function renderHome(){
+    clearTimers();
+    var sc = store.scope;
+    var roster = thinkersIn(sc).map(function(k){
+      return '<div class="roster-item">' + avatar(k, 44) + '<span>' + esc(T[k].name) + '</span></div>';
+    }).join('');
+    var scopePills = ['02','03','all'].map(function(s){
+      return '<button type="button" class="pill' + (s === sc ? ' active' : '') + '" data-act="scope" data-v="' + s + '" aria-pressed="' + (s === sc) + '">' + SCOPES[s].label + '<small>' + SCOPES[s].name + '</small></button>';
+    }).join('');
+    var pairPills = [6, 8].map(function(n){
+      return '<button type="button" class="pill' + (n === store.pairs ? ' active' : '') + '" data-act="pairs" data-v="' + n + '" aria-pressed="' + (n === store.pairs) + '">' + n + '쌍<small>' + (n === 6 ? '카드 12장' : '카드 16장') + '</small></button>';
+    }).join('');
+    app.innerHTML = topbar(false) +
+      '<div class="fade-in">' +
+      '<p class="eyebrow">현대사회와 윤리 · Ⅳ. 민주시민과 윤리</p>' +
+      '<h1 class="title">누가 한 말일까?</h1>' +
+      '<p class="lede">교과서에 나온 사상가들의 말을 카드로 모았어요. 말을 읽고 누가 한 말인지 맞혀 보세요. 맞힌 카드는 <b>사상가 도감</b>에 차곡차곡 모입니다.</p>' +
+
+      '<div class="card">' +
+        '<span class="section-label">① 범위 고르기</span>' +
+        '<div class="pill-row">' + scopePills + '</div>' +
+        '<div class="roster" aria-label="등장 사상가">' + roster + '</div>' +
+        '<p class="hint">사상가마다 고유한 색이 있어요. 색을 기억해 두면 도감에서 찾기 쉬워요.</p>' +
+      '</div>' +
+
+      '<div class="card">' +
+        '<span class="section-label">② 게임 고르기</span>' +
+        '<div class="modes">' +
+          '<button type="button" class="mode-btn" data-act="memory">' +
+            '<span class="mode-ico" style="background:color-mix(in srgb, #5B8DEF 20%, var(--surface));color:#4A7BE0">' + ICON_MEM + '</span>' +
+            '<span><b class="mt">짝 맞추기</b><span class="desc">사상가 카드와 말 카드를 뒤집어 짝을 찾아요. 시도 횟수와 시간을 재요.</span></span><span class="chev" aria-hidden="true">›</span>' +
+          '</button>' +
+          '<div class="pill-row" style="padding:0 2px">' + pairPills + '</div>' +
+          '<button type="button" class="mode-btn" data-act="quiz">' +
+            '<span class="mode-ico" style="background:color-mix(in srgb, #E07B12 20%, var(--surface));color:#D9730F">' + ICON_QUIZ + '</span>' +
+            '<span><b class="mt">스피드 퀴즈</b><span class="desc">말 카드 10장! 빨리, 연속으로 맞힐수록 점수가 올라가요.</span></span><span class="chev" aria-hidden="true">›</span>' +
+          '</button>' +
+          '<button type="button" class="mode-btn" data-act="dex">' +
+            '<span class="mode-ico" style="background:color-mix(in srgb, #2BB3A3 20%, var(--surface));color:#1F9A8C">' + ICON_DEX + '</span>' +
+            '<span><b class="mt">사상가 도감</b><span class="desc">지금까지 맞힌 말 카드 <b>' + store.got.length + '</b> / ' + CARDS.length + '장을 사상가별로 복습해요.</span></span><span class="chev" aria-hidden="true">›</span>' +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+      footer() + '</div>';
+  }
+
+  /* =========================================================
+     짝 맞추기
+     ========================================================= */
+  var M = null;
+  function pickMemoryCard(k, scope){
+    var pool = cardsIn(scope).filter(function(c){ return c.w === k; });
+    var short = pool.filter(function(c){ return plain(c.t).length <= 70; });
+    if(short.length) return shuffle(short)[0];
+    return pool.slice().sort(function(a, b){ return a.t.length - b.t.length; })[0];
+  }
+  function startMemory(){
+    clearTimers();
+    var scope = store.scope;
+    var people = shuffle(thinkersIn(scope)).slice(0, store.pairs);
+    var tiles = [];
+    people.forEach(function(k){
+      var c = pickMemoryCard(k, scope);
+      tiles.push({ kind:'p', w:k });
+      tiles.push({ kind:'q', w:k, card:c });
+    });
+    M = { scope:scope, tiles:shuffle(tiles), open:[], matched:0, pairs:people.length, tries:0, sec:0, started:false, lock:false, last:null, log:[] };
+    M.tiles.forEach(function(t, i){ t.i = i; t.up = false; t.done = false; });
+    renderMemory();
+  }
+  function tileHTML(t){
+    var front;
+    if(t.kind === 'p'){
+      front = '<span class="face front person tc" ' + tcStyle(t.w) + '>' + avatar(t.w) + '<span class="nm' + (T[t.w].name.length > 4 ? ' long' : '') + '">' + esc(T[t.w].name) + '</span></span>';
+    }else{
+      front = '<span class="face front quote tc" ' + tcStyle(t.w) + '><span class="qm" aria-hidden="true">“</span><span class="qt">' + rich(t.card.t) + '</span></span>';
+    }
+    var label = t.up || t.done ? (t.kind === 'p' ? '사상가 카드: ' + T[t.w].name : '말 카드: ' + plain(t.card.t)) : '뒤집힌 카드 ' + (t.i + 1);
+    return '<button type="button" class="tile tc' + (t.up || t.done ? ' up' : '') + (t.done ? ' matched' : '') + '" ' + tcStyle(t.w) +
+      ' data-act="flip" data-i="' + t.i + '" aria-label="' + esc(label) + '"' + (t.done ? ' aria-disabled="true"' : '') + '>' +
+      '<span class="tile-inner"><span class="face back" aria-hidden="true">?</span>' + front + '</span></button>';
+  }
+  function renderMemory(){
+    app.innerHTML = topbar(true) +
+      '<p class="eyebrow">짝 맞추기 · ' + SCOPES[M.scope].label + ' ' + SCOPES[M.scope].name + '</p>' +
+      '<h2 class="sub">사상가와 그 사람의 말을 짝지어요</h2>' +
+      '<p class="lede" style="margin-bottom:14px">카드 두 장을 뒤집어 <b>사상가 카드 + 말 카드</b>가 맞으면 짝 성공!</p>' +
+      '<div class="stats">' +
+        '<div class="stat"><small>찾은 짝</small><strong id="m-found">' + M.matched + '/' + M.pairs + '</strong></div>' +
+        '<div class="stat"><small>시도</small><strong id="m-tries">' + M.tries + '</strong></div>' +
+        '<div class="stat"><small>시간</small><strong id="m-time">' + fmtTime(M.sec) + '</strong></div>' +
+      '</div>' +
+      '<div class="grid" id="grid">' + M.tiles.map(tileHTML).join('') + '</div>' +
+      '<div class="reader" id="reader" aria-live="polite">' + readerHTML() + '</div>' +
+      footer();
+  }
+  function readerHTML(){
+    var openQ = M.open.map(function(i){ return M.tiles[i]; }).filter(function(t){ return t.kind === 'q'; });
+    if(M.last && M.last.type === 'ok'){
+      var c = M.last.card;
+      return '<p class="r-label" style="color:var(--good)">짝 성공! ' + esc(T[c.w].name) + '의 말</p><p class="r-quote">“' + rich(c.t) + '”</p><p class="r-src">출처: ' + esc(srcLine(c)) + '</p>';
+    }
+    if(openQ.length){
+      return '<p class="r-label">펼친 말 카드</p>' + openQ.map(function(t){ return '<p class="r-quote">“' + rich(t.card.t) + '”</p>'; }).join('');
+    }
+    if(M.last && M.last.type === 'no'){
+      return '<p class="r-label" style="color:var(--bad)">짝이 아니에요. 카드 위치를 기억해 두세요!</p><p class="r-quote" style="font-size:15px;color:var(--ink-soft)">사상가 카드와 말 카드를 한 장씩 뒤집어야 짝이 될 수 있어요.</p>';
+    }
+    return '<p class="r-label">말 카드를 뒤집으면 여기에 전체 문장이 보여요.</p><p class="r-quote" style="font-size:15px;color:var(--ink-soft)">카드 글씨가 작으면 여기서 읽으세요.</p>';
+  }
+  function updateTile(i){
+    var el = app.querySelector('.tile[data-i="' + i + '"]');
+    if(!el) return;
+    var t = M.tiles[i];
+    el.classList.toggle('up', t.up || t.done);
+    el.classList.toggle('matched', t.done);
+    var label = t.up || t.done ? (t.kind === 'p' ? '사상가 카드: ' + T[t.w].name : '말 카드: ' + plain(t.card.t)) : '뒤집힌 카드 ' + (i + 1);
+    el.setAttribute('aria-label', label);
+    if(t.done) el.setAttribute('aria-disabled', 'true');
+  }
+  function updateMemStats(){
+    var a = document.getElementById('m-found'), b = document.getElementById('m-tries'), r = document.getElementById('reader');
+    if(a) a.textContent = M.matched + '/' + M.pairs;
+    if(b) b.textContent = M.tries;
+    if(r){ r.className = 'reader' + (M.last && M.last.type === 'ok' && !M.open.length ? ' ok' : ''); r.innerHTML = readerHTML(); }
+  }
+  function flip(i){
+    if(!M || M.lock) return;
+    var t = M.tiles[i];
+    if(!t || t.done || t.up) return;
+    if(!M.started){
+      M.started = true;
+      timers.push(setInterval(function(){
+        M.sec++;
+        var el = document.getElementById('m-time'); if(el) el.textContent = fmtTime(M.sec);
+      }, 1000));
+    }
+    t.up = true; M.open.push(i); M.last = null;
+    updateTile(i);
+    if(M.open.length === 2){
+      M.tries++;
+      var a = M.tiles[M.open[0]], b = M.tiles[M.open[1]];
+      var ok = a.w === b.w && a.kind !== b.kind;
+      if(ok){
+        a.done = b.done = true; a.up = b.up = false;
+        var q = a.kind === 'q' ? a : b;
+        M.matched++; M.open = [];
+        M.last = { type:'ok', card:q.card };
+        M.log.push(q.card);
+        collect(q.card.id);
+        later(function(){ updateTile(a.i); updateTile(b.i); }, reduceMotion ? 0 : 300);
+        updateMemStats();
+        if(M.matched === M.pairs){
+          clearTimers();
+          later(renderMemoryEnd, reduceMotion ? 500 : 1100);
+        }
+      }else{
+        M.lock = true;
+        updateMemStats();
+        later(function(){
+          [a, b].forEach(function(x){
+            var el = app.querySelector('.tile[data-i="' + x.i + '"]');
+            if(el && !reduceMotion){ el.classList.add('shake'); }
+          });
+        }, 450);
+        later(function(){
+          a.up = b.up = false; M.open = []; M.lock = false;
+          M.last = { type:'no' };
+          [a, b].forEach(function(x){
+            var el = app.querySelector('.tile[data-i="' + x.i + '"]');
+            if(el) el.classList.remove('shake');
+            updateTile(x.i);
+          });
+          updateMemStats();
+        }, 1300);
+      }
+    }else{
+      updateMemStats();
+    }
+  }
+  function renderMemoryEnd(){
+    clearTimers();
+    var ratio = M.tries / M.pairs, msg;
+    if(ratio <= 1.5) msg = '와, 기억력 천재! 사상가들의 말을 거의 한 번에 찾아냈어요. 이제 스피드 퀴즈로 실력을 뽐내 볼까요?';
+    else if(ratio <= 2.2) msg = '아주 잘했어요! 사상가와 그 사람의 핵심 주장이 머릿속에서 잘 연결되고 있어요.';
+    else if(ratio <= 3) msg = '좋아요, 끝까지 다 찾았어요! 한 번 더 하면 시도 횟수가 확 줄어들 거예요.';
+    else msg = '끝까지 해낸 것이 대단해요! 아래에서 짝지은 말을 한 번 더 읽고 다시 도전해 봐요.';
+    var review = M.log.map(function(c){
+      return '<div class="review-item tc" ' + tcStyle(c.w) + '><div class="ri-head">' + avatar(c.w, 28) + esc(T[c.w].name) + '</div><p>“' + rich(c.t) + '”</p><p class="src">출처: ' + esc(srcLine(c)) + '</p></div>';
+    }).join('');
+    app.innerHTML = topbar(true) + '<div class="fade-in">' +
+      '<div class="card"><div class="score-tile">' +
+        '<p class="eyebrow">짝 맞추기 완료 · ' + SCOPES[M.scope].label + '</p>' +
+        '<p class="score-number">' + M.tries + '번</p>' +
+        '<p class="score-caption">' + M.pairs + '쌍을 찾는 데 <b>' + M.tries + '번</b> 시도, <b>' + fmtTime(M.sec) + '</b> 걸렸어요.</p>' +
+        '<div class="cheer">' + msg + '<span class="sig">— ' + SIGN + '</span></div>' +
+      '</div>' +
+      '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="memory">한 판 더</button><button type="button" class="btn btn-ghost" data-act="dex">도감 보기</button></div></div>' +
+      '<div class="card"><span class="section-label">이번 판에 짝지은 말</span><div class="review">' + review + '</div></div>' +
+      footer() + '</div>';
+    window.scrollTo(0, 0);
+  }
+
+  /* =========================================================
+     스피드 퀴즈
+     ========================================================= */
+  var Q = null;
+  var QN = 10;
+  function startQuiz(){
+    clearTimers();
+    var scope = store.scope;
+    var people = thinkersIn(scope);
+    // 같은 사상가가 너무 몰리지 않게: 사상가별로 섞은 뒤 돌아가며 뽑기
+    var by = {};
+    shuffle(cardsIn(scope)).forEach(function(c){ (by[c.w] = by[c.w] || []).push(c); });
+    var order = shuffle(Object.keys(by)), picks = [];
+    while(picks.length < QN){
+      var added = false;
+      for(var i = 0; i < order.length && picks.length < QN; i++){
+        var arr = by[order[i]];
+        if(arr.length){ picks.push(arr.shift()); added = true; }
+      }
+      if(!added) break;
+      order = shuffle(order);
+    }
+    picks = shuffle(picks);
+    Q = {
+      scope:scope, people:people, idx:0, score:0, combo:0, best:0, right:0,
+      items:picks.map(function(c){
+        var others = shuffle(people.filter(function(k){ return k !== c.w; })).slice(0, 3);
+        return { card:c, opts:shuffle(others.concat([c.w])), pick:null, pts:0 };
+      }),
+      t0:0
+    };
+    renderQuestion();
+  }
+  function renderQuestion(){
+    var it = Q.items[Q.idx];
+    var c = it.card;
+    var answered = it.pick !== null;
+    var pct = ((Q.idx + (answered ? 1 : 0)) / Q.items.length) * 100;
+    var opts = it.opts.map(function(k){
+      var cls = 'opt';
+      if(answered){
+        if(k === c.w) cls += ' correct';
+        else if(k === it.pick) cls += ' wrong';
+        else cls += ' dim';
+      }
+      return '<button type="button" class="' + cls + '" data-act="answer" data-v="' + k + '"' + (answered ? ' disabled' : '') + '>' + avatar(k) + '<span>' + esc(T[k].name) + '</span></button>';
+    }).join('');
+    var fb = '';
+    if(answered){
+      var ok = it.pick === c.w;
+      fb = '<div class="feedback ' + (ok ? 'correct' : 'wrong') + ' fade-in" role="status">' +
+        '<div class="fb-head">' + avatar(c.w) + '<span class="fb-title ' + (ok ? 'correct' : 'wrong') + '">' + (ok ? '정답! ' : '아쉬워요. 정답은 ') + esc(T[c.w].name) + (ok ? '' : '') + '</span>' +
+        (ok ? '<span class="fb-pts">+' + it.pts + '</span>' : '') + '</div>' +
+        (ok ? '' : '<p class="fb-text"><b>' + esc(T[c.w].name) + '</b>의 핵심 키워드를 기억해 두세요.</p>') +
+        chips(c.w) +
+        '<p class="src">출처: ' + esc(srcLine(c)) + '</p>' +
+      '</div>' +
+      '<button type="button" class="btn btn-primary" data-act="next">' + (Q.idx === Q.items.length - 1 ? '결과 보기' : '다음 문제 →') + '</button>';
+    }
+    app.innerHTML = topbar(true) +
+      '<p class="eyebrow">스피드 퀴즈 · ' + SCOPES[Q.scope].label + ' ' + SCOPES[Q.scope].name + '</p>' +
+      '<div class="stats">' +
+        '<div class="stat"><small>문제</small><strong>' + (Q.idx + 1) + '/' + Q.items.length + '</strong></div>' +
+        '<div class="stat"><small>점수</small><strong>' + Q.score + '</strong></div>' +
+        '<div class="stat"><small>콤보</small><strong>' + Q.combo + '</strong></div>' +
+      '</div>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<div class="quote-card' + (answered ? '' : ' fade-in') + '"><span class="big-q" aria-hidden="true">“</span><p>' + rich(c.t) + '</p>' +
+        '<span class="q-kind">이 말, 누가 했을까?' + (Q.combo >= 2 && !answered ? ' · <span class="combo hot">' + Q.combo + '연속 정답 중!</span>' : '') + '</span></div>' +
+      '<div class="options" role="group" aria-label="사상가 고르기">' + opts + '</div>' +
+      fb + footer();
+    if(!answered) Q.t0 = Date.now();
+    else{
+      var nb = app.querySelector('[data-act="next"]'); if(nb) nb.focus({ preventScroll:true });
+      var f = app.querySelector('.feedback'); if(f && f.scrollIntoView){ f.scrollIntoView({ block:'nearest', behavior: reduceMotion ? 'auto' : 'smooth' }); }
+    }
+  }
+  function answer(k){
+    var it = Q.items[Q.idx];
+    if(it.pick !== null) return;
+    it.pick = k;
+    if(k === it.card.w){
+      var sec = (Date.now() - Q.t0) / 1000;
+      var speed = Math.max(0, Math.round(50 - sec * 4));
+      Q.combo++; Q.best = Math.max(Q.best, Q.combo); Q.right++;
+      var comboBonus = Math.min(Q.combo - 1, 5) * 10;
+      it.pts = 100 + speed + comboBonus;
+      Q.score += it.pts;
+      collect(it.card.id);
+      if(Q.combo >= 3) toast(Q.combo + '연속 정답! 콤보 보너스 +' + comboBonus);
+    }else{
+      Q.combo = 0;
+    }
+    renderQuestion();
+  }
+  function renderQuizEnd(){
+    var r = Q.right, msg;
+    if(r === QN) msg = '10문제 모두 정답! 사상가 박사 인정합니다. 이 실력이면 단원 평가도 걱정 없어요!';
+    else if(r >= 8) msg = '정말 잘했어요! 틀린 문제의 키워드만 한 번 더 보면 완벽해요.';
+    else if(r >= 5) msg = '절반 이상 맞혔어요, 좋은 출발이에요! 도감에서 사상가별 말을 복습하고 다시 도전해 봐요.';
+    else msg = '괜찮아요, 처음엔 누구나 헷갈려요. 짝 맞추기로 사상가와 말을 먼저 익히고 다시 오세요. 분명 늘어요!';
+    var review = Q.items.map(function(it, i){
+      var ok = it.pick === it.card.w, c = it.card;
+      return '<div class="review-item tc" ' + tcStyle(c.w) + '><div class="ri-head">' + avatar(c.w, 28) + (i + 1) + '. ' + esc(T[c.w].name) +
+        '<span class="ri-mark ' + (ok ? 'ok' : 'no') + '">' + (ok ? '정답 +' + it.pts : '오답 (고른 답: ' + esc(T[it.pick].name) + ')') + '</span></div>' +
+        '<p>“' + rich(c.t) + '”</p><p class="src">출처: ' + esc(srcLine(c)) + '</p></div>';
+    }).join('');
+    if(store.best == null || Q.score > store.best){ store.best = Q.score; save(); }
+    app.innerHTML = topbar(true) + '<div class="fade-in">' +
+      '<div class="card"><div class="score-tile">' +
+        '<p class="eyebrow">스피드 퀴즈 결과 · ' + SCOPES[Q.scope].label + '</p>' +
+        '<p class="score-number">' + Q.score + '점</p>' +
+        '<p class="score-caption">' + QN + '문제 중 <b>' + r + '개</b> 정답 · 최고 콤보 <b>' + Q.best + '</b> · 내 최고 점수 <b>' + store.best + '</b></p>' +
+        '<div class="cheer">' + msg + '<span class="sig">— ' + SIGN + '</span></div>' +
+      '</div>' +
+      '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="quiz">다시 도전</button><button type="button" class="btn btn-ghost" data-act="dex">도감 보기</button></div></div>' +
+      '<div class="card"><span class="section-label">문제 다시 보기</span><div class="review">' + review + '</div></div>' +
+      footer() + '</div>';
+    window.scrollTo(0, 0);
+  }
+
+  /* =========================================================
+     사상가 도감
+     ========================================================= */
+  var resetArmed = false;
+  function renderDex(){
+    clearTimers();
+    var total = CARDS.length, got = store.got.filter(function(id){ return CARD_BY_ID[id]; }).length;
+    var people = ORDER.map(function(k){
+      var p = T[k];
+      var mine = CARDS.filter(function(c){ return c.w === k; });
+      var have = mine.filter(function(c){ return store.got.indexOf(c.id) !== -1; });
+      var meta = [p.years, p.about, p.book ? '대표 저서 ' + p.book : ''].filter(Boolean).join(' · ');
+      var units = {}; mine.forEach(function(c){ units[c.u] = true; });
+      var unitTags = Object.keys(units).sort().map(function(u){ return '<span class="unit-tag">' + SCOPES[u].label + '</span>'; }).join('');
+      var list = mine.map(function(c){
+        if(store.got.indexOf(c.id) !== -1){
+          return '<div class="dex-card tc" ' + tcStyle(k) + '><p>“' + rich(c.t) + '”</p><p class="src">출처: ' + esc(srcLine(c)) + '</p></div>';
+        }
+        return '<div class="dex-card locked">？ 아직 못 찾은 말 카드 <span class="unit-tag" style="margin-left:6px">' + SCOPES[c.u].label + '</span></div>';
+      }).join('');
+      return '<div class="card dex-person tc" ' + tcStyle(k) + '>' +
+        '<div class="dex-head">' + avatar(k, 56) + '<div><h3>' + esc(p.name) + '</h3><div class="meta">' + unitTags + esc(meta) + '</div></div>' +
+        '<span class="dex-count' + (have.length === mine.length ? ' full' : '') + '">' + have.length + '/' + mine.length + '</span></div>' +
+        (have.length ? chips(k) : '') + list + '</div>';
+    }).join('');
+    app.innerHTML = topbar(true) + '<div class="fade-in">' +
+      '<p class="eyebrow">사상가 도감</p>' +
+      '<h2 class="sub">내가 모은 말 카드</h2>' +
+      '<p class="lede" style="margin-bottom:14px">짝 맞추기·스피드 퀴즈에서 맞힌 말 카드가 사상가별로 모여요. <b class="blank">빨간 굵은 글씨</b>는 학습지 빈칸 정답이에요.</p>' +
+      '<div class="card"><div class="dex-total"><div class="dex-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + got + '"><i style="width:' + (got / total * 100) + '%"></i></div><strong>' + got + '/' + total + '</strong></div>' +
+      (got === 0 ? '<p class="hint">아직 모은 카드가 없어요. 게임을 해서 첫 카드를 모아 보세요!</p>' : (got === total ? '<p class="hint" style="color:var(--good);font-weight:700">도감 완성! 모든 말 카드를 모았어요. ' + SIGN + '</p>' : '')) +
+      '</div>' + people +
+      '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="quiz">스피드 퀴즈로 더 모으기</button><button type="button" class="btn btn-ghost" data-act="reset">' + (resetArmed ? '정말 지울까요? 한 번 더 누르기' : '도감 초기화') + '</button></div>' +
+      '<p class="hint" style="text-align:center">도감은 이 기기의 브라우저에만 저장돼요.</p>' +
+      footer() + '</div>';
+  }
+
+  /* ---------- 이벤트 ---------- */
+  app.addEventListener('click', function(e){
+    var b = e.target.closest('[data-act]');
+    if(!b) return;
+    var act = b.getAttribute('data-act'), v = b.getAttribute('data-v');
+    if(act !== 'reset') resetArmed = false;
+    switch(act){
+      case 'theme': toggleTheme(); break;
+      case 'home': renderHome(); window.scrollTo(0, 0); break;
+      case 'scope': store.scope = v; save(); renderHome(); break;
+      case 'pairs': store.pairs = Number(v); save(); renderHome(); break;
+      case 'memory': startMemory(); window.scrollTo(0, 0); break;
+      case 'quiz': startQuiz(); window.scrollTo(0, 0); break;
+      case 'dex': renderDex(); window.scrollTo(0, 0); break;
+      case 'flip': flip(Number(b.getAttribute('data-i'))); break;
+      case 'answer': answer(v); break;
+      case 'next':
+        if(Q.idx < Q.items.length - 1){ Q.idx++; renderQuestion(); window.scrollTo(0, 0); }
+        else renderQuizEnd();
+        break;
+      case 'reset':
+        if(!resetArmed){ resetArmed = true; renderDex(); }
+        else{ resetArmed = false; store.got = []; save(); renderDex(); toast('도감을 비웠어요.'); }
+        break;
+    }
+  });
+
+  renderHome();
+})();
+</script>
+</body>
+</html>

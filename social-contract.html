@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>국가는 왜 필요할까</title>
+<meta name="description" content="현대사회와 윤리 Ⅳ-02 시민과 국가의 관계 — 홉스·로크·루소의 사회 계약론과 국가 권위의 정당성">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#E8F1FC;
+    --hero-a:#CFE3FA; --hero-b:#E8F1FC;
+    --surface:#FFFFFF;
+    --surface-2:#EEF4FC;
+    --ink:#1B2533;
+    --ink-soft:#4C5A6E;
+    --ink-faint:#718099;
+    --line:#D3E1F2;
+    --line-strong:#B6CBE6;
+
+    --accent:#2F86DE;
+    --accent-ink:#1A5DA6;
+    --accent-soft:#DCEBFB;
+
+
+    --hobbes:#5B8DEF;  --hobbes-ink:#2A58B8;  --hobbes-soft:#E8EFFD;  --hobbes-soft-2:#D6E3FB;
+    --locke:#2BB3A3;   --locke-ink:#11786C;   --locke-soft:#DFF4F1;   --locke-soft-2:#C7EBE6;
+    --rousseau:#F2795B;--rousseau-ink:#B4432A;--rousseau-soft:#FDEBE5;--rousseau-soft-2:#FAD8CC;
+    --aristotle:#A1887F;--aristotle-ink:#6B544B;--aristotle-soft:#F1ECE9;--aristotle-soft-2:#E5DCD8;
+    --confucian:#5E8C6A;--confucian-ink:#376445;--confucian-soft:#E5F0E8;--confucian-soft-2:#D2E5D7;
+
+    --good:#2E7D53; --good-soft:#E4F3E9;
+    --bad:#C1443A;  --bad-soft:#FBE7E4;
+
+    --shadow: 0 1px 2px rgba(31,36,34,0.05), 0 10px 28px -16px rgba(31,36,34,0.20);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1A2A;
+    --hero-a:#16294A; --hero-b:#0F1A2A;
+      --surface:#172438;
+      --surface-2:#1E2D44;
+      --ink:#E6EEF8;
+      --ink-soft:#A7B6CB;
+      --ink-faint:#7A8BA3;
+      --line:#2A3B55;
+      --line-strong:#3B4F6D;
+
+      --accent:#6BB2F2;
+      --accent-ink:#CBE3FB;
+      --accent-soft:#1B3352;
+
+
+      --hobbes:#86AAF5;  --hobbes-ink:#C2D5FB;  --hobbes-soft:#1E2A44;  --hobbes-soft-2:#273657;
+      --locke:#4FD1C0;   --locke-ink:#A9EDE4;   --locke-soft:#15332F;   --locke-soft-2:#1C433D;
+      --rousseau:#F79A80;--rousseau-ink:#FBC8B9;--rousseau-soft:#3D241D;--rousseau-soft-2:#4E2E25;
+      --aristotle:#C7B3AA;--aristotle-ink:#E6D9D3;--aristotle-soft:#322A27;--aristotle-soft-2:#403633;
+      --confucian:#8CC29B;--confucian-ink:#C5E4CD;--confucian-soft:#1F3226;--confucian-soft-2:#284031;
+
+      --good:#74CE9B; --good-soft:#1E3527;
+      --bad:#E8867B;  --bad-soft:#3B2622;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px -14px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F1A2A;
+    --hero-a:#16294A; --hero-b:#0F1A2A;
+    --surface:#172438;
+    --surface-2:#1E2D44;
+    --ink:#E6EEF8;
+    --ink-soft:#A7B6CB;
+    --ink-faint:#7A8BA3;
+    --line:#2A3B55;
+    --line-strong:#3B4F6D;
+
+    --accent:#6BB2F2;
+    --accent-ink:#CBE3FB;
+    --accent-soft:#1B3352;
+
+
+    --hobbes:#86AAF5;  --hobbes-ink:#C2D5FB;  --hobbes-soft:#1E2A44;  --hobbes-soft-2:#273657;
+    --locke:#4FD1C0;   --locke-ink:#A9EDE4;   --locke-soft:#15332F;   --locke-soft-2:#1C433D;
+    --rousseau:#F79A80;--rousseau-ink:#FBC8B9;--rousseau-soft:#3D241D;--rousseau-soft-2:#4E2E25;
+    --aristotle:#C7B3AA;--aristotle-ink:#E6D9D3;--aristotle-soft:#322A27;--aristotle-soft-2:#403633;
+    --confucian:#8CC29B;--confucian-ink:#C5E4CD;--confucian-soft:#1F3226;--confucian-soft-2:#284031;
+
+    --good:#74CE9B; --good-soft:#1E3527;
+    --bad:#E8867B;  --bad-soft:#3B2622;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px -14px rgba(0,0,0,0.6);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; scroll-padding-top:72px; overflow-x:clip; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans KR", "Malgun Gothic", sans-serif;
+    font-size:16.5px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  h1,h2,h3,h4,.display{
+    font-family:"Gowun Batang", "Malgun Gothic", serif;
+    text-wrap:balance;
+    letter-spacing:-0.01em;
+  }
+  .mono{ font-family:"IBM Plex Mono", "Noto Sans KR", monospace; }
+  button{ font-family:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{ max-width:900px; margin:0 auto; padding:0 20px 80px; }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:900px; margin:0 auto; padding:10px 20px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .topbar-title{ font-size:13px; font-weight:600; color:var(--ink-soft); white-space:nowrap; }
+  .topnav{
+    display:flex; gap:2px; margin-left:auto; min-width:0;
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .topnav::-webkit-scrollbar{ display:none; }
+  .topnav a{
+    font-size:14px; color:var(--ink-soft); text-decoration:none;
+    padding:6px 10px; border-radius:999px; white-space:nowrap;
+  }
+  .topnav a:hover{ background:var(--surface-2); color:var(--ink); }
+  .topnav a:focus-visible, .theme-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .theme-btn{
+    flex:0 0 auto; width:36px; height:36px; border-radius:50%;
+    border:1px solid var(--line-strong); background:var(--surface); color:var(--ink);
+    cursor:pointer; font-size:16px; line-height:1;
+  }
+  @media (max-width:640px){ .topbar-title{ display:none; } .topnav{ margin-left:0; } }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:48px 0 40px; position:relative; }
+  .hero::before{
+    content:""; position:absolute; top:0; bottom:0; left:calc(50% - 50vw); right:calc(50% - 50vw); z-index:-1;
+    background:linear-gradient(180deg, var(--hero-a) 0%, var(--hero-b) 100%);
+  }
+  .hero-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:700; color:var(--accent);
+    background:var(--surface); border:1px solid var(--line);
+    padding:5px 12px; border-radius:999px; margin-bottom:18px;
+  }
+  .hero h1{ font-size:clamp(32px, 6vw, 48px); font-weight:700; margin:0 0 14px; line-height:1.2; }
+  .hero .lede{ font-size:17.5px; color:var(--ink-soft); max-width:62ch; margin:0 0 26px; }
+
+
+
+  .seals{ display:flex; gap:14px; flex-wrap:wrap; margin-top:26px; }
+  .seal{
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface); border:1.5px solid var(--c); border-radius:999px;
+    padding:5px 16px 5px 5px; color:var(--c-ink); font-weight:700; font-size:15px;
+    text-decoration:none;
+  }
+  .seal img{ width:40px; height:40px; border-radius:50%; background:#fff; object-fit:cover; }
+  .seal:hover{ background:var(--c-soft); }
+
+  /* ---------- sections ---------- */
+  .scene{ padding:52px 0; border-top:1px solid var(--line); }
+  .eyebrow{
+    font-size:13px; font-weight:700; letter-spacing:0.02em; color:var(--ink-faint);
+    display:flex; align-items:center; gap:10px; margin-bottom:10px;
+  }
+  .eyebrow .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; border-radius:7px; background:var(--surface-2);
+    color:var(--ink-soft); font-size:12px; font-family:"IBM Plex Mono", monospace;
+  }
+  .scene h2{ font-size:clamp(25px, 4.4vw, 31px); margin:0 0 12px; line-height:1.3; }
+  .scene > p{ color:var(--ink-soft); max-width:66ch; margin:0 0 18px; }
+
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:18px;
+    padding:24px; box-shadow:var(--shadow);
+  }
+  @media (max-width:480px){ .card{ padding:18px; } }
+
+  /* theme wrappers */
+  .theme-h{ --c:var(--hobbes); --c-ink:var(--hobbes-ink); --c-soft:var(--hobbes-soft); --c-soft-2:var(--hobbes-soft-2); }
+  .theme-l{ --c:var(--locke); --c-ink:var(--locke-ink); --c-soft:var(--locke-soft); --c-soft-2:var(--locke-soft-2); }
+  .theme-r{ --c:var(--rousseau); --c-ink:var(--rousseau-ink); --c-soft:var(--rousseau-soft); --c-soft-2:var(--rousseau-soft-2); }
+  .theme-a{ --c:var(--aristotle); --c-ink:var(--aristotle-ink); --c-soft:var(--aristotle-soft); --c-soft-2:var(--aristotle-soft-2); }
+  .theme-c{ --c:var(--confucian); --c-ink:var(--confucian-ink); --c-soft:var(--confucian-soft); --c-soft-2:var(--confucian-soft-2); }
+  .theme-s{ --c:var(--accent); --c-ink:var(--accent-ink); --c-soft:var(--accent-soft); --c-soft-2:var(--accent-soft); }
+
+  /* ---------- classroom story ---------- */
+  .story{ position:relative; }
+  .story p{ margin:0 0 12px; }
+  .story p:last-of-type{ margin-bottom:0; }
+  .story .icon-row{ font-size:26px; letter-spacing:6px; margin-bottom:10px; }
+  .story .note{
+    margin-top:16px; padding:12px 16px; border-radius:12px; background:var(--surface-2);
+    font-size:15.5px; color:var(--ink-soft);
+  }
+  .story .note b{ color:var(--ink); }
+
+  .predict{ margin-top:22px; }
+  .predict .label{ font-weight:700; font-size:17px; margin-bottom:12px; }
+  .opt-list{ display:flex; flex-direction:column; gap:10px; }
+  .opt{
+    display:flex; gap:12px; align-items:flex-start;
+    text-align:left; width:100%; border:1.5px solid var(--line-strong); background:var(--surface);
+    color:var(--ink); border-radius:13px; padding:13px 16px; font-size:16px; line-height:1.55;
+    cursor:pointer; transition:border-color .15s, background .15s;
+  }
+  .opt:hover{ background:var(--surface-2); }
+  .opt:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .opt .mark{
+    flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+    border:1.5px solid var(--line-strong); display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:600; color:var(--ink-soft);
+    margin-top:1px;
+  }
+  .opt.chosen{ border-color:var(--c); background:var(--c-soft); font-weight:700; }
+  .opt.chosen .mark{ background:var(--c); border-color:var(--c); color:#fff; }
+
+  .lens{
+    margin-top:18px; border-radius:16px; border:1.5px solid var(--c); background:var(--c-soft);
+    padding:20px 22px; display:none;
+  }
+  .lens.show{ display:block; animation:fadein .25s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+  .lens-head{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .lens-head img{ width:52px; height:52px; border-radius:50%; background:#fff; border:2px solid var(--c); object-fit:cover; }
+  .lens-head .t{ font-weight:700; font-size:17px; color:var(--c-ink); line-height:1.4; }
+  .lens p{ margin:0 0 10px; }
+  .lens p:last-child{ margin-bottom:0; }
+  .lens-switch{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .chip-btn{
+    border:1.5px solid var(--cc); color:var(--cc-ink); background:var(--surface);
+    border-radius:999px; padding:7px 14px; font-size:15px; font-weight:700; cursor:pointer;
+  }
+  .chip-btn:hover, .chip-btn.on{ background:var(--cc-soft); }
+  .chip-btn:focus-visible{ outline:2px solid var(--cc); outline-offset:2px; }
+  .chip-h{ --cc:var(--hobbes); --cc-ink:var(--hobbes-ink); --cc-soft:var(--hobbes-soft); }
+  .chip-l{ --cc:var(--locke); --cc-ink:var(--locke-ink); --cc-soft:var(--locke-soft); }
+  .chip-r{ --cc:var(--rousseau); --cc-ink:var(--rousseau-ink); --cc-soft:var(--rousseau-soft); }
+
+  /* ---------- thinker section ---------- */
+  .thinker-top{ display:flex; gap:20px; align-items:center; margin-bottom:18px; }
+  .portrait{
+    flex:0 0 auto; width:112px; height:112px; border-radius:50%;
+    background:#fff; border:3px solid var(--c); overflow:hidden;
+  }
+  .portrait img{ width:100%; height:100%; object-fit:cover; }
+  .thinker-top .who{ font-family:"Gowun Batang", serif; font-size:31px; font-weight:700; color:var(--c-ink); line-height:1.2; margin:0 0 6px; }
+  .tag{
+    display:inline-block; font-size:13.5px; font-weight:700;
+    color:var(--c-ink); background:var(--c-soft); padding:4px 12px; border-radius:999px;
+  }
+  @media (max-width:480px){
+    .portrait{ width:84px; height:84px; }
+    .thinker-top{ gap:14px; }
+    .thinker-top .who{ font-size:26px; }
+  }
+
+  .bubble{
+    position:relative; background:var(--surface); border:2px solid var(--c);
+    border-radius:18px; padding:18px 22px 14px; margin:6px 0 22px; box-shadow:var(--shadow);
+  }
+  .bubble::before{
+    content:""; position:absolute; top:-11px; left:46px; width:18px; height:18px;
+    background:var(--surface); border-left:2px solid var(--c); border-top:2px solid var(--c);
+    transform:rotate(45deg);
+  }
+  .bubble .quote{ font-family:"Gowun Batang", serif; font-size:19px; font-weight:700; line-height:1.65; margin:0; }
+  .bubble .src{ font-size:13px; color:var(--ink-faint); margin-top:8px; text-align:right; }
+
+  .steps3{ display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+  @media (max-width:720px){ .steps3{ grid-template-columns:1fr; } }
+  .step{
+    background:var(--c-soft); border-radius:14px; padding:16px 18px; position:relative;
+  }
+  .step .k{
+    display:inline-block; font-size:13px; font-weight:700; color:var(--c-ink);
+    border:1.5px solid var(--c); background:var(--surface); padding:2px 10px; border-radius:999px; margin-bottom:8px;
+  }
+  .step .v{ font-size:16px; color:var(--ink); }
+  .step .v b{ color:var(--c-ink); }
+
+  .callout{
+    display:flex; gap:12px; align-items:flex-start;
+    background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:15px 18px; margin:20px 0 0; font-size:15.5px; color:var(--ink-soft);
+  }
+  .callout b{ color:var(--ink); }
+  .callout .icon{ font-size:20px; line-height:1.4; }
+
+  .deepen{ margin-top:18px; border:1.5px dashed var(--line-strong); border-radius:14px; background:var(--surface); }
+  .deepen summary{
+    list-style:none; cursor:pointer; padding:14px 18px; display:flex; align-items:center; gap:10px;
+    font-weight:700; font-size:16px; color:var(--ink);
+  }
+  .deepen summary::-webkit-details-marker{ display:none; }
+  .deepen summary::before{ content:"＋"; font-family:"IBM Plex Mono", monospace; color:var(--c, var(--accent)); font-weight:700; }
+  .deepen[open] summary::before{ content:"－"; }
+  .deepen summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:12px; }
+  .deepen .badge{
+    font-size:12px; background:var(--c-soft, var(--accent-soft)); color:var(--c-ink, var(--accent-ink));
+    padding:2px 9px; border-radius:999px; font-weight:700;
+  }
+  .deepen .body{ padding:0 18px 18px; color:var(--ink-soft); font-size:16px; }
+  .deepen .body p{ margin:0 0 10px; }
+  .deepen .body p:last-child{ margin-bottom:0; }
+  .tb-quote{
+    border-left:4px solid var(--c, var(--accent)); background:var(--surface-2);
+    padding:12px 16px; border-radius:0 10px 10px 0; color:var(--ink); margin:0 0 10px;
+  }
+
+  /* ---------- compare ---------- */
+  .tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .tab{
+    border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink-soft);
+    border-radius:999px; padding:8px 16px; font-size:15.5px; font-weight:700; cursor:pointer;
+  }
+  .tab:hover{ background:var(--surface-2); }
+  .tab[aria-selected="true"]{ background:var(--accent); border-color:var(--accent); color:var(--surface); }
+  .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .cmp-q{ font-weight:700; font-size:17px; margin:0 0 12px; }
+  .cmp-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+  @media (max-width:720px){ .cmp-grid{ grid-template-columns:1fr; } }
+  .cmp-cell{
+    background:var(--surface); border:1px solid var(--line); border-top:5px solid var(--c);
+    border-radius:14px; padding:16px 18px; box-shadow:var(--shadow);
+    animation:fadein .2s ease;
+  }
+  .cmp-cell .who{ display:flex; align-items:center; gap:10px; font-weight:700; color:var(--c-ink); margin-bottom:8px; font-size:17px; }
+  .cmp-cell .who img{ width:34px; height:34px; border-radius:50%; background:#fff; border:2px solid var(--c); object-fit:cover; }
+  .cmp-cell .v{ font-size:16px; }
+  .cmp-cell .v b{ color:var(--c-ink); }
+  .cmp-cell .none{ color:var(--ink-faint); font-size:15px; }
+
+  .common{
+    margin-top:18px; border-radius:16px; padding:18px 20px;
+    background:var(--accent-soft); border:1px solid var(--line);
+  }
+  .common .k{ font-weight:700; color:var(--accent-ink); margin-bottom:4px; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--accent); color:var(--surface); border:1.5px solid var(--accent); border-radius:12px;
+    padding:11px 20px; font-size:16px; font-weight:700; cursor:pointer; min-height:46px;
+  }
+  .btn:hover{ opacity:.92; }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn.ghost{ background:transparent; color:var(--ink); border-color:var(--line-strong); }
+  .btn.ghost:hover{ background:var(--surface-2); }
+  .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center; }
+
+  /* ---------- quiz ---------- */
+  .quiz{ max-width:680px; }
+  .progress-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:10px; }
+  .progress-label{ font-family:"IBM Plex Mono", monospace; font-size:14px; font-weight:600; color:var(--ink-soft); }
+  .qtype{ font-size:13px; font-weight:700; color:var(--accent-ink); background:var(--accent-soft); padding:3px 10px; border-radius:999px; }
+  .progress-track{ height:6px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-bottom:18px; }
+  .progress-fill{ height:100%; background:var(--accent); border-radius:999px; transition:width .25s ease; }
+  .q-quote{
+    font-family:"Gowun Batang", serif; font-size:19.5px; font-weight:700; line-height:1.65;
+    background:var(--surface-2); border-radius:14px; padding:16px 18px; margin:0 0 10px;
+  }
+  .q-quote u{ text-decoration-thickness:2px; text-underline-offset:4px; text-decoration-color:var(--accent); }
+  .q-ask{ font-weight:700; font-size:17px; margin:0 0 14px; }
+  .answers{ display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:16px; }
+  @media (max-width:560px){ .answers{ grid-template-columns:1fr; } }
+  .ans{
+    display:flex; align-items:center; gap:10px;
+    width:100%; text-align:left; padding:12px 14px; border-radius:13px;
+    border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink);
+    font-size:16px; font-weight:700; cursor:pointer; min-height:52px;
+  }
+  .ans:hover{ background:var(--surface-2); }
+  .ans:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .ans:disabled{ cursor:default; }
+  .ans:disabled:hover{ background:var(--surface); }
+  .ans .dot{ flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--c, var(--surface-2)); overflow:hidden; border:2px solid var(--c, var(--line-strong)); }
+  .ans .dot img{ width:100%; height:100%; object-fit:cover; background:#fff; }
+  .ans .dot.letter{ display:flex; align-items:center; justify-content:center; color:#fff; font-family:"Gowun Batang", serif; font-size:15px; }
+  .ans.correct{ border-color:var(--good); background:var(--good-soft); }
+  .ans.wrong{ border-color:var(--bad); background:var(--bad-soft); }
+  .ans.correct:disabled:hover{ background:var(--good-soft); }
+  .ans.wrong:disabled:hover{ background:var(--bad-soft); }
+  .ans .res{ margin-left:auto; font-size:18px; }
+  .feedback{ border-radius:12px; padding:14px 16px; margin-bottom:16px; border:1px solid; }
+  .feedback.correct{ background:var(--good-soft); border-color:var(--good); }
+  .feedback.wrong{ background:var(--bad-soft); border-color:var(--bad); }
+  .feedback .lbl{ font-weight:700; margin:0 0 4px; }
+  .feedback.correct .lbl{ color:var(--good); }
+  .feedback.wrong .lbl{ color:var(--bad); }
+  .feedback p{ margin:0; font-size:16px; }
+  .score-tile{ text-align:center; padding:6px 0 10px; }
+  .score-num{ font-family:"IBM Plex Mono", monospace; font-size:48px; font-weight:600; line-height:1.1; color:var(--accent-ink); }
+  .score-msg{ color:var(--ink-soft); margin:6px 0 16px; }
+  .review{ list-style:none; margin:0 0 16px; padding:0; }
+  .review li{ display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line-strong); font-size:15.5px; }
+  .review li:last-child{ border-bottom:none; }
+  .review .r-ok{ color:var(--good); font-weight:700; flex:0 0 auto; }
+  .review .r-no{ color:var(--bad); font-weight:700; flex:0 0 auto; }
+
+  /* ---------- flowchart ---------- */
+  .fc-top{
+    max-width:640px; margin:0 auto; text-align:center;
+    background:var(--surface); border:2px solid var(--ink); border-radius:18px;
+    padding:14px 20px; font-weight:700; font-size:16.5px; line-height:1.6;
+  }
+  .fc-branch{ display:block; width:100%; height:40px; color:var(--ink-soft); }
+  @media (max-width:760px){ .fc-branch{ display:none; } .fc-top{ margin-bottom:18px; } .wide-br{ display:none; } }
+  .fc-cols{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+  @media (max-width:760px){ .fc-cols{ grid-template-columns:1fr; gap:26px; } }
+  .fc-col{ display:flex; flex-direction:column; }
+  .fc-head{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:14px;
+    background:var(--c); color:#fff; margin-bottom:8px;
+  }
+  .fc-head img{ width:40px; height:40px; border-radius:50%; background:#fff; border:2px solid #fff; object-fit:cover; }
+  .fc-head .n{ font-family:"Gowun Batang", serif; font-weight:700; font-size:20px; line-height:1.2; }
+  :root[data-theme="dark"] .fc-head{ color:#141816; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .fc-head{ color:#141816; } }
+  .fc-box{
+    background:var(--surface); border:1.5px solid var(--c); border-left-width:6px;
+    border-radius:12px; padding:11px 14px; min-height:96px;
+  }
+  .fc-box .k{
+    font-size:12.5px; font-weight:700; color:var(--c-ink); letter-spacing:0.02em; margin-bottom:3px;
+  }
+  .fc-box .v{ font-size:15.5px; line-height:1.55; }
+  .fc-box .v b{ color:var(--c-ink); }
+  .fc-box.end{ background:var(--c-soft-2); }
+  .fc-box.extra{ border-style:dashed; background:var(--c-soft); }
+  .fc-box.empty{ border-color:var(--line); border-style:dashed; background:transparent; color:var(--ink-faint); display:flex; align-items:center; justify-content:center; text-align:center; font-size:14px; }
+  .fc-arrow{ display:flex; justify-content:center; height:22px; color:var(--c); }
+  .fc-arrow svg{ width:18px; height:22px; }
+  @media (max-width:760px){ .fc-box.empty, .fc-arrow.to-empty{ display:none; } .fc-box{ min-height:0; } }
+  .fc-summary{
+    margin-top:24px; background:var(--surface); border:2px solid var(--ink); border-radius:18px;
+    padding:20px 24px;
+  }
+  .fc-summary h3{ font-size:21px; margin:0 0 10px; text-align:center; }
+  .fc-summary p{ margin:6px 0; font-size:16px; }
+  .fc-summary .h{ color:var(--hobbes-ink); font-weight:700; }
+  .fc-summary .l{ color:var(--locke-ink); font-weight:700; }
+  .fc-summary .r{ color:var(--rousseau-ink); font-weight:700; }
+  .fc-summary .common-line{ color:var(--ink-soft); font-size:15px; margin-top:12px; text-align:center; }
+
+  footer{ margin-top:40px; padding-top:22px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:13.5px; text-align:center; }
+  footer .signature{ font-size:15px; font-weight:700; color:var(--rousseau-ink); margin-top:8px; letter-spacing:0.04em; }
+
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:0.01ms !important; transition:none !important; } html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-title">시민과 국가의 관계</span>
+    <nav class="topnav" aria-label="섹션 이동">
+      <a href="#classroom">우리 반</a>
+      <a href="#hobbes">홉스</a>
+      <a href="#locke">로크</a>
+      <a href="#rousseau">루소</a>
+      <a href="#compare">비교</a>
+      <a href="#quiz">퀴즈</a>
+      <a href="#recap">흐름도</a>
+    </nav>
+    <button class="theme-btn" id="theme-btn" type="button" aria-label="밝은/어두운 화면 바꾸기" title="밝은/어두운 화면 바꾸기">◐</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <span class="hero-tag">홉스 · 로크 · 루소의 사회 계약론</span>
+    <h1>국가가 사라진다면?</h1>
+    <p class="lede">늘 곁에 있어서 잘 느끼지 못하지만, 국가는 우리 삶의 많은 부분을 지켜 주고 있습니다. 그렇다면 사람들은 <b>왜</b> 국가를 만들었는가? 세 사상가의 대답을 따라가 봅시다.</p>
+
+    <div class="seals">
+      <a class="seal theme-h" href="#hobbes"><img src="img/democ/hobbes.png" alt="">홉스</a>
+      <a class="seal theme-l" href="#locke"><img src="img/democ/locke.png" alt="">로크</a>
+      <a class="seal theme-r" href="#rousseau"><img src="img/democ/rousseau.png" alt="">루소</a>
+    </div>
+  </section>
+
+  <!-- ================= CLASSROOM ================= -->
+  <section class="scene" id="classroom">
+    <div class="eyebrow"><span class="num">0</span>상상해 보기</div>
+    <h2>규칙도, 선생님도, 반장도 없는 우리 반의 한 달</h2>
+    <p>사회 계약론자들은 국가가 생기기 전의 상태, 곧 <b>자연 상태</b>를 상상하면서 &ldquo;사람들은 왜 국가를 만들었을까?&rdquo;를 설명했습니다. 우리 교실에서 작은 자연 상태를 만들어 봅시다.</p>
+
+    <div class="card story">
+      <div class="icon-row" aria-hidden="true">🏫📋✏️</div>
+      <p>담임 선생님이 깜짝 실험을 제안했습니다. &ldquo;이번 한 달은 <b>아무 규칙 없이</b> 지내 보자. 선생님도 끼어들지 않고, 반장도 없어.&rdquo;</p>
+      <p>자리 배치, 청소 당번, 급식 줄 서는 순서, 체육관 사용 시간까지 <b>정해진 것이 하나도 없습니다.</b> 다툼이 생겨도 누가 판단하고 누가 해결할지 아무도 모릅니다.</p>
+      <div class="note">이처럼 <b>모두를 다스리는 공동의 규칙과 권력이 없는 상태</b>가 바로 사상가들이 말하는 &lsquo;자연 상태&rsquo;입니다.</div>
+
+      <div class="predict theme-s" id="predict">
+        <div class="label">🤔 이 교실은 어떻게 될 것인가?</div>
+        <div class="opt-list" id="predict-opts">
+          <button class="opt" type="button" data-lens="h"><span class="mark">A</span><span>좋은 자리와 급식 순서를 두고 힘센 사람 마음대로 하려 하고, 서로 다투고 경계하게 될 것 같다.</span></button>
+          <button class="opt" type="button" data-lens="l"><span class="mark">B</span><span>다들 자유롭고 평등하게 지내지만, 각자 자기 물건과 자리를 스스로 지켜야 해서 이를 지켜 줄 장치가 필요할 것 같다.</span></button>
+          <button class="opt" type="button" data-lens="r"><span class="mark">C</span><span>처음엔 사이좋게 지내다가, 좋은 자리를 먼저 차지한 사람이 생기면서 점점 불평등해질 것 같다.</span></button>
+        </div>
+
+        <div class="lens" id="lens" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOBBES ================= -->
+  <section class="scene theme-h" id="hobbes">
+    <div class="eyebrow"><span class="num">1</span>사회 계약론 ①</div>
+    <div class="thinker-top">
+      <div class="portrait"><img src="img/democ/hobbes.png" alt="홉스 초상"></div>
+      <div>
+        <h2 class="who">홉스</h2>
+        <span class="tag">자연 상태 = 만인의 만인에 대한 투쟁</span>
+      </div>
+    </div>
+
+    <div class="bubble">
+      <p class="quote">&ldquo;자연 상태는 &lsquo;만인의 만인에 대한 투쟁&rsquo; 상태야. 따라서 자기 보존을 위해서 계약을 맺고 국가를 형성하게 돼.&rdquo;</p>
+      <div class="src">— 홉스</div>
+    </div>
+
+    <div class="steps3">
+      <div class="step"><span class="k">① 자연 상태</span><div class="v">모든 사람이 모든 사람과 싸우는 <b>&lsquo;만인의 만인에 대한 투쟁&rsquo;</b> 상태</div></div>
+      <div class="step"><span class="k">② 계약을 맺는 이유</span><div class="v">투쟁 속에서 살아남기 위해, 곧 <b>자기 보존</b>을 위해</div></div>
+      <div class="step"><span class="k">③ 그 결과</span><div class="v">사람들이 계약을 맺어 <b>국가를 형성</b>함</div></div>
+    </div>
+
+    <div class="callout">
+      <span class="icon">🏫</span>
+      <div>홉스의 눈으로 보면 규칙 없는 우리 반은 곧 <b>모두가 모두를 경계하는 곳</b>이 됩니다. 누구도 마음 편히 지낼 수 없으니, 자신을 지키기 위해 모두가 지킬 <b>학급 규칙(계약)</b>을 만들게 됩니다.</div>
+    </div>
+  </section>
+
+  <!-- ================= LOCKE ================= -->
+  <section class="scene theme-l" id="locke">
+    <div class="eyebrow"><span class="num">2</span>사회 계약론 ②</div>
+    <div class="thinker-top">
+      <div class="portrait"><img src="img/democ/locke.png" alt="로크 초상"></div>
+      <div>
+        <h2 class="who">로크</h2>
+        <span class="tag">생명·재산 보호 · 저항권</span>
+      </div>
+    </div>
+
+    <div class="bubble">
+      <p class="quote">&ldquo;내 생명과 재산을 보호받기 위해서는 자연 상태에서 가졌던 평등, 자유 및 집행권을 입법부가 처리할 수 있도록 사회의 수중에 양도해야 해. 그러나 정부가 이를 지키지 못하면 저항권을 행사할 수 있어.&rdquo;</p>
+      <div class="src">— 로크</div>
+    </div>
+
+    <div class="steps3">
+      <div class="step"><span class="k">① 자연 상태</span><div class="v">사람들은 <b>평등, 자유 및 집행권</b>을 가지고 있음</div></div>
+      <div class="step"><span class="k">② 계약을 맺는 이유</span><div class="v"><b>생명과 재산을 보호받기 위해</b> 평등·자유·집행권을 <b>입법부</b>가 처리하도록 사회의 수중에 <b>양도</b>함</div></div>
+      <div class="step"><span class="k">③ 그 결과</span><div class="v">정부가 생명과 재산을 지키지 못하면 시민은 <b>저항권</b>을 행사할 수 있음</div></div>
+    </div>
+
+    <div class="callout">
+      <span class="icon">🏫</span>
+      <div>로크의 눈으로 보면 반 친구들은 처음부터 <b>평등하고 자유로우며</b>, 자기 물건과 자리를 지키는 일도 각자 맡습니다. 하지만 이를 제대로 보호받기 위해, 이 권리를 <b>규칙을 정하는 대표 모임(입법부)</b>에 맡기기로 합니다. 그 대표들이 약속을 어기면? <b>저항</b>할 수 있습니다.</div>
+    </div>
+
+    <details class="deepen">
+      <summary>저항권은 어디로 이어졌을까? <span class="badge">더 알아보기</span></summary>
+      <div class="body">
+        <p class="tb-quote">국민의 뜻에 반하는 국가권력의 행사에 대해서는 저항할 수 있다는 저항권 개념은 근대 사상가 로크에서부터 시작하였다. 그는 계약을 통해 자연권을 양도받은 국가가 시민들을 제대로 보호하지 못한다면 시민들은 계약을 파기하고 자기방어를 할 수 있다고 주장하였다.</p>
+        <p>저항권은 이후 <b>시민불복종 운동</b>에 영향을 주었습니다. 부정의한 법에 맞서는 시민불복종의 뿌리가 바로 로크의 저항권입니다.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ================= ROUSSEAU ================= -->
+  <section class="scene theme-r" id="rousseau">
+    <div class="eyebrow"><span class="num">3</span>사회 계약론 ③</div>
+    <div class="thinker-top">
+      <div class="portrait"><img src="img/democ/rousseau.png" alt="루소 초상"></div>
+      <div>
+        <h2 class="who">루소</h2>
+        <span class="tag">평화로운 자연 상태 → 불평등과 예속</span>
+      </div>
+    </div>
+
+    <div class="bubble">
+      <p class="quote">&ldquo;평화로운 자연 상태에서 사유 재산이 증가함에 따라 점차 불평등과 예속 상태에 놓이게 돼. 이를 벗어나기 위해 사회 계약을 맺고 국가를 형성하게 돼.&rdquo;</p>
+      <div class="src">— 루소</div>
+    </div>
+
+    <div class="steps3">
+      <div class="step"><span class="k">① 자연 상태</span><div class="v">처음에는 <b>평화로운</b> 상태</div></div>
+      <div class="step"><span class="k">② 무엇이 문제일까</span><div class="v"><b>사유 재산이 증가</b>하면서 점차 <b>불평등과 예속</b> 상태에 놓이게 됨</div></div>
+      <div class="step"><span class="k">③ 계약과 그 결과</span><div class="v">불평등과 예속에서 <b>벗어나기 위해</b> 사회 계약을 맺고 국가를 형성함</div></div>
+    </div>
+
+    <div class="callout">
+      <span class="icon">🏫</span>
+      <div>루소의 눈으로 보면 우리 반은 <b>처음엔 평화롭습니다.</b> 그런데 &ldquo;이 자리는 내 거야!&rdquo; 하며 각자의 몫이 늘어나자, 많이 가진 사람과 못 가진 사람이 생기고 못 가진 사람은 가진 사람에게 <b>매이게(예속)</b> 됩니다. 이 상태를 벗어나려고 다 함께 <b>학급 규칙(계약)</b>을 맺는 것입니다.</div>
+    </div>
+  </section>
+
+  <!-- ================= COMPARE ================= -->
+  <section class="scene" id="compare">
+    <div class="eyebrow"><span class="num">4</span>나란히 놓고 보기</div>
+    <h2>같은 질문, 세 개의 답</h2>
+    <p>세 사람 모두 &lsquo;계약으로 국가가 생겼다&rsquo;고 보지만, 자연 상태를 어떻게 보느냐에 따라 이야기가 달라집니다. 항목을 눌러 비교해 봅시다.</p>
+
+    <div class="tabs" role="tablist" id="cmp-tabs">
+      <button class="tab" role="tab" type="button" data-k="nature" aria-selected="true">자연 상태</button>
+      <button class="tab" role="tab" type="button" data-k="problem" aria-selected="false">무엇이 문제?</button>
+      <button class="tab" role="tab" type="button" data-k="reason" aria-selected="false">계약을 맺는 이유</button>
+      <button class="tab" role="tab" type="button" data-k="after" aria-selected="false">국가가 생긴 뒤</button>
+    </div>
+    <p class="cmp-q" id="cmp-q"></p>
+    <div class="cmp-grid" id="cmp-grid" role="tabpanel"></div>
+
+    <div class="common">
+      <div class="k">🤝 세 사람의 공통점 — 사회 계약론의 관점</div>
+      <div>사람들은 생명, 자유, 재산과 같은 권리를 보호받으려고 국가를 형성하는 <b>계약</b>을 맺습니다. 그래서 시민은 국가에 <b>복종하는 것에 동의</b>한 것이라고 봅니다.</div>
+    </div>
+
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section class="scene" id="quiz">
+    <div class="eyebrow"><span class="num">6</span>확인 퀴즈</div>
+    <h2>이 말, 누가 했을까?</h2>
+    <p>말풍선 속 주장을 읽고, 누구의 생각인지 골라 봅시다.</p>
+    <div class="card quiz" id="quiz-card" aria-live="polite"></div>
+  </section>
+
+  <!-- ================= RECAP ================= -->
+  <section class="scene" id="recap">
+    <div class="eyebrow"><span class="num">7</span>흐름도</div>
+    <h2>한눈에 정리하기</h2>
+    <p>자연 상태에서 출발해 국가가 생기기까지, 세 갈래 길을 한 번에 따라가 봅시다.</p>
+
+    <div class="fc-top">사회 계약론: 생명·자유·재산 같은 권리를 보호받으려고 <br class="wide-br">국가를 형성하는 <b>계약</b>을 맺는다</div>
+    <svg class="fc-branch" viewBox="0 0 900 40" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M450 0 V16 M150 16 H750 M150 16 V32 M450 16 V32 M750 16 V32" stroke="currentColor" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/>
+      <polygon points="144,30 156,30 150,40" fill="currentColor"/>
+      <polygon points="444,30 456,30 450,40" fill="currentColor"/>
+      <polygon points="744,30 756,30 750,40" fill="currentColor"/>
+    </svg>
+
+    <div class="fc-cols" id="fc-cols"></div>
+
+    <div class="fc-summary">
+      <h3>세 줄 요약</h3>
+      <p><span class="h">홉스</span> : 만인의 만인에 대한 투쟁 → 자기 보존을 위해 계약 → 국가</p>
+      <p><span class="l">로크</span> : 평등·자유·집행권 → 생명과 재산 보호를 위해 입법부에 양도 → 못 지키면 저항권</p>
+      <p><span class="r">루소</span> : 평화로운 자연 상태 → 사유 재산 증가로 불평등과 예속 → 벗어나려고 사회 계약 → 국가</p>
+      <p class="common-line">공통점: 세 사람 모두 사람들이 <b>계약</b>을 맺어 국가를 형성한다고 본다</p>
+    </div>
+  </section>
+
+  <footer>
+    <div>현대사회와 윤리 Ⅳ-02 시민성과 윤리 &middot; 시민과 국가의 관계</div>
+    <div class="signature">♥무늬T♥</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  function safeGet(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
+  function safeSet(k, v){ try{ window.localStorage.setItem(k, v); }catch(e){} }
+  var savedTheme = safeGet('sc-theme');
+  if(savedTheme === 'light' || savedTheme === 'dark'){ root.setAttribute('data-theme', savedTheme); }
+  document.getElementById('theme-btn').addEventListener('click', function(){
+    var cur = root.getAttribute('data-theme');
+    if(!cur){
+      cur = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    safeSet('sc-theme', next);
+  });
+
+  var IMG = { h:'img/democ/hobbes.png', l:'img/democ/locke.png', r:'img/democ/rousseau.png', a:'img/democ/aristotle.png' };
+  var NAME = { h:'홉스', l:'로크', r:'루소', a:'아리스토텔레스', c:'유교' };
+
+  /* ---------- classroom lens ---------- */
+  var LENS = {
+    h: {
+      t: '홉스의 눈으로 본 우리 반',
+      body: '<p>좋은 자리, 급식 순서, 체육관을 두고 힘센 사람이 마음대로 하려 하고, 모두가 모두를 경계합니다. 누구도 마음 편히 지낼 수 없습니다. 홉스는 이런 자연 상태를 <b>&lsquo;만인의 만인에 대한 투쟁&rsquo;</b> 상태라고 보았습니다.</p>' +
+            '<p>그래서 사람들은 자신을 지키기 위해, 곧 <b>자기 보존</b>을 위해 계약을 맺고 국가를 형성합니다. 우리 반이라면 모두가 지킬 <b>학급 규칙</b>을 함께 만들게 됩니다.</p>'
+    },
+    l: {
+      t: '로크의 눈으로 본 우리 반',
+      body: '<p>반 친구들은 모두 <b>평등하고 자유로우며</b>, 자기 물건과 자리를 지키는 일(<b>집행권</b>)도 각자 가지고 있습니다. 하지만 각자 알아서 지키는 것만으로는 불안합니다.</p>' +
+            '<p>그래서 로크는 <b>생명과 재산을 보호받기 위해</b> 각자 가진 평등·자유·집행권을 사회에 맡겨 <b>입법부</b>가 처리하도록 한다고 보았습니다. 우리 반이라면 규칙을 정할 대표 모임을 만드는 셈입니다. 만약 그 대표들이 약속을 지키지 못하면? 시민은 <b>저항권</b>을 행사할 수 있습니다.</p>'
+    },
+    r: {
+      t: '루소의 눈으로 본 우리 반',
+      body: '<p>처음 교실은 <b>평화롭습니다.</b> 그런데 &ldquo;이 자리는 내 거야!&rdquo; 하며 먼저 차지한 사람이 생기고 <b>내 것이 늘어나자</b>, 많이 가진 사람과 못 가진 사람이 생기고 못 가진 사람은 점점 가진 사람에게 매이게 됩니다.</p>' +
+            '<p>루소는 이렇게 <b>사유 재산이 증가</b>하면서 점차 <b>불평등과 예속</b> 상태에 놓이게 되고, 이를 벗어나기 위해 사회 계약을 맺고 국가를 형성한다고 보았습니다. 우리 반이라면 모두를 위한 <b>학급 규칙</b>을 다시 함께 정하는 것입니다.</p>'
+    }
+  };
+  var THEME_CLASS = { h:'theme-h', l:'theme-l', r:'theme-r' };
+  var predictBox = document.getElementById('predict');
+  var predictOpts = document.getElementById('predict-opts');
+  var lensEl = document.getElementById('lens');
+  var picked = null;
+
+  function renderLens(key, fromPick){
+    lensEl.className = 'lens show ' + THEME_CLASS[key];
+    var head = fromPick
+      ? '나의 예상은 <b>' + NAME[key] + '</b>의 생각과 가깝습니다.'
+      : LENS[key].t;
+    var sw = ['h','l','r'].map(function(k){
+      return '<button type="button" class="chip-btn chip-' + k + (k === key ? ' on' : '') + '" data-k="' + k + '" aria-pressed="' + (k === key) + '">' + NAME[k] + '의 눈으로 보기</button>';
+    }).join('');
+    lensEl.innerHTML =
+      '<div class="lens-head"><img src="' + IMG[key] + '" alt="' + NAME[key] + ' 초상"><div class="t">' + head + '</div></div>' +
+      LENS[key].body +
+      '<div class="lens-switch">' + sw + '</div>';
+  }
+
+  predictOpts.addEventListener('click', function(e){
+    var btn = e.target.closest('.opt');
+    if(!btn) return;
+    var key = btn.getAttribute('data-lens');
+    Array.prototype.forEach.call(predictOpts.querySelectorAll('.opt'), function(b){
+      b.classList.remove('chosen', 'theme-h', 'theme-l', 'theme-r');
+    });
+    btn.classList.add('chosen', THEME_CLASS[key]);
+    picked = key;
+    renderLens(key, true);
+  });
+  lensEl.addEventListener('click', function(e){
+    var btn = e.target.closest('.chip-btn');
+    if(!btn) return;
+    var key = btn.getAttribute('data-k');
+    renderLens(key, key === picked);
+  });
+
+  /* ---------- compare tabs ---------- */
+  var CMP = {
+    nature: {
+      q: 'Q. 국가가 없는 자연 상태는 어떤 모습일까?',
+      h: '<b>&lsquo;만인의 만인에 대한 투쟁&rsquo;</b> 상태',
+      l: '사람들이 <b>평등, 자유 및 집행권</b>을 가진 상태',
+      r: '<b>평화로운</b> 상태'
+    },
+    problem: {
+      q: 'Q. 자연 상태에서 무엇이 문제가 될까?',
+      h: '서로 싸우는 투쟁 속에서 <b>자기 보존</b>(살아남기)이 위태로움',
+      l: '<b>생명과 재산</b>을 제대로 보호받기 어려움',
+      r: '<b>사유 재산이 증가</b>하면서 점차 <b>불평등과 예속</b> 상태에 놓이게 됨'
+    },
+    reason: {
+      q: 'Q. 사람들은 왜 계약을 맺을까?',
+      h: '<b>자기 보존</b>을 위해 계약을 맺고 국가를 형성함',
+      l: '<b>생명과 재산을 보호받기 위해</b> 평등·자유·집행권을 입법부가 처리하도록 사회의 수중에 <b>양도</b>함',
+      r: '<b>불평등과 예속 상태를 벗어나기 위해</b> 사회 계약을 맺고 국가를 형성함'
+    },
+    after: {
+      q: 'Q. 국가가 생긴 뒤에는?',
+      h: '자기 보존을 위해 계약으로 <b>국가를 형성</b>함',
+      l: '정부가 생명과 재산을 지키지 못하면 시민은 <b>저항권</b>을 행사할 수 있음<br><span class="none">→ 계약을 파기하고 자기방어 가능 · 이후 시민불복종 운동에 영향</span>',
+      r: '사회 계약으로 <b>국가를 형성</b>하여 불평등과 예속에서 벗어남'
+    }
+  };
+  var cmpTabs = document.getElementById('cmp-tabs');
+  var cmpGrid = document.getElementById('cmp-grid');
+  var cmpQ = document.getElementById('cmp-q');
+  function renderCmp(k){
+    var d = CMP[k];
+    cmpQ.textContent = d.q;
+    cmpGrid.innerHTML = ['h','l','r'].map(function(t){
+      return '<div class="cmp-cell ' + THEME_CLASS[t] + '"><div class="who"><img src="' + IMG[t] + '" alt="">' + NAME[t] + '</div><div class="v">' + d[t] + '</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(cmpTabs.querySelectorAll('.tab'), function(b){
+      b.setAttribute('aria-selected', b.getAttribute('data-k') === k ? 'true' : 'false');
+    });
+  }
+  cmpTabs.addEventListener('click', function(e){
+    var b = e.target.closest('.tab');
+    if(b) renderCmp(b.getAttribute('data-k'));
+  });
+  renderCmp('nature');
+
+  /* ---------- quiz ---------- */
+  var WHO_OPTS = ['h','l','r'];
+  var QUIZ = [
+    {
+      type:'who', quote:'자연 상태는 &lsquo;만인의 만인에 대한 투쟁&rsquo; 상태야.',
+      ans:'h',
+      exp:'홉스입니다. 홉스는 자연 상태를 모두가 모두와 싸우는 투쟁 상태로 보고, <b>자기 보존</b>을 위해 계약을 맺고 국가를 형성한다고 보았습니다.'
+    },
+    {
+      type:'who', quote:'평화로운 자연 상태에서 사유 재산이 증가함에 따라 점차 불평등과 예속 상태에 놓이게 돼.',
+      ans:'r',
+      exp:'루소입니다. 홉스와 달리 루소는 자연 상태를 <b>평화로운</b> 상태로 보았습니다. 문제는 사유 재산이 늘어나며 생긴 불평등과 예속입니다.'
+    },
+    {
+      type:'who', quote:'내 생명과 재산을 보호받기 위해서는 자연 상태에서 가졌던 평등, 자유 및 집행권을 입법부가 처리할 수 있도록 사회의 수중에 양도해야 해.',
+      ans:'l',
+      exp:'로크입니다. 로크의 자연 상태에서 사람들은 <b>평등, 자유 및 집행권</b>을 가지고 있습니다. 생명과 재산을 보호받기 위해 이것을 입법부에 맡기는 것입니다.'
+    },
+    {
+      type:'who', quote:'자기 보존을 위해서 계약을 맺고 국가를 형성하게 돼.',
+      ans:'h',
+      exp:'홉스입니다. &lsquo;만인의 만인에 대한 투쟁&rsquo; 속에서 살아남는 것, 곧 <b>자기 보존</b>이 홉스가 말한 계약의 이유입니다.'
+    },
+    {
+      type:'who', quote:'정부가 생명과 재산을 지키지 못하면 저항권을 행사할 수 있어.',
+      ans:'l',
+      exp:'로크입니다. 계약을 통해 권리를 넘겨받은 국가가 시민을 제대로 보호하지 못하면, 시민은 계약을 파기하고 자기방어를 할 수 있다고 보았습니다. 이 <b>저항권</b>은 이후 시민불복종 운동에 영향을 주었습니다.'
+    },
+    {
+      type:'who', quote:'불평등과 예속 상태를 벗어나기 위해 사회 계약을 맺고 국가를 형성하게 돼.',
+      ans:'r',
+      exp:'루소입니다. 루소에게 사회 계약은 사유 재산 증가로 생긴 <b>불평등과 예속</b>에서 벗어나기 위한 것입니다.'
+    }
+  ];
+
+  var qCard = document.getElementById('quiz-card');
+  var qi = 0, score = 0, results = [];
+
+  function dotHtml(k){
+    if(IMG[k]) return '<span class="dot ' + THEME_CLASS[k] + '" style="--c:var(--' + ({h:'hobbes',l:'locke',r:'rousseau',a:'aristotle'})[k] + ')"><img src="' + IMG[k] + '" alt=""></span>';
+    if(k === 'c') return '<span class="dot letter" style="--c:var(--confucian)">民</span>';
+    return '<span class="dot letter" style="--c:var(--accent)">?</span>';
+  }
+
+  function renderQ(){
+    var q = QUIZ[qi];
+    var pct = Math.round(qi / QUIZ.length * 100);
+    var head =
+      '<div class="progress-row"><span class="progress-label">' + (qi+1) + ' / ' + QUIZ.length + '</span>' +
+      '<span class="qtype">' + (q.type === 'who' ? '누가 했을까?' : '밑줄 고치기 ' + q.tag) + '</span></div>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    var body, opts;
+    if(q.type === 'who'){
+      body = '<p class="q-quote">&ldquo;' + q.quote + '&rdquo;</p><p class="q-ask">이 말을 한 사람은?</p>';
+      opts = WHO_OPTS.map(function(k){ return [k, NAME[k]]; });
+    } else {
+      body = '<p class="q-quote">' + q.sentence + '</p><p class="q-ask">' + q.ask + '</p>';
+      opts = q.opts;
+    }
+    var optHtml = '<div class="answers">' + opts.map(function(o){
+      var hasDot = (IMG[o[0]] || o[0] === 'c');
+      return '<button type="button" class="ans" data-a="' + o[0] + '">' + (hasDot ? dotHtml(o[0]) : '') + '<span>' + o[1] + '</span></button>';
+    }).join('') + '</div>';
+    qCard.innerHTML = head + body + optHtml + '<div id="q-fb"></div>';
+    qCard.querySelector('.answers').addEventListener('click', onAnswer);
+  }
+
+  function onAnswer(e){
+    var btn = e.target.closest('.ans');
+    if(!btn || btn.disabled) return;
+    var q = QUIZ[qi];
+    var a = btn.getAttribute('data-a');
+    var ok = a === q.ans;
+    if(ok) score++;
+    results.push(ok);
+    Array.prototype.forEach.call(qCard.querySelectorAll('.ans'), function(b){
+      b.disabled = true;
+      var k = b.getAttribute('data-a');
+      if(k === q.ans){ b.classList.add('correct'); b.insertAdjacentHTML('beforeend', '<span class="res" aria-hidden="true">✔</span>'); }
+      else if(b === btn){ b.classList.add('wrong'); b.insertAdjacentHTML('beforeend', '<span class="res" aria-hidden="true">✘</span>'); }
+    });
+    var last = qi === QUIZ.length - 1;
+    document.getElementById('q-fb').innerHTML =
+      '<div class="feedback ' + (ok ? 'correct' : 'wrong') + '"><p class="lbl">' + (ok ? '정답입니다!' : '오답입니다.') + '</p><p>' + q.exp + '</p></div>' +
+      '<button type="button" class="btn" id="q-next" style="width:100%">' + (last ? '결과 보기' : '다음 →') + '</button>';
+    var next = document.getElementById('q-next');
+    next.addEventListener('click', function(){
+      qi++;
+      if(qi < QUIZ.length) renderQ(); else renderResult();
+      qCard.scrollIntoView({ block:'start', behavior:'smooth' });
+    });
+    next.focus({ preventScroll:true });
+  }
+
+  function renderResult(){
+    var msg = score === QUIZ.length ? '모두 맞혔습니다! 홉스·로크·루소의 생각을 정확히 구분하고 있습니다.'
+      : score >= QUIZ.length - 2 ? '잘했습니다! 틀린 문제를 한 번 더 확인해 봅시다.'
+      : '비교 표와 흐름도를 다시 보고 한 번 더 도전해 봅시다.';
+    var list = QUIZ.map(function(q, i){
+      var label = q.type === 'who' ? '&ldquo;' + q.quote + '&rdquo; → ' + NAME[q.ans]
+        : '밑줄 고치기 ' + q.tag + ' → ' + (q.opts.filter(function(o){ return o[0] === q.ans; })[0][1]);
+      return '<li><span class="' + (results[i] ? 'r-ok' : 'r-no') + '">' + (results[i] ? '○' : '×') + '</span><span>' + label + '</span></li>';
+    }).join('');
+    qCard.innerHTML =
+      '<div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>' +
+      '<div class="score-tile"><div class="score-num">' + score + ' / ' + QUIZ.length + '</div><p class="score-msg">' + msg + '</p></div>' +
+      '<ul class="review">' + list + '</ul>' +
+      '<button type="button" class="btn" id="q-retry" style="width:100%">다시 풀기</button>';
+    document.getElementById('q-retry').addEventListener('click', function(){
+      qi = 0; score = 0; results = [];
+      renderQ();
+    });
+  }
+  renderQ();
+
+  /* ---------- flowchart ---------- */
+  var FLOW = [
+    { k:'h', tag:'만인의 만인에 대한 투쟁', steps:[
+      ['자연 상태', '<b>&lsquo;만인의 만인에 대한 투쟁&rsquo;</b> 상태'],
+      ['문제', '투쟁 속에서 <b>자기 보존</b>이 위태로움'],
+      ['사회 계약', '자기 보존을 위해 <b>계약</b>을 맺음'],
+      ['국가', '<b>국가를 형성</b>함', 'end']
+    ]},
+    { k:'l', tag:'생명·재산 보호', steps:[
+      ['자연 상태', '<b>평등, 자유 및 집행권</b>을 가짐'],
+      ['문제', '<b>생명과 재산</b>을 보호받기 어려움'],
+      ['사회 계약', '평등·자유·집행권을 <b>입법부</b>가 처리하도록 사회의 수중에 <b>양도</b>'],
+      ['국가', '생명과 재산을 <b>보호</b>하는 정부', 'end'],
+      ['저항권', '정부가 지키지 못하면 <b>저항권</b> 행사 → 계약 파기·자기방어 → 시민불복종에 영향', 'extra']
+    ]},
+    { k:'r', tag:'불평등과 예속', steps:[
+      ['자연 상태', '<b>평화로운</b> 상태'],
+      ['문제', '<b>사유 재산 증가</b> → 점차 <b>불평등과 예속</b>'],
+      ['사회 계약', '불평등과 예속을 <b>벗어나기 위해</b> 사회 계약'],
+      ['국가', '<b>국가를 형성</b>함', 'end']
+    ]}
+  ];
+  var ARROW = '<div class="fc-arrow{X}" aria-hidden="true"><svg viewBox="0 0 18 22"><path d="M9 0 V13" stroke="currentColor" stroke-width="2.5"/><polygon points="3,12 15,12 9,22" fill="currentColor"/></svg></div>';
+  var fcCols = document.getElementById('fc-cols');
+  fcCols.innerHTML = FLOW.map(function(col){
+    var html = '<div class="fc-col ' + THEME_CLASS[col.k] + '">' +
+      '<div class="fc-head"><img src="' + IMG[col.k] + '" alt="' + NAME[col.k] + ' 초상"><div class="n">' + NAME[col.k] + '</div></div>';
+    col.steps.forEach(function(s, i){
+      if(i > 0) html += ARROW.replace('{X}', '');
+      html += '<div class="fc-box' + (s[2] ? ' ' + s[2] : '') + '"><div class="k">' + s[0] + '</div><div class="v">' + s[1] + '</div></div>';
+    });
+    return html + '</div>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

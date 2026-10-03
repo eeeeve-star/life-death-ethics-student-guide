@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>민주시민과 윤리 - 형성평가</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#FDEBE4;
+    --surface:#FFFFFF;
+    --surface-soft:#FBE4DB;
+    --ink:#2A1A15;
+    --ink-soft:#7A5A50;
+    --border:#F1D2C6;
+    --accent:#D2502F;
+    --accent-ink:#7A2A17;
+    --accent-soft:#FDE3D9;
+    --good:#2E7D53;
+    --good-soft:#E4F3E9;
+    --bad:#A3264B;
+    --bad-soft:#F8E1E8;
+    --key:#C62828;
+    --shadow:rgba(120,50,30,0.14);
+    --bg-top:#F9D2C4; --stim-bg:#FFF6F2;
+    /* 사상가 고정 색 */
+    --c-hobbes:#5B8DEF; --c-locke:#2BB3A3; --c-rousseau:#F2795B; --c-rawls:#8B6FD6;
+    --c-macintyre:#E0A526; --c-nozick:#E5609A; --c-thoreau:#4CAF50; --c-singer:#F39C34;
+    --c-dworkin:#3F51B5; --c-kant:#3A6EA5; --c-beccaria:#20A4C4; --c-bentham:#7FA33A;
+    --c-niebuhr:#8D6E63; --c-aristotle:#A1887F;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1F1310;
+      --surface:#2B1C17;
+      --surface-soft:#36241E;
+      --ink:#F6E9E4;
+      --ink-soft:#C4A49A;
+      --border:#4A322A;
+      --accent:#F08A6C;
+      --accent-ink:#FFE3D9;
+      --accent-soft:#3D251D;
+      --good:#74CE9B;
+      --good-soft:#1E3527;
+      --bad:#F07A9A;
+      --bad-soft:#3E1F29;
+      --key:#FF8A80;
+      --shadow:rgba(0,0,0,0.4);
+    --bg-top:#3A221B; --stim-bg:#241713;
+      --c-hobbes:#8FB2F5; --c-locke:#5FD3C5; --c-rousseau:#F7A28D; --c-rawls:#B4A0EC;
+      --c-macintyre:#F0C35E; --c-nozick:#F08DB9; --c-thoreau:#7CCB7F; --c-singer:#F7B86A;
+      --c-dworkin:#8C9AE6; --c-kant:#82AEDD; --c-beccaria:#62C8E0; --c-bentham:#AACB6C;
+      --c-niebuhr:#BFA195; --c-aristotle:#C9B5AD;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1F1310;
+    --surface:#2B1C17;
+    --surface-soft:#36241E;
+    --ink:#F6E9E4;
+    --ink-soft:#C4A49A;
+    --border:#4A322A;
+    --accent:#F08A6C;
+    --accent-ink:#FFE3D9;
+    --accent-soft:#3D251D;
+    --good:#74CE9B;
+    --good-soft:#1E3527;
+    --bad:#F07A9A;
+    --bad-soft:#3E1F29;
+    --key:#FF8A80;
+    --shadow:rgba(0,0,0,0.4);
+    --bg-top:#3A221B; --stim-bg:#241713;
+    --c-hobbes:#8FB2F5; --c-locke:#5FD3C5; --c-rousseau:#F7A28D; --c-rawls:#B4A0EC;
+    --c-macintyre:#F0C35E; --c-nozick:#F08DB9; --c-thoreau:#7CCB7F; --c-singer:#F7B86A;
+    --c-dworkin:#8C9AE6; --c-kant:#82AEDD; --c-beccaria:#62C8E0; --c-bentham:#AACB6C;
+    --c-niebuhr:#BFA195; --c-aristotle:#C9B5AD;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg) linear-gradient(180deg, var(--bg-top) 0, var(--bg) 360px) no-repeat;
+    color:var(--ink);
+    font-family:"Noto Sans KR", "Malgun Gothic", sans-serif;
+    min-height:100dvh;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 56px;
+  }
+  .app{ width:100%; max-width:580px; min-width:0; }
+
+  .eyebrow{
+    font-family:"Noto Sans KR", "IBM Plex Mono", ui-monospace, monospace;
+    font-size:12.5px;
+    letter-spacing:.02em;
+    color:var(--accent);
+    font-weight:700;
+    margin:0 0 6px;
+  }
+  h1.title{
+    font-family:"Gowun Batang", serif;
+    font-size:clamp(24px,6.5vw,32px);
+    line-height:1.3;
+    margin:0 0 8px;
+    text-wrap:balance;
+  }
+  p.lede{
+    color:var(--ink-soft);
+    margin:0 0 24px;
+    font-size:14.5px;
+    line-height:1.6;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 10px 28px -18px var(--shadow);
+  }
+  .card + .card{ margin-top:16px; }
+
+  label.field-label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:8px;
+  }
+
+  .field-hint{ font-size:12px; color:var(--ink-soft); }
+  .passage-box{
+    max-height:260px;
+    overflow-y:auto;
+    background:var(--stim-bg);
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+  }
+  .passage-box.expanded{ max-height:none; }
+  .passage-box p{
+    font-size:14.5px;
+    line-height:1.75;
+    margin:0 0 12px;
+    color:var(--ink);
+    word-break:keep-all;
+  }
+  .passage-box p:last-child{ margin-bottom:0; }
+  .passage-box h4{
+    font-family:"Gowun Batang", serif;
+    font-size:16px;
+    margin:18px 0 6px;
+    color:var(--accent-ink);
+  }
+  .passage-box h4:first-child{ margin-top:0; }
+  .passage-toggle-btn{
+    background:none;
+    border:1.5px solid var(--border);
+    color:var(--accent-ink);
+    font-size:12.5px;
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .passage-toggle-btn:hover{ background:var(--accent-soft); border-color:var(--accent); }
+
+  .key{ color:var(--key); font-weight:700; }
+  .who{ font-weight:700; }
+
+  .diff-row{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+  }
+  .diff-pill{
+    flex:1;
+    text-align:center;
+    padding:11px 8px;
+    border-radius:11px;
+    border:1.5px solid var(--border);
+    background:var(--stim-bg);
+    color:var(--ink-soft);
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+    user-select:none;
+    line-height:1.4;
+  }
+  .diff-pill small{ display:block; font-size:12px; font-weight:700; opacity:.85; }
+  .diff-pill.active{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+    color:var(--accent-ink);
+  }
+  .diff-pill:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .field-block{ margin-bottom:20px; }
+  .field-block:last-child{ margin-bottom:0; }
+  .set-desc{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin:10px 2px 0; }
+
+  button{ font-family:inherit; }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    font-size:15.5px;
+    font-weight:700;
+    border:1.5px solid transparent;
+    cursor:pointer;
+    min-height:48px;
+  }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn-primary{ background:var(--accent); color:var(--surface); }
+  .btn-primary:disabled{ background:var(--surface-soft); color:var(--ink-soft); cursor:not-allowed; }
+  .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--border); }
+  .btn-ghost:hover{ background:var(--surface-soft); }
+  .btn-ghost:disabled{ color:var(--ink-soft); cursor:not-allowed; }
+  .btn-ghost:disabled:hover{ background:transparent; }
+  .btn-row{ display:flex; gap:10px; margin-top:18px; }
+  .btn-row > *{ flex:1; }
+  .signature{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:20px 0 0;
+  }
+
+  /* quiz */
+  .progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .progress-label{
+    font-family:"IBM Plex Mono", monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .diff-tag{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--accent-ink);
+    background:var(--accent-soft);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+  .progress-track{
+    height:6px;
+    border-radius:999px;
+    background:var(--surface-soft);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    border-radius:999px;
+    transition:width .25s ease;
+  }
+  .quiz-passage-wrap{ margin-bottom:18px; }
+  .question-text{
+    font-size:18.5px;
+    font-weight:700;
+    line-height:1.55;
+    margin:0 0 16px;
+    word-break:keep-all;
+  }
+
+  /* 제시문 */
+  .stim{
+    border:1.5px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:0 0 18px;
+    background:var(--stim-bg);
+    font-size:15.5px;
+    line-height:1.75;
+    word-break:keep-all;
+  }
+  .stim p{ margin:0 0 10px; }
+  .stim p:last-child{ margin-bottom:0; }
+  .stim .u{ text-decoration:underline; text-underline-offset:3px; }
+  .stim .src{ display:block; text-align:right; font-size:13px; color:var(--ink-soft); margin-top:2px; }
+  .spk{ display:flex; gap:10px; align-items:flex-start; margin:0 0 12px; }
+  .spk:last-child{ margin-bottom:0; }
+  .spk-label{
+    flex:0 0 auto;
+    min-width:28px; height:28px;
+    padding:0 6px;
+    border-radius:8px;
+    border:1.5px solid var(--ink-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:14px;
+    margin-top:1px;
+    background:var(--surface);
+  }
+  .spk-body{ flex:1; min-width:0; }
+  .bogi{
+    margin-top:12px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    padding:22px 14px 12px;
+    position:relative;
+    background:var(--surface);
+  }
+  .bogi::before{
+    content:"〈보기〉";
+    position:absolute;
+    top:-12px; left:50%;
+    transform:translateX(-50%);
+    background:var(--surface);
+    padding:0 8px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    border-radius:6px;
+  }
+  .stim > .bogi:first-child{ margin-top:6px; }
+  .bogi p{ margin:0 0 6px; padding-left:1.6em; text-indent:-1.6em; }
+  .bogi p:last-child{ margin-bottom:0; }
+  .case-title{ font-weight:700; color:var(--accent-ink); }
+
+  .options{ display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    width:100%;
+    text-align:left;
+    padding:13px 14px;
+    border-radius:13px;
+    border:1.5px solid var(--border);
+    background:var(--surface);
+    color:var(--ink);
+    font-size:16px;
+    line-height:1.55;
+    cursor:pointer;
+    word-break:keep-all;
+  }
+  .option:hover{ background:var(--surface-soft); }
+  body.suppress-hover .option:hover{ background:var(--surface); }
+  .option:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .option.selected{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+  }
+  .option:disabled{ cursor:default; }
+  .option:disabled:hover{ background:var(--surface); }
+  .option.correct{ border-color:var(--good); background:var(--good-soft); }
+  .option.wrong{ border-color:var(--bad); background:var(--bad-soft); }
+  .option.correct:disabled:hover{ background:var(--good-soft); }
+  .option.wrong:disabled:hover{ background:var(--bad-soft); }
+  .option-mark{
+    flex:0 0 auto;
+    width:24px; height:24px;
+    margin-top:1px;
+    border-radius:50%;
+    border:1.5px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12.5px; font-weight:600;
+    color:var(--ink-soft);
+  }
+  .option.selected .option-mark{
+    border-color:var(--accent);
+    background:var(--accent);
+    color:var(--surface);
+  }
+  .option.correct .option-mark{
+    border-color:var(--good);
+    background:var(--good);
+    color:var(--surface);
+  }
+  .option.wrong .option-mark{
+    border-color:var(--bad);
+    background:var(--bad);
+    color:var(--surface);
+  }
+  .feedback-box{
+    border-radius:12px;
+    padding:14px 16px;
+    margin:-6px 0 22px;
+    border:1px solid;
+  }
+  .feedback-box.correct{ background:var(--good-soft); border-color:var(--good); }
+  .feedback-box.wrong{ background:var(--bad-soft); border-color:var(--bad); }
+  .feedback-label{ font-weight:700; font-size:14.5px; margin:0 0 6px; }
+  .feedback-label.correct{ color:var(--good); }
+  .feedback-label.wrong{ color:var(--bad); }
+  .feedback-explain{ font-size:14.5px; line-height:1.7; color:var(--ink); margin:0; word-break:keep-all; }
+  .nav-row{ display:flex; gap:10px; }
+  .nav-row > *{ flex:1; }
+
+  /* result */
+  .score-tile{
+    text-align:center;
+    padding:8px 8px 4px;
+    margin-bottom:8px;
+  }
+  .score-number{
+    font-family:"IBM Plex Mono", monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:44px;
+    font-weight:600;
+    line-height:1;
+    margin:0 0 6px;
+  }
+  .score-number.tier-good{ color:var(--good); }
+  .score-number.tier-mid{ color:var(--ink); }
+  .score-number.tier-bad{ color:var(--bad); }
+  .score-caption{ color:var(--ink-soft); font-size:14px; margin:0; }
+  .perfect-badge{
+    display:inline-block;
+    margin:14px 0 0;
+    padding:6px 16px;
+    border-radius:999px;
+    background:var(--good-soft);
+    color:var(--good);
+    font-weight:700;
+    font-size:14.5px;
+  }
+  .perfect-badge.encourage{
+    background:var(--accent-soft);
+    color:var(--accent-ink);
+  }
+
+  .review-item{
+    padding:16px 16px 16px 18px;
+    border:1px solid var(--border);
+    border-left:4px solid var(--border);
+    border-radius:12px;
+    margin-bottom:12px;
+    background:var(--surface);
+  }
+  .review-item.correct{ border-left-color:var(--good); }
+  .review-item.wrong{ border-left-color:var(--bad); }
+  .review-item:last-child{ margin-bottom:0; }
+  .review-head{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .review-index{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    flex:0 0 auto;
+  }
+  .review-q{ font-weight:700; font-size:15.5px; line-height:1.5; word-break:keep-all; }
+  .review-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:12px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:999px;
+    margin:2px 6px 2px 0;
+  }
+  .review-chip.correct{ background:var(--good-soft); color:var(--good); }
+  .review-chip.wrong{ background:var(--bad-soft); color:var(--bad); }
+  .review-answers{ font-size:14px; color:var(--ink-soft); margin:6px 0; line-height:1.7; word-break:keep-all; }
+  .review-answers b{ color:var(--ink); font-weight:700; }
+  .review-stim{ margin:8px 0 4px; }
+  .review-stim summary{ cursor:pointer; font-size:13px; font-weight:700; color:var(--accent-ink); }
+  .review-stim .stim{ margin:8px 0 0; font-size:14px; }
+  .review-explain{
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.7;
+    margin:8px 0 0;
+    padding-top:8px;
+    border-top:1px dashed var(--border);
+    word-break:keep-all;
+  }
+  .review-explain > b:first-child{ color:var(--ink); }
+
+  @media (max-width:420px){
+    .card{ padding:20px 16px; }
+    .stim{ padding:12px 13px; font-size:15px; }
+    .option{ font-size:15.5px; padding:12px; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+(function(){
+  var app = document.getElementById('app');
+
+  var TITLE = '민주시민과 윤리';
+  var SUBTITLE = '현대사회와 윤리';
+  var UNIT = 'Ⅳ. 민주시민과 윤리';
+  var SIGNATURE = '현대사회와 윤리 수강 2학년♥무늬T♥';
+  var MARKS = ['1','2','3','4','5'];
+  var CIRCLED = ['①','②','③','④','⑤'];
+
+  /* 사상가 이름 → 고정 색 (해설·교과서 보기에서 {이름}으로 표시) */
+  var THINKER_VAR = {
+    '홉스':'hobbes','로크':'locke','루소':'rousseau','롤스':'rawls','매킨타이어':'macintyre',
+    '노직':'nozick','소로':'thoreau','싱어':'singer','드워킨':'dworkin','칸트':'kant',
+    '베카리아':'beccaria','벤담':'bentham','니부어':'niebuhr','아리스토텔레스':'aristotle'
+  };
+
+  /* ───────── 교과서 보기 (세트별) ─────────
+     [[단어]] = 학습지 빈칸 정답(빨간 글씨), {이름} = 사상가 고정 색 */
+  var PASSAGES = {
+    civic: [
+      ['h','1. 시민과 국가의 관계'],
+      ['p','민주 국가의 시민은 다양한 권리와 의무를 지닌다. 시민의 권리란 주권자로서 국가에 요구할 수 있는 권리로 자유권, 평등권, 참정권, 청구권, 사회권 등이 있고, 시민의 의무란 사회를 유지하고 공공복리를 증진하기 위해 수행해야 하는 책무로 납세·국방·교육·근로의 의무가 있다. 우리나라 헌법은 이외에도 환경 보전의 의무, 재산권 행사의 공공복리 적합 의무를 규정하고 있다.'],
+      ['p','권리에는 의무가 수반되며, 의무는 개인의 [[권리]]를 전제하기 때문에 시민의 권리와 의무는 따로 떼어서 생각할 수 없다. 권리와 의무는 보완적인 관계이므로, 시민의 권리 행사와 의무 이행은 균형 있게 이루어져야 한다.'],
+      ['p','국가의 권위란 국가가 시민들에게 명령을 내리고 통치할 수 있는 힘을 의미한다. {아리스토텔레스}에 따르면 인간은 사회적·정치적 동물이다. 국가는 인간의 [[본성]]에 의해 자연스럽게 형성된 것이므로 정당성을 갖는다(인간 본성의 관점).'],
+      ['p','사회 계약론은 생명, 자유, 재산과 같은 권리를 보호받으려고 개인 간 국가를 형성하는 [[계약]]을 맺기 때문에, 시민은 국가에 복종하는 것에 동의한다고 본다. 이러한 국가는 철도, 전기, 국방, 교육, 치안 등 공공재를 제공하고, 공익을 위한 제도나 법률 같은 관행의 혜택을 제공하기 때문에 권위를 갖는다.'],
+      ['p','유교는 나라의 근본을 백성에 두는 [[민본주의]] 정신을 강조한다. 유교에 따르면 군주가 덕을 갖추고 백성을 위한 통치를 해야만 국가의 권위가 정당화된다.'],
+      ['p','[사회 계약론 비교] {홉스}: “자연 상태는 ‘만인의 만인에 대한 투쟁’ 상태야. 따라서 자기 보존을 위해서 계약을 맺고 국가를 형성하게 돼.” / {로크}: “내 생명과 재산을 보호받기 위해서는 자연 상태에서 가졌던 평등, 자유 및 집행권을 입법부가 처리할 수 있도록 사회의 수중에 양도해야 해. 그러나 정부가 이를 지키지 못하면 저항권을 행사할 수 있어.” / {루소}: “평화로운 자연 상태에서 사유 재산이 증가함에 따라 점차 불평등과 예속 상태에 놓이게 돼. 이를 벗어나기 위해 사회 계약을 맺고 국가를 형성하게 돼.”'],
+      ['p','사회 계약론에 따르면 국가는 먼저 시민들의 기본권인 생명, 재산, 자유를 보호해야 한다. 또한 국가는 시민들이 인간다운 삶을 살아갈 수 있도록 실업이나 빈곤과 같은 어려움에 처한 사람들을 돕거나 출산 및 양육 등을 지원하는 사회 보장 제도를 제공해야 한다.'],
+      ['h','2. 개인선과 공동선의 조화'],
+      ['p','자유주의는 개인의 [[자유]]를 최상의 가치로 여기는 사상이다. 개인들은 이성적이고 합리적인 능력을 지녔기 때문에 인생의 목적이나 신념을 스스로 판단하고 선택할 수 있는 [[자율적]]인 존재로 본다. 따라서 사회나 국가는 개인의 자유와 권리 보호에 힘쓰면서 특정한 형태의 삶의 방식을 강요하지 않고 중립적이어야 한다고 본다. 그러나 자유주의가 지나치게 강조되면 자신의 의무와 공동선에 무관심해지는 문제가 생길 수 있다.'],
+      ['p','공동체주의는 공동체의 문화와 역사, 전통과 규범 등을 중시하는 사상으로, 인간은 공동체 안에서 [[사회적 역할]]을 수행하면서 소속감과 자아 정체성을 형성하는 존재라고 본다. 개인의 사적인 권리보다 공동체 구성원으로서 갖춰야 할 덕목을 우선시하며, 연대 의식과 공동선을 강조한다. 그러나 공동체의 가치를 지나치게 우선시하면 권위주의나 전체주의로 흘러 개인의 자유와 권리를 침해할 수 있고, 개인을 사회나 집단의 존속과 발전을 위한 하나의 [[수단]]으로 취급하는 문제점이 나타날 수 있다.'],
+      ['p','{롤스}: “모든 사람은 기본적 자유를 누릴 수 있는 평등한 권리를 가져야 합니다. 다수의 이익을 위해 개인의 기본적 자유가 침해되는 것은 허용되지 않습니다.” - 『정의론』 / {매킨타이어}: “나의 정체성은 공동체의 역사 속에서 만들어집니다. 나는 나의 가족, 나의 도시, 나의 부족, 나의 민족으로부터 다양한 빚과 유산, 정당한 기대와 의무를 물려받습니다. 따라서 공동체 구성원으로서 책임과 의무를 다해야 합니다.” - 『덕의 상실』'],
+      ['p','개인선과 공동선은 항상 충돌하는 것이 아니며 상호 보완적 관계이다. 개인의 자유와 권리를 최대한 인정하는 동시에, 사회 전체의 공익을 지향함으로써 개인선과 공동선이 조화를 이룰 수 있어야 한다.'],
+      ['h','3. 시민의 정치참여'],
+      ['p','시민의 정치참여란 선거권을 행사하는 것뿐만 아니라 [[정책]]의 결정이나 집행에 직접 참여하여 영향을 미치는 것을 말한다. 정치참여를 통해 시민에 의한 정치를 실현하고, 공동선을 추구하며, 국가권력의 남용을 견제하고, 더 좋은 [[민주주의]]를 실현하는 토대를 마련할 수 있다.'],
+      ['p','대부분의 현대 국가는 선거를 통해 선출한 대표가 시민의 정치적 의사를 대변하는 대의 민주주의를 채택하고 있다. 하지만 대의 민주주의는 대표자가 시민의 의사를 온전히 대표하기 어렵고, 다수 집단의 이익만을 대변하고 소수의 의견과 권리를 배제하여 사회통합을 저해할 수 있다. 이를 보완하기 위해 주민 소환제, 공청회, 청소년 참여 위원회, 인터넷을 통한 정책 제안 등을 활용할 수 있다.'],
+      ['h','4. 시민불복종'],
+      ['p','저항권 개념은 근대 사상가 [[로크]]에서부터 시작하였다. 그는 계약을 통해 자연권을 양도받은 국가가 시민들을 제대로 보호하지 못한다면 시민들은 계약을 파기하고 자기방어를 할 수 있다고 주장하였다. 저항권은 이후 시민불복종 운동에 영향을 주었다.'],
+      ['p','시민불복종은 정의롭지 못한 법이나 정책을 변화시키려는 목적을 가지고 의도적으로 법을 위반하는 행위를 말한다. {소로}는 국가의 시민이기 이전에 먼저 인간이어야 하기 때문에, 법보다는 개인의 [[양심]]을 따라야 한다고 보았다. {롤스}는 개인의 양심보다 [[다수]]의 정의관에 초점을 맞추어, 어떤 법률이나 명령이 정의의 원칙을 심각하게 위반할 경우 최후의 수단으로 시민불복종을 할 수 있다고 주장하였다. {싱어}는 공리주의적 입장에서 시민불복종이 산출할 손해보다 [[이익]]이 더 큰 경우에 성공 가능성을 고려하여 이루어져야 한다고 주장하였다. {드워킨}은 헌법 정신에 어긋나는 법에 대해 자신의 자율적인 판단에 따라 시민불복종을 할 수 있다고 주장하였다.'],
+      ['p','{롤스}가 제시한 시민불복종의 정당화 조건: 첫째, [[목적]]이 정당해야 한다(사적 이익이 아닌 공공의 이익). 둘째, 비폭력적이어야 한다. 셋째, 최후의 수단이어야 한다(합법적인 수단을 모두 사용한 후). 넷째, 공개적이어야 한다. 마지막으로 처벌을 감수해야 한다. 이와 달리 {소로}는 부정의한 법이 개선될 때까지 기다리면 부정의가 지속될 수 있으므로 양심에 따른 즉각적인 저항을 주장하였다.'],
+      ['p','시민불복종은 인권을 신장하고 민주주의의 발전에 기여할 수 있다. 하지만 사회의 법과 제도를 어기는 행위이기에 시민들의 [[준법 의식]]을 약화하고 사회의 존립 자체를 위협할 수도 있다. 따라서 사회 정의를 실현하는 방향으로 심사숙고해서 이루어져야 한다.']
+    ],
+    justice: [
+      ['h','1. 개인 윤리와 사회 윤리'],
+      ['p','개인 윤리는 개인의 [[도덕성]]을 함양하여 사회의 윤리적 문제를 해결하려고 한다. 하지만 오늘날 빈부 격차, 세대 간·지역 간 갈등 등은 개인의 도덕성 함양만으로 해결하는 데 한계가 있다. 이를 보완하기 위해 등장한 사회 윤리는 사회의 구조와 [[제도]]를 개선하는 데 초점을 둔다.'],
+      ['p','{니부어}는 도덕적인 개인일지라도 [[집단]]에 소속되면 이기심을 조절하는 힘이 떨어져 비도덕적인 행동을 하기 쉽다고 보았다. 또한 집단 사이의 갈등은 힘의 불균형으로 인해 발생하기 때문에 개인 윤리만으로는 해결하는 데 한계가 있다고 보았다. 따라서 사회 정의를 실현하기 위해서는 양심과 이타성을 강조하는 개인 윤리적 방법과 정치적 강제력을 동원하는 사회 윤리적 방법이 모두 필요하다고 주장하였다.'],
+      ['h','2. 분배적 정의'],
+      ['p','분배적 정의란 사회적 [[이익]]이나 부담을 공정하게 분배하여 구성원 각자가 정당한 몫을 누리도록 하는 것이다.'],
+      ['p','[분배 기준의 장단점] 절대적 평등 - 장점: 모두에게 같은 혜택, 각자의 욕구를 균등하게 존중 / 단점: 개인 간의 정당한 차이 간과, 근로 의욕 및 효율성 저하. 능력 - 장점: 잠재력을 발휘할 기회 제공, 능력 함양 동기 부여 / 단점: 선천적·환경적 우연성 작용, 평가 기준 불확실. 노력 - 장점: 노력하는 자세 장려, 노력에 비례해 분배 / 단점: 노력의 정도와 결과가 불일치할 수 있음, 객관적 평가 어려움. 업적 - 장점: 객관적인 평가가 쉬움, 성취동기 및 생산성 향상 / 단점: 업적이 없는 사회적 약자 배려 힘듦, 서로 다른 분야의 업적은 평가가 어려움. 필요 - 장점: 사회적 약자의 인간다운 삶 보장, 사회 불평등 개선 / 단점: 모든 사람의 필요를 충족시킬 수 없음, 성취동기 약화.'],
+      ['p','{롤스}는 정의의 본질을 공정성으로 해석하면서 절차의 공정성을 강조하였다. 그는 정의의 원칙을 합의하기 위한 공정한 절차로서 원초적 입장이라는 가상적 계약 상황을 설정하였다. 원초적 입장에서 각 개인은 자신의 재능, 출신, 성별, 사회적 상황 등을 알지 못하는 무지의 베일을 쓰고 있으며, 타인의 이익에는 무관심하고 자신의 이익을 합리적으로 추구한다. 계약 당사자들은 자신이 사회적 약자가 되는 위험한 상황을 회피하려고 하면서 정의의 원칙에 합의한다.'],
+      ['p','제1원칙: 각 개인은 기본적 자유에 있어 평등한 권리를 가져야 한다(평등한 자유의 원칙). 제2원칙: 사회적·경제적 불평등은 ① 최소 수혜자에게 최대의 이익이 보장되고(차등의 원칙), ② 불평등의 계기가 되는 사회적 지위는 모든 사람에게 개방되어야 한다는([[기회균등]]의 원칙) 조건을 만족시킬 때 정당화될 수 있다. 두 원칙이 충돌하면 제1원칙이 우선한다. 무지의 베일은 선천적·환경적 우연성의 개입을 차단하기 위한 것으로, 개인이 지닌 재능의 분포 상황은 사회의 공동 자산으로 간주한다.'],
+      ['p','{노직}은 정의란 개인의 [[소유권]]을 보장해 주는 것이라는 소유 권리론을 주장하였다. 재화의 취득과 양도의 절차가 정당하다면 그 소유물에 대해 개인이 절대적인 권리를 갖는다. 그러므로 국가는 개인의 소유를 절도·사기로부터 보호하고 국방을 담당하는 역할 정도만 해야 한다는 [[최소]] 국가론을 주장하였다. 정의의 원칙: 취득의 원칙, 양도의 원칙, 교정의 원칙(취득과 양도의 과정에서 부정의가 발생한다면 이를 교정해야 한다).'],
+      ['h','3. 우대 정책과 역차별'],
+      ['p','소수자란 집단 구성원의 수와 관계없이 차별받는 집단에 속해 있는 사람을 말하며, 소수자 우대 정책이란 차별로 인한 불이익을 보상해 주기 위해 소수자에게 혜택을 주는 정책이다. 사회통합 전형, 비례 대표 의원 여성 할당제, 장애인 의무 고용제 등이 해당한다. 찬성하는 사람들은 사회적 지위를 얻을 기회를 제공함으로써 실질적 평등을 이루어 나갈 수 있다고 주장한다.'],
+      ['p','하지만 소수자 우대 정책으로 인해 다른 집단이 부당하게 불이익을 받는 [[역차별]]이 발생할 수 있다. 또한 과거의 차별로 이전 세대가 받은 고통에 대해 현세대가 보상받는다는 한계, 성과에 따라 분배하는 업적주의에 어긋난다는 비판도 있다.'],
+      ['h','4. 교정적 정의'],
+      ['p','교정적 정의란 범죄 행위에 대해 공정하게 [[처벌]]하고, 발생한 손해에 대해 합당하게 배상하도록 하여 부정의를 바로잡는 것이다.'],
+      ['p','응보주의 관점에서는 처벌을 범죄 행위에 상응하는 [[보복]]을 가하는 것으로 본다. {칸트}는 이성적이고 자율적인 존재인 인간은 자신의 행위에 책임을 져야 하기 때문에 범죄 행위에 대한 대가로 응분의 처벌을 받는 것이 마땅하다고 주장하였다. 하지만 이 관점은 범죄 예방과 범죄자들의 [[교화]]를 소홀히 한다는 비판을 받는다.'],
+      ['p','[[공리주의]] 관점에서는 처벌을 범죄 예방과 범죄자 교화를 통해 사회의 이익을 증진하는 수단이라고 본다. {벤담}은 처벌 그 자체는 고통을 증진하기 때문에 악하다고 볼 수 있지만, 이를 통해 사회적 이익이 증진되기 때문에 사회에 필요한 악이라고 주장하였다. 하지만 이 관점은 사회적 이익을 최우선으로 여겨 [[인간 존엄성]]을 훼손할 수 있다는 비판을 받는다.'],
+      ['h','5. 사형 제도'],
+      ['p','[찬성 논거] 흉악 범죄 억제 효과가 큼, 국민의 생명과 안전을 지키는 방어 수단임, 흉악한 살인자의 생명 박탈은 비례성의 원리에 따른 사회 정의 실현임, 가해자의 생명을 피해자의 생명보다 중시하는 것은 평등의 논리에 어긋남 등. [반대 논거] 흉악 범죄를 예방하는 효과가 없음, 일시적인 복수심 충족일 뿐 근본적인 해결이 아님, 형벌의 목적인 교화와 개선에 부합하지 않음, 오판에 의한 사형의 경우 원상 복귀가 불가능함, 인간의 존엄과 생명권을 침해하는 비인도적 형벌임, 정치적 반대 세력을 제거하는 수단으로 악용될 가능성이 있음 등.'],
+      ['p','{칸트}는 살인자는 누구든 사형에 처해지지 않으면 안 된다고 본다. [[동등성]]의 원리에 따라 살인자에 대한 사형은 정당하며 사형 이외의 형벌은 정의에 부합하지 않기 때문이다. 또한 형벌은 어떤 다른 선을 촉진하기 위한 수단으로 가해져서는 안 되며, 언제나 범죄를 저질렀다는 오직 그 이유만으로 부과되어야 한다. “시민 사회가 모든 구성원의 동의로써 해체될 때조차도 감옥에 있는 마지막 살인자는 반드시 처형되어야 한다.” - 『윤리 형이상학』'],
+      ['p','[[루소]]는 사회 계약의 관점에서 계약자인 시민의 생명과 안전을 확보하기 위한 사형은 정당하다고 본다. 타인을 희생하여 생존하려는 살인자는 마땅히 자신의 생명을 희생해야 한다. 법을 집행할 때 살인자는 시민이라기보다는 적으로서 간주해야 하며, 추방에 의해서나 죽음에 의해 국가로부터 분리되어야 한다. 국가의 보존은 살인자의 보존과 양립할 수 없기 때문이다.'],
+      ['p','{베카리아}는 사회 계약의 관점에서 살인자의 생명을 빼앗는 사형은 정당하지 않다고 본다. 사회 계약은 계약자의 생명 보존이 목적이기 때문에 자신의 생명을 빼앗을 권능을 타인에게 양도할 자는 없다. 또한 공리주의의 관점에서 형벌은 타인의 범죄를 [[억제]]하기에 충분한 정도의 강도만을 가져야 한다. 한순간에 강렬한 인상만을 주는 사형보다 오랫동안 고통의 본보기가 되는 종신 노역형이 범죄 예방과 사회 전체 이익에 부합한다.'],
+      ['p','{베카리아}, 『범죄와 형벌』: “한 국민의 죽음은 한 가지 경우를 제외하고는 필연적일 수가 없다. 그가 자유를 박탈당하더라도 국가의 안전을 위협할 만한 충분한 힘과 조직을 보유하고 있다는 사실이 명백한 경우다. 그러나 평온한 시대에 법의 지배를 받는 정부에서는 어떤 이유로든 국민의 생명을 빼앗을 수 없다.” “인간의 정신에 가장 큰 영향을 미치는 것은 고통의 강렬함이 아니라 고통이 지속되는 정도다.”'],
+      ['h','6. 회복적 정의'],
+      ['p','1972년 캐나다 엘마이라에서 10대 두 명이 이웃 주민들의 재산에 피해를 입히는 범죄를 저지르자, 판사는 가해자들에게 피해자를 직접 찾아가 그들의 고통을 인지하고 용서를 구할 것을 명령하였다. 이처럼 피해자의 피해가 회복되는 것에 목표를 둔 정의를 회복적 정의라고 한다. 가해자가 자신의 행동으로 발생하는 피해와 영향을 직시하도록 돕고, 그 피해에 대해 자발적으로 책임을 느끼도록 하는 것이다. 응보적 정의가 가해자를 어떻게 처벌할 것인지에 초점을 맞춘다면, 회복적 정의는 범죄의 피해를 바로잡는 것에 초점을 맞춘다. 우리나라에서도 2006년부터 소년 사건에 대해 회복적 대화 모임을 시도하면서 화해 권고 제도가 생기게 되었다.']
+    ]
+  };
+
+  /* ───────── 문항 ─────────
+     q: 발문, box: 제시문(HTML), options: 5개, answer: 정답 번호(0~4), explain: 해설 */
+  function spk(label, html, src){
+    return '<div class="spk"><span class="spk-label">' + label + '</span><div class="spk-body">' + html +
+      (src ? '<span class="src">' + src + '</span>' : '') + '</div></div>';
+  }
+  function bogi(items){
+    return '<div class="bogi">' + items.map(function(t){ return '<p>' + t + '</p>'; }).join('') + '</div>';
+  }
+
+  var SETS = {
+    civic: {
+      code: 'Ⅳ-02',
+      name: '시민성과 윤리',
+      desc: '시민의 권리와 의무 · 국가 권위의 정당성 · 자유주의와 공동체주의 · 정치참여 · 시민불복종',
+      questions: [
+        {
+          q: '시민의 권리와 의무에 대한 설명으로 옳은 것은?',
+          options: [
+            '시민의 권리와 의무는 서로 관련이 없으므로 따로 떼어서 생각해야 한다.',
+            '시민의 의무란 주권자로서 국가에 요구할 수 있는 것을 말한다.',
+            '권리에는 의무가 수반되며, 의무는 개인의 권리를 전제한다.',
+            '우리나라 헌법은 납세·국방·교육·근로의 의무 외에 다른 의무는 규정하지 않는다.',
+            '시민이 의무를 다하지 않더라도 개인의 권리는 온전하게 보장된다.'
+          ],
+          answer: 2,
+          explain: '정답 ③ 권리에는 의무가 수반되며, 의무는 개인의 [[권리]]를 전제한다. 그래서 권리와 의무는 보완적인 관계이다.\n① 권리와 의무는 따로 떼어서 생각할 수 없다. ② 국가에 요구할 수 있는 것은 ‘권리’이다. ④ 헌법은 환경 보전의 의무, 재산권 행사의 공공복리 적합 의무도 규정한다. ⑤ 의무를 다하지 않으면 사회가 불안정해져 결국 개인의 권리도 온전하게 보장받지 못한다.'
+        },
+        {
+          q: '다음은 국가 권위의 정당성에 대한 관점 (가)~(다)이다. 이에 대한 설명으로 옳은 것은?',
+          box: '<p>(가) 인간은 사회적·정치적 동물이다. 국가는 인간의 본성에 의해 자연스럽게 형성된 것이므로 정당성을 갖는다.</p>' +
+               '<p>(나) 생명, 자유, 재산과 같은 권리를 보호받으려고 개인 간 국가를 형성하는 계약을 맺었으므로, 시민은 국가에 복종하는 것에 동의한 것이다.</p>' +
+               '<p>(다) 나라의 근본은 백성에 있다. 군주가 덕을 갖추고 백성을 위한 통치를 해야만 국가의 권위가 정당화된다.</p>',
+          options: [
+            '(가)는 아리스토텔레스의 관점으로, 국가 권위의 정당성을 인간의 본성에서 찾는다.',
+            '(가)는 국가가 시민들의 계약에 의해 인위적으로 만들어졌다고 본다.',
+            '(나)는 국가가 공공재를 제공하는 것과 국가의 권위는 관련이 없다고 본다.',
+            '(다)는 민주주의를 바탕으로 국가 통치 행위의 근본을 백성에게 둔다.',
+            '(다)는 군주의 덕과 관계없이 국가의 권위가 정당화된다고 본다.'
+          ],
+          answer: 0,
+          explain: '정답 ① (가)는 인간 본성의 관점({아리스토텔레스}), (나)는 사회 계약론, (다)는 유교적 관점이다. (가)는 국가가 인간의 [[본성]]에 의해 자연스럽게 형성되었다고 본다.\n② 계약으로 국가가 형성된다고 보는 것은 (나)이다. ③ 사회 계약론은 국가가 공공재와 공익을 위한 제도의 혜택을 제공하기 때문에 권위를 갖는다고 본다. ④ 유교는 ‘민주주의’가 아니라 [[민본주의]]를 바탕으로 한다. ⑤ 유교는 군주가 덕을 갖추어야만 국가의 권위가 정당화된다고 본다.'
+        },
+        {
+          q: '갑, 을, 병은 사회 계약론자이다. 이들의 입장에 대한 설명으로 옳은 것은?',
+          box: spk('갑', '자연 상태는 ‘만인의 만인에 대한 투쟁’ 상태야. 따라서 자기 보존을 위해서 계약을 맺고 국가를 형성하게 돼.') +
+               spk('을', '내 생명과 재산을 보호받기 위해서는 자연 상태에서 가졌던 평등, 자유 및 집행권을 입법부가 처리할 수 있도록 사회의 수중에 양도해야 해. 그러나 정부가 이를 지키지 못하면 저항권을 행사할 수 있어.') +
+               spk('병', '평화로운 자연 상태에서 사유 재산이 증가함에 따라 점차 불평등과 예속 상태에 놓이게 돼. 이를 벗어나기 위해 사회 계약을 맺고 국가를 형성하게 돼.'),
+          options: [
+            '갑은 자연 상태를 평화로운 상태로 본다.',
+            '을은 정부가 생명과 재산을 지키지 못하더라도 시민은 저항할 수 없다고 본다.',
+            '병은 자연 상태가 처음부터 만인의 만인에 대한 투쟁 상태라고 본다.',
+            '갑과 달리 병은 국가가 사회 계약에 의해 형성된다고 본다.',
+            '을은 자연 상태의 권리를 사회에 양도해야 한다고 보면서도, 정부가 이를 지키지 못하면 저항권을 행사할 수 있다고 본다.'
+          ],
+          answer: 4,
+          explain: '정답 ⑤ 갑은 {홉스}, 을은 {로크}, 병은 {루소}이다. 로크는 평등, 자유 및 집행권을 사회의 수중에 양도해야 하지만, 정부가 이를 지키지 못하면 저항권을 행사할 수 있다고 본다.\n① 홉스는 자연 상태를 ‘만인의 만인에 대한 투쟁’ 상태로 본다. ② 로크는 저항권을 인정한다. ③ 루소는 자연 상태를 평화로운 상태로 본다. ④ 갑, 을, 병 모두 사회 계약을 맺어 국가를 형성한다고 본다.'
+        },
+        {
+          q: '갑, 을 사상가의 입장으로 옳은 것은?',
+          box: spk('갑', '“모든 사람은 기본적 자유를 누릴 수 있는 평등한 권리를 가져야 합니다. 다수의 이익을 위해 개인의 기본적 자유가 침해되는 것은 허용되지 않습니다.”') +
+               spk('을', '“나의 정체성은 공동체의 역사 속에서 만들어집니다. 나는 나의 가족, 나의 도시, 나의 부족, 나의 민족으로부터 다양한 빚과 유산, 정당한 기대와 의무를 물려받습니다. 따라서 공동체 구성원으로서 책임과 의무를 다해야 합니다.”'),
+          options: [
+            '갑: 국가는 공동선과 전통에 비추어 무엇이 좋은 삶인지 시민에게 제시해야 한다.',
+            '을: 개인의 정체성은 공동체의 역사와 전통 속에서 형성된다.',
+            '갑: 공동체 구성원으로서 갖춰야 할 덕목이 개인의 권리보다 우선한다.',
+            '을: 국가는 특정한 삶의 방식을 강요하지 말고 중립을 지켜야 한다.',
+            '갑, 을: 다수의 이익을 위해서라면 개인의 기본적 자유를 제한할 수 있다.'
+          ],
+          answer: 1,
+          explain: '정답 ② 갑은 자유주의자 {롤스}(『정의론』), 을은 공동체주의자 {매킨타이어}(『덕의 상실』)이다. 매킨타이어는 나의 정체성이 공동체의 역사 속에서 만들어진다고 본다.\n①, ③ 좋은 삶을 제시하고 공동체의 덕목을 우선시하는 것은 공동체주의(을)의 입장이다. ④ 국가의 중립을 강조하는 것은 자유주의(갑)의 입장이다. ⑤ 갑은 다수의 이익을 위해 개인의 기본적 자유가 침해되는 것을 허용하지 않는다.'
+        },
+        {
+          q: '다음 글의 ㉠, ㉡에 대한 설명으로 옳은 것은?',
+          box: '<p>개인의 자유와 권리 같은 개인선과 공동체를 위한 공동선이 충돌하는 상황에서, 어느 쪽을 강조하느냐에 따라 <span class="u">㉠ 개인의 자유를 최상의 가치로 여기는 사상</span>과 <span class="u">㉡ 공동체의 문화와 역사, 전통과 규범 등을 중시하는 사상</span>으로 구분된다.</p>',
+          options: [
+            '㉠은 인간을 공동체 안에서 사회적 역할을 수행하며 자아 정체성을 형성하는 존재로 본다.',
+            '㉡은 인간을 인생의 목적이나 신념을 스스로 판단하고 선택하는 자율적인 존재로 본다.',
+            '㉠이 지나치게 강조되면 권위주의나 전체주의로 흐를 수 있다.',
+            '㉡이 지나치게 강조되면 개인을 집단의 존속과 발전을 위한 수단으로 취급할 수 있다.',
+            '㉠은 공동체 구성원들의 연대 의식과 공동선을 개인의 권리보다 우선시한다.'
+          ],
+          answer: 3,
+          explain: '정답 ④ ㉠은 자유주의, ㉡은 공동체주의이다. 공동체주의가 지나치게 강조되면 권위주의나 전체주의로 흘러 개인을 집단의 존속과 발전을 위한 [[수단]]으로 취급할 수 있다.\n① [[사회적 역할]]을 수행하며 정체성을 형성하는 존재로 보는 것은 ㉡이다. ② 인간을 [[자율적]]인 존재로 보는 것은 ㉠이다. ③ 권위주의·전체주의로 흐를 위험은 ㉡에 대한 비판이다. ⑤ 연대 의식과 공동선을 우선시하는 것은 ㉡이다.'
+        },
+        {
+          q: '시민의 정치참여에 대한 옳은 설명만을 〈보기〉에서 있는 대로 고른 것은?',
+          box: bogi([
+            'ㄱ. 선거권을 행사하는 것뿐만 아니라 정책의 결정이나 집행에 직접 참여하여 영향을 미치는 것을 포함한다.',
+            'ㄴ. 국가권력의 남용을 견제하고, 정부가 좋은 정치를 할 수 있도록 동기를 부여한다.',
+            'ㄷ. 대의 민주주의에서는 대표자가 시민의 의사를 온전히 대표하므로 선거 외의 참여는 필요하지 않다.',
+            'ㄹ. 주민 소환제, 공청회, 청소년 참여 위원회, 인터넷을 통한 정책 제안 등을 통해서도 참여할 수 있다.'
+          ]),
+          options: ['ㄱ, ㄷ', 'ㄱ, ㄴ, ㄹ', 'ㄴ, ㄷ', 'ㄴ, ㄷ, ㄹ', 'ㄱ, ㄴ, ㄷ, ㄹ'],
+          answer: 1,
+          explain: '정답 ② (ㄱ, ㄴ, ㄹ) 정치참여는 선거권 행사뿐 아니라 [[정책]]의 결정이나 집행에 직접 참여하는 것이며, 권력 남용을 견제하고 [[민주주의]] 실현의 토대를 마련한다. 주민 소환제, 공청회, 청소년 참여 위원회 등 다양한 방법이 있다.\nㄷ. 대의 민주주의는 대표자가 시민의 의사를 온전히 대표하기 어렵다는 한계가 있다. 그래서 선거 외의 다양한 참여로 보완해야 한다.'
+        },
+        {
+          q: '다음은 시민불복종에 대한 갑, 을, 병의 주장이다. 이에 대한 설명으로 옳은 것은?',
+          box: spk('갑', '“우리는 먼저 인간이어야 하고, 그다음에 국민이어야 한다고 나는 생각한다. 법에 대한 존경심보다는 먼저 정의에 대한 존경심을 기르는 것이 바람직하다.”') +
+               spk('을', '“시민불복종은 소수자가 다수자의 정의감에 호소하여 정의의 원칙에 따라 법을 바꾸도록 하는 행위이기 때문에 직접적으로 법이나 명령을 바꾸는 혁명적인 행위와는 구별된다.”') +
+               spk('병', '“우리는 또, 우리의 행위가 목표 달성에 실패하여 반작용을 불러일으킴으로써 다른 수단으로 성공할 가능성을 감소시킬 가능성도 고려해 봐야 한다. 시민불복종은 민주주의적인 의사 결정을 좌절시킨다기보다는 복원하려는 시도이다.”'),
+          options: [
+            '갑: 시민은 자신의 양심을 입법자에게 맡기고 법을 따라야 한다.',
+            '을: 시민불복종은 법이나 명령을 직접 바꾸는 혁명적인 행위이다.',
+            '병: 시민불복종은 민주주의적인 의사 결정을 좌절시키는 행위이다.',
+            '을: 시민불복종은 다수자가 소수자의 정의감에 호소하는 행위이다.',
+            '병: 불복종하기 전에 그 행위가 실패하여 다른 수단의 성공 가능성을 줄일 수 있는지도 고려해야 한다.'
+          ],
+          answer: 4,
+          explain: '정답 ⑤ 갑은 {소로}(『시민의 불복종』), 을은 {롤스}(『정의론』), 병은 {싱어}(『실천윤리학』)이다. 싱어는 불복종의 이익과 손해, 성공 가능성을 따져 보아야 한다고 본다.\n① 소로는 법보다 개인의 [[양심]]을 따라야 한다고 본다. ② 롤스는 시민불복종을 혁명적인 행위와 구별한다. ③ 싱어는 시민불복종을 민주적 의사 결정을 ‘복원’하려는 시도로 본다. ④ 소수자가 [[다수]]자의 정의감에 호소하는 행위이다.'
+        },
+        {
+          q: '롤스가 제시한 시민불복종의 정당화 조건에 비추어 볼 때, 다음 사례에서 A의 행위가 충족하지 못한 조건으로 가장 적절한 것은?',
+          box: '<p><span class="case-title">〈사례〉</span> A는 공공의 이익을 심각하게 해치는 법을 바꾸기 위해 청원, 서명 운동 등 합법적인 수단을 모두 사용해 보았다. 그래도 법이 바뀌지 않자 A는 자신이 이 법을 어기겠다고 미리 공개적으로 밝힌 뒤, 폭력을 쓰지 않고 평화롭게 법을 어기는 시위를 하였다. 그런데 경찰이 법 위반으로 A를 붙잡으려 하자, A는 신분을 숨기고 처벌을 피해 달아났다.</p>',
+          options: ['처벌 감수', '비폭력', '최후의 수단', '공개성', '목적의 정당성'],
+          answer: 0,
+          explain: '정답 ① {롤스}의 조건은 [[목적]]의 정당성, 비폭력, 최후의 수단, 공개성, 처벌 감수이다. A는 처벌을 피해 달아났으므로 ‘위법 행위에 대한 처벌을 받아들여야 한다’는 처벌 감수 조건을 충족하지 못했다.\n② 폭력을 쓰지 않았다. ③ 합법적인 수단을 모두 사용한 뒤였다. ④ 미리 공개적으로 밝혔다. ⑤ 사적 이익이 아니라 공공의 이익을 위한 것이었다.'
+        },
+        {
+          q: '시민불복종에 대한 설명으로 옳지 않은 것은?',
+          options: [
+            '로크의 저항권 사상은 이후 시민불복종 운동에 영향을 주었다.',
+            '드워킨은 헌법 정신에 어긋나는 법에 대해 자신의 자율적인 판단에 따라 시민불복종을 할 수 있다고 보았다.',
+            '소로는 합법적인 수단을 모두 사용한 뒤 부정의한 법이 개선될 때까지 기다렸다가 마지막 수단으로 불복종해야 한다고 보았다.',
+            '시민불복종은 불의한 법과 정책을 개선하려는 노력으로, 인권을 신장하고 민주주의의 발전에 기여할 수 있다.',
+            '시민불복종은 시민들의 준법 의식을 약화하고 사회의 존립 자체를 위협할 수도 있다.'
+          ],
+          answer: 2,
+          explain: '정답 ③ {소로}는 부정의한 법이 개선될 때까지 기다리면 부정의가 지속될 수 있으므로 양심에 따른 ‘즉각적인’ 저항을 주장하였다. ‘최후의 수단’을 조건으로 내세운 것은 {롤스}이다.\n① [[로크]]의 저항권은 시민불복종 운동에 영향을 주었다. ② {드워킨}의 입장이다. ④ 시민불복종의 의의이다. ⑤ 시민불복종의 한계로, [[준법 의식]]을 약화할 수 있어 심사숙고해서 이루어져야 한다.'
+        },
+        {
+          q: '밑줄 친 ㉠~㉤ 중 옳지 않은 것은?',
+          box: '<p>사회 계약론에 따르면 국가는 <span class="u">㉠ 시민들의 기본권인 생명, 재산, 자유를 보호</span>해야 하며, <span class="u">㉡ 실업이나 빈곤과 같은 어려움에 처한 사람들을 돕는 사회 보장 제도를 제공</span>해야 한다. 한편 대부분의 현대 국가는 <span class="u">㉢ 선거를 통해 선출한 대표가 시민의 정치적 의사를 대변하는 대의 민주주의</span>를 채택하고 있다. 그러나 대의 민주주의는 <span class="u">㉣ 소수 집단의 이익만을 대변하고 다수의 의견과 권리를 배제</span>할 수 있다는 한계가 있다. 이를 보완하기 위해 <span class="u">㉤ 주민 소환제, 공청회, 인터넷을 통한 정책 제안</span> 등 다양한 참여 방법을 활용할 수 있다.</p>',
+          options: ['㉠', '㉡', '㉢', '㉣', '㉤'],
+          answer: 3,
+          explain: '정답 ④ 대의 민주주의는 ‘다수’ 집단의 이익만을 대변하고 ‘소수’의 의견과 권리를 배제하여 사회통합을 저해할 수 있다. ㉣은 다수와 소수가 뒤바뀌었다.\n㉠, ㉡ 사회 계약론에서 말하는 국가의 의무(기본권 보장, 복지 정책)이다. ㉢ 대의 민주주의의 의미이다. ㉤ 대의 민주주의의 한계를 보완하는 참여 방법이다.'
+        }
+      ]
+    },
+    justice: {
+      code: 'Ⅳ-03',
+      name: '사회 정의와 윤리',
+      desc: '개인 윤리와 사회 윤리 · 분배적 정의 · 롤스와 노직 · 우대 정책 · 교정적 정의 · 사형 제도',
+      questions: [
+        {
+          q: '다음 글을 주장한 사상가의 입장으로 가장 적절한 것은?',
+          box: '<p>도덕적인 개인일지라도 집단에 소속되면 이기심을 조절하는 힘이 떨어져 비도덕적인 행동을 하기 쉽다. 또한 집단 사이의 갈등은 힘의 불균형으로 인해 발생하기 때문에 개인 윤리만으로는 해결하는 데 한계가 있다.</p>',
+          options: [
+            '사회 문제는 개인의 도덕성 함양만으로 충분히 해결할 수 있다.',
+            '사회 정의를 실현하려면 개인 윤리적 방법과 정치적 강제력을 동원하는 사회 윤리적 방법이 모두 필요하다.',
+            '집단의 도덕성은 그 집단에 속한 개인의 도덕성보다 언제나 높다.',
+            '집단 간의 갈등은 개인의 양심과 이타성만으로 해결해야 한다.',
+            '사회 구조와 제도의 개선은 사회 정의 실현과 관련이 없다.'
+          ],
+          answer: 1,
+          explain: '정답 ② 제시문은 {니부어}의 주장이다. 니부어는 도덕적인 개인도 [[집단]]에 소속되면 비도덕적으로 행동하기 쉬우므로, 양심과 이타성을 강조하는 개인 윤리적 방법과 정치적 강제력을 동원하는 사회 윤리적 방법이 모두 필요하다고 보았다.\n①, ④ 개인 윤리만으로는 한계가 있다고 보았다. ③ 개인이 집단에 속하면 오히려 비도덕적으로 행동하기 쉽다고 보았다. ⑤ 사회 윤리는 사회 구조와 [[제도]]의 개선에 초점을 둔다.'
+        },
+        {
+          q: '다음은 분배적 정의의 기준 (가)의 장점과 단점이다. (가)에 해당하는 것은?',
+          box: '<p><b>(가)의 장점</b><br>• 객관적인 평가가 쉽다.<br>• 성취동기 및 생산성 향상에 효과적이다.</p>' +
+               '<p><b>(가)의 단점</b><br>• 사회적 약자를 배려하기 힘들다.<br>• 서로 다른 분야의 성과는 비교·평가하기 어렵다.</p>',
+          options: ['절대적 평등', '능력', '노력', '업적', '필요'],
+          answer: 3,
+          explain: '정답 ④ 업적에 따른 분배는 객관적인 평가가 쉽고 성취동기와 생산성 향상에 효과적이지만, 업적이 없는 사회적 약자를 배려하기 힘들고 서로 다른 분야의 업적은 평가가 어렵다.\n① 절대적 평등: 개인 간의 정당한 차이를 간과한다. ② 능력: 선천적·환경적 우연성이 작용하고 평가 기준이 불확실하다. ③ 노력: 객관적으로 평가하기 ‘어렵다’. ⑤ 필요: 사회적 약자의 인간다운 삶을 보장할 수 있다는 것이 장점이다.'
+        },
+        {
+          q: '다음 글의 밑줄 친 ㉠에 대한 설명으로 옳은 것은?',
+          box: '<p>롤스는 정의의 본질을 공정성으로 해석하면서 절차의 공정성을 강조하였다. 그는 정의의 원칙을 합의하기 위한 공정한 절차로서 <span class="u">㉠ 원초적 입장</span>이라는 가상적 계약 상황을 설정하였다.</p>',
+          options: [
+            '계약 당사자들은 자신의 재능, 출신, 성별, 사회적 상황 등을 알지 못하는 무지의 베일을 쓰고 있다.',
+            '계약 당사자들은 타인의 이익에 깊은 관심을 갖고 이타적으로 판단한다.',
+            '계약 당사자들은 자신이 사회적 약자가 될 위험을 무릅쓰고 최대의 이익을 얻으려 한다.',
+            '무지의 베일은 선천적·환경적 우연성이 정의의 원칙에 반영되도록 하기 위해 설정되었다.',
+            '계약 당사자들은 개인의 소유권만을 절대적으로 보장하는 원칙에 합의한다.'
+          ],
+          answer: 0,
+          explain: '정답 ① 원초적 입장에서 각 개인은 자신의 재능, 출신, 성별, 사회적 상황 등을 알지 못하는 무지의 베일을 쓰고 있다.\n② 타인의 이익에는 무관심하고 자신의 이익을 합리적으로 추구한다. ③ 사회적 약자가 되는 위험한 상황을 ‘회피’하려 한다. ④ 무지의 베일은 우연성의 개입을 ‘차단’하기 위한 것이다. ⑤ 평등한 자유의 원칙, 차등의 원칙, [[기회균등]]의 원칙에 합의한다. 소유권 보장을 정의로 보는 것은 {노직}이다.'
+        },
+        {
+          q: '갑, 을 사상가의 입장에 대한 설명으로 옳은 것은?',
+          box: spk('갑', '사회적·경제적 불평등은 최소 수혜자에게 최대의 이익이 보장되고, 불평등의 계기가 되는 사회적 지위가 모든 사람에게 개방될 때 정당화될 수 있다.') +
+               spk('을', '재화의 취득과 양도의 절차가 정당하다면 그 소유물에 대해 개인은 절대적인 권리를 갖는다. 국가는 개인의 소유를 절도·사기로부터 보호하고 국방을 담당하는 역할 정도만 해야 한다.'),
+          options: [
+            '갑은 모든 사회적·경제적 불평등이 정의롭지 않다고 본다.',
+            '을은 국가가 복지를 위해 세금을 거두어 적극적으로 재분배해야 한다고 본다.',
+            '갑은 정의의 원칙들이 충돌하면 차등의 원칙이 평등한 자유의 원칙보다 우선한다고 본다.',
+            '을은 취득과 양도의 과정에서 부정의가 발생하더라도 이를 교정할 필요가 없다고 본다.',
+            '을과 달리 갑은 개인이 지닌 재능의 분포를 사회의 공동 자산으로 간주한다.'
+          ],
+          answer: 4,
+          explain: '정답 ⑤ 갑은 {롤스}, 을은 {노직}이다. 롤스는 무지의 베일을 통해 우연성의 개입을 차단하고, 개인이 지닌 재능의 분포 상황을 사회의 공동 자산으로 간주한다.\n① 롤스는 차등의 원칙과 기회균등의 원칙을 만족하는 불평등은 정당하다고 본다. ② 노직은 [[최소]] 국가론을 주장하며 개인의 [[소유권]] 보장을 정의로 본다. ③ 롤스는 제1원칙(평등한 자유의 원칙)이 우선한다고 본다. ④ 노직의 교정의 원칙은 부정의가 발생하면 이를 교정해야 한다는 것이다.'
+        },
+        {
+          q: '소수자 우대 정책에 대한 옳은 설명만을 〈보기〉에서 있는 대로 고른 것은?',
+          box: bogi([
+            'ㄱ. 소수자란 집단 구성원의 수가 적은 집단에 속한 사람만을 말한다.',
+            'ㄴ. 사회통합 전형, 비례 대표 의원 여성 할당제, 장애인 의무 고용제 등이 해당한다.',
+            'ㄷ. 찬성하는 사람들은 사회적 지위를 얻을 기회를 제공하여 실질적 평등을 이룰 수 있다고 본다.',
+            'ㄹ. 다른 집단이 부당하게 불이익을 받는 역차별이 발생할 수 있다는 비판을 받는다.'
+          ]),
+          options: ['ㄱ, ㄴ', 'ㄱ, ㄷ', 'ㄴ, ㄷ, ㄹ', 'ㄱ, ㄴ, ㄹ', 'ㄱ, ㄴ, ㄷ, ㄹ'],
+          answer: 2,
+          explain: '정답 ③ (ㄴ, ㄷ, ㄹ) 소수자 우대 정책은 차별로 인한 불이익을 보상해 주기 위해 소수자에게 혜택을 주는 정책으로, 실질적 평등을 이룰 수 있다는 의의가 있지만 다른 집단이 부당하게 불이익을 받는 [[역차별]]이 생길 수 있다.\nㄱ. 소수자란 집단 구성원의 ‘수와 관계없이’ 차별받는 집단에 속해 있는 사람을 말한다.'
+        },
+        {
+          q: '처벌에 대한 갑, 을의 관점을 바르게 설명한 것은?',
+          box: spk('갑', '이성적이고 자율적인 존재인 인간은 자신의 행위에 책임을 져야 한다. 그러므로 범죄 행위에 대한 대가로 응분의 처벌을 받는 것이 마땅하다.') +
+               spk('을', '처벌 그 자체는 고통을 증진하기 때문에 악하다고 볼 수 있다. 그러나 처벌을 통해 사회적 이익이 증진되기 때문에 처벌은 사회에 필요한 악이다.'),
+          options: [
+            '갑은 처벌을 범죄 예방과 범죄자 교화를 통해 사회의 이익을 증진하는 수단으로 본다.',
+            '을은 처벌을 범죄 행위에 상응하는 보복을 가하는 것으로 본다.',
+            '갑은 범죄 예방을 처벌의 가장 중요한 목적으로 여긴다.',
+            '을의 관점은 범죄 예방과 범죄자들의 교화를 소홀히 한다는 비판을 받는다.',
+            '을의 관점은 사회적 이익을 최우선으로 여겨 인간 존엄성을 훼손할 수 있다는 비판을 받는다.'
+          ],
+          answer: 4,
+          explain: '정답 ⑤ 갑은 응보주의({칸트}), 을은 [[공리주의]]({벤담})이다. 공리주의 관점은 사회적 이익을 최우선으로 여겨 [[인간 존엄성]]을 훼손할 수 있다는 비판을 받는다.\n①, ③ 처벌을 사회의 이익을 증진하는 수단으로 보는 것은 공리주의(을)이다. ② 처벌을 범죄에 상응하는 [[보복]]으로 보는 것은 응보주의(갑)이다. ④ 범죄 예방과 [[교화]]를 소홀히 한다는 비판은 응보주의(갑)가 받는다.'
+        },
+        {
+          q: '사형 제도에 대한 갑, 을 사상가의 입장으로 옳은 것은?',
+          box: spk('갑', '“시민 사회가 모든 구성원의 동의로써 해체될 때조차도 감옥에 있는 마지막 살인자는 반드시 처형되어야 한다.”') +
+               spk('을', '“인간의 정신에 가장 큰 영향을 미치는 것은 고통의 강렬함이 아니라 고통이 지속되는 정도다. … 범죄자의 죽음은 끔찍하지만 순간적인 광경에 지나지 않는다.”'),
+          options: [
+            '갑: 형벌은 다른 선을 촉진하기 위한 수단이 아니라, 범죄를 저질렀다는 이유만으로 부과되어야 한다.',
+            '을: 사형은 한순간에 강렬한 인상을 주므로 종신 노역형보다 범죄 예방에 효과적이다.',
+            '갑: 사형 이외의 형벌로도 살인죄에 대한 정의를 충분히 실현할 수 있다.',
+            '을: 사회 계약을 맺을 때 시민은 자신의 생명을 빼앗을 권능을 국가에 양도한다.',
+            '갑, 을: 사회 전체의 이익을 기준으로 사형 제도의 존폐를 판단해야 한다.'
+          ],
+          answer: 0,
+          explain: '정답 ① 갑은 {칸트}(『윤리 형이상학』), 을은 {베카리아}(『범죄와 형벌』)이다. 칸트는 형벌이 다른 선을 촉진하기 위한 수단이 아니라 범죄를 저질렀다는 오직 그 이유만으로 부과되어야 한다고 본다.\n② 베카리아는 오랫동안 고통의 본보기가 되는 종신 노역형이 사형보다 범죄 예방에 효과적이라고 본다. ③ 칸트는 [[동등성]]의 원리에 따라 사형 이외의 형벌은 정의에 부합하지 않는다고 본다. ④ 베카리아는 자신의 생명을 빼앗을 권능을 타인에게 양도할 자는 없다고 본다. ⑤ 공리주의 관점은 베카리아에게만 해당한다.'
+        },
+        {
+          q: '갑, 을은 모두 사회 계약의 관점에서 사형 제도를 바라본다. 갑, 을의 입장에 대한 설명으로 옳은 것은?',
+          box: spk('갑', '타인을 희생하여 생존하려는 살인자는 마땅히 자신의 생명을 희생해야 한다. 법을 집행할 때 살인자는 시민이라기보다는 적으로서 간주해야 하며, 추방에 의해서나 죽음에 의해 국가로부터 분리되어야 한다.') +
+               spk('을', '“한 국민의 죽음은 한 가지 경우를 제외하고는 필연적일 수가 없다. 그가 자유를 박탈당하더라도 국가의 안전을 위협할 만한 충분한 힘과 조직을 보유하고 있다는 사실이 명백한 경우다. 그러나 평온한 시대에 법의 지배를 받는 정부에서는 어떤 이유로든 국민의 생명을 빼앗을 수 없다.”'),
+          options: [
+            '갑은 법을 집행할 때 살인자도 시민으로 대우해야 한다고 본다.',
+            '을은 어떠한 경우에도 국민의 죽음이 필연적일 수는 없다고 본다.',
+            '갑은 국가의 보존과 살인자의 보존은 양립할 수 없다고 본다.',
+            '을은 사회 계약의 목적이 계약자의 생명 보존에 있지 않다고 본다.',
+            '갑과 을은 모두 사형 제도에 찬성한다.'
+          ],
+          answer: 2,
+          explain: '정답 ③ 갑은 {루소}, 을은 {베카리아}이다. 루소는 국가의 보존이 살인자의 보존과 양립할 수 없으므로 살인자를 사형에 처하는 것이 정당하다고 본다.\n① 루소는 살인자를 시민이 아니라 ‘적’으로 간주해야 한다고 본다. ② 베카리아는 국가의 안전을 위협할 만한 힘과 조직을 가진 경우라는 ‘한 가지 예외’를 인정한다. ④ 베카리아는 사회 계약의 목적이 계약자의 생명 보존이라고 본다. ⑤ 루소는 찬성, 베카리아는 반대한다.'
+        },
+        {
+          q: '사형 제도 반대 논거로 옳은 것만을 〈보기〉에서 있는 대로 고른 것은?',
+          box: bogi([
+            'ㄱ. 오판에 의한 사형의 경우 원상 복귀가 불가능하다.',
+            'ㄴ. 가해자의 생명을 피해자의 생명보다 중시하는 것은 평등의 논리에 어긋난다.',
+            'ㄷ. 형벌의 목적인 교화와 개선에 부합하지 않는다.',
+            'ㄹ. 정치적 반대 세력을 제거하는 수단으로 악용될 가능성이 있다.'
+          ]),
+          options: ['ㄱ, ㄴ', 'ㄴ, ㄷ', 'ㄱ, ㄴ, ㄷ', 'ㄱ, ㄷ, ㄹ', 'ㄴ, ㄷ, ㄹ'],
+          answer: 3,
+          explain: '정답 ④ (ㄱ, ㄷ, ㄹ) 오판 시 원상 복귀 불가능, 교화와 개선이라는 형벌 목적에 부합하지 않음, 정치적 악용 가능성은 모두 사형 제도 반대 논거이다.\nㄴ. ‘가해자의 생명을 피해자의 생명보다 중시하는 것은 평등의 논리에 어긋난다’는 사형 제도 ‘찬성’ 논거이다.'
+        },
+        {
+          q: '다음 글의 밑줄 친 ㉠에 대한 설명으로 가장 적절한 것은?',
+          box: '<p>1972년 캐나다 엘마이라에서 10대 두 명이 이웃 주민들의 재산에 피해를 입히는 범죄를 저질렀다. 판사는 가해자들에게 피해자를 직접 찾아가서 그들의 고통을 인지하고 용서를 구할 것을 명령하였다. 가해자들은 피해자들의 집을 일일이 찾아다니며 진심 어린 사과와 현금 배상 등을 하였다. 이처럼 피해자의 피해가 회복되는 것에 목표를 둔 정의를 <span class="u">㉠ 회복적 정의</span>라고 한다.</p>',
+          options: [
+            '가해자를 어떻게 처벌할 것인지에 가장 큰 초점을 맞춘다.',
+            '가해자가 자신의 행동으로 발생한 피해를 직시하고, 그 피해에 대해 자발적으로 책임을 느끼도록 돕는다.',
+            '범죄 행위에 상응하는 보복을 가하는 것을 가장 중요한 목표로 삼는다.',
+            '피해자가 입은 피해보다 국가의 법질서가 입은 손해를 바로잡는 데 중점을 둔다.',
+            '우리나라에서는 아직 소개되거나 시도된 적이 없다.'
+          ],
+          answer: 1,
+          explain: '정답 ② 회복적 정의는 가해자가 자신의 행동으로 발생하는 피해와 영향을 직시하도록 돕고, 그 피해에 대해 자발적으로 책임을 느끼도록 하는 것이다.\n①, ③ 가해자 처벌과 보복에 초점을 맞추는 것은 응보적 정의이다. ④ 회복적 정의는 범죄의 ‘피해’를 바로잡는 것에 초점을 맞춘다. ⑤ 우리나라도 2006년부터 소년 사건에 회복적 대화 모임을 시도하여 화해 권고 제도가 생겼다.'
+        }
+      ]
+    }
+  };
+  var SET_ORDER = ['civic', 'justice'];
+
+  var state = {
+    screen: 'setup', // setup | quiz | result
+    setKey: 'civic',
+    questions: [],
+    answers: [],
+    current: 0,
+    showPassage: false
+  };
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  /* [[단어]] → 빨간 굵은 글씨, {이름} → 사상가 고정 색, \n → 줄바꿈 */
+  function rich(s){
+    return escapeHtml(s)
+      .replace(/\[\[(.+?)\]\]/g, '<b class="key">$1</b>')
+      .replace(/\{([^{}]+)\}/g, function(m, name){
+        var v = THINKER_VAR[name];
+        return v ? '<span class="who" style="color:var(--c-' + v + ')">' + name + '</span>' : m;
+      })
+      .replace(/\n/g, '<br>');
+  }
+
+  function passageHtml(){
+    return PASSAGES[state.setKey].map(function(b){
+      return b[0] === 'h' ? '<h4>' + escapeHtml(b[1]) + '</h4>' : '<p>' + rich(b[1]) + '</p>';
+    }).join('');
+  }
+
+  function startQuiz(){
+    state.questions = SETS[state.setKey].questions;
+    state.answers = new Array(state.questions.length).fill(null);
+    state.current = 0;
+    state.showPassage = false;
+    state.screen = 'quiz';
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function selectOption(i){
+    if (state.answers[state.current] !== null) return;
+    state.answers[state.current] = i;
+    render();
+  }
+  function goPrev(){
+    if (state.current > 0){ state.current--; render(); window.scrollTo(0, 0); }
+  }
+  function goNext(){
+    if (state.current < state.questions.length - 1){
+      state.current++;
+      render();
+    } else {
+      state.screen = 'result';
+      render();
+    }
+    window.scrollTo(0, 0);
+  }
+  function backToSetup(){
+    state.questions = [];
+    state.answers = [];
+    state.current = 0;
+    state.screen = 'setup';
+    render();
+    window.scrollTo(0, 0);
+  }
+  function retrySameQuiz(){
+    startQuiz();
+  }
+  function togglePassage(){
+    state.showPassage = !state.showPassage;
+    render();
+  }
+
+  function renderSetupScreen(){
+    var setRow = SET_ORDER.map(function(k){
+      var s = SETS[k];
+      return '<button type="button" class="diff-pill' + (state.setKey === k ? ' active' : '') + '" data-set="' + k + '">' +
+        '<small>' + s.code + '</small>' + escapeHtml(s.name) + '</button>';
+    }).join('');
+
+    app.innerHTML =
+      '<p class="eyebrow">' + escapeHtml(SUBTITLE) + ' · ' + escapeHtml(UNIT) + '</p>' +
+      '<h1 class="title">「' + escapeHtml(TITLE) + '」 퀴즈</h1>' +
+      '<p class="lede">단원을 골라서 풀어보세요. 파이팅!</p>' +
+      '<div class="card">' +
+        '<div class="field-block">' +
+          '<label class="field-label">단원 (10문제 · 5지선다)</label>' +
+          '<div class="diff-row" id="set-row">' + setRow + '</div>' +
+          '<p class="set-desc" id="set-desc">' + escapeHtml(SETS[state.setKey].desc) + '</p>' +
+        '</div>' +
+        '<button type="button" class="btn btn-primary" id="generate-btn">퀴즈 시작하기</button>' +
+      '</div>' +
+      '<p class="signature">' + escapeHtml(SIGNATURE) + '</p>';
+
+    var setRowEl = document.getElementById('set-row');
+    setRowEl.addEventListener('click', function(ev){
+      var btn = ev.target.closest('.diff-pill');
+      if (!btn) return;
+      state.setKey = btn.getAttribute('data-set');
+      setRowEl.querySelectorAll('.diff-pill').forEach(function(p){
+        p.classList.toggle('active', p === btn);
+      });
+      document.getElementById('set-desc').textContent = SETS[state.setKey].desc;
+    });
+    document.getElementById('generate-btn').addEventListener('click', function(){
+      startQuiz();
+    });
+  }
+
+  function renderPassageToggle(){
+    return '<div class="quiz-passage-wrap">' +
+      '<button type="button" class="passage-toggle-btn" id="passage-toggle-btn">' + (state.showPassage ? '교과서 접기' : '교과서 보기') + '</button>' +
+      (state.showPassage ? '<div class="passage-box expanded" style="margin-top:10px;">' + passageHtml() + '</div>' : '') +
+    '</div>';
+  }
+
+  function setTag(){
+    var s = SETS[state.setKey];
+    return s.code + ' ' + s.name;
+  }
+
+  function renderQuizScreen(){
+    var total = state.questions.length;
+    var q = state.questions[state.current];
+    var selected = state.answers[state.current];
+    var answered = selected !== null;
+    var isLast = state.current === total - 1;
+    var pct = Math.round(((state.current) / total) * 100);
+    var isCorrect = answered && selected === q.answer;
+
+    var optionsHtml = q.options.map(function(opt, i){
+      var cls = 'option';
+      if (answered){
+        if (i === q.answer) cls += ' correct';
+        else if (i === selected) cls += ' wrong';
+      } else if (selected === i){
+        cls += ' selected';
+      }
+      return '<button type="button" class="' + cls + '" data-opt="' + i + '"' + (answered ? ' disabled' : '') + '>' +
+        '<span class="option-mark">' + MARKS[i] + '</span>' +
+        '<span>' + escapeHtml(opt) + '</span>' +
+      '</button>';
+    }).join('');
+
+    var feedbackHtml = answered
+      ? '<div class="feedback-box ' + (isCorrect ? 'correct' : 'wrong') + '">' +
+          '<p class="feedback-label ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '정답이에요!' : '오답이에요') + '</p>' +
+          '<p class="feedback-explain">' + rich(q.explain) + '</p>' +
+        '</div>'
+      : '';
+
+    app.innerHTML =
+      '<div class="card">' +
+        '<div class="progress-row">' +
+          '<span class="progress-label">질문 ' + (state.current + 1) + ' / ' + total + '</span>' +
+          '<span class="diff-tag">' + escapeHtml(setTag()) + '</span>' +
+        '</div>' +
+        '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+        renderPassageToggle() +
+        '<p class="question-text">' + escapeHtml(q.q) + '</p>' +
+        (q.box ? '<div class="stim">' + q.box + '</div>' : '') +
+        '<div class="options">' + optionsHtml + '</div>' +
+        feedbackHtml +
+        '<div class="nav-row">' +
+          '<button type="button" class="btn btn-ghost" id="prev-btn"' + (state.current === 0 ? ' disabled' : '') + '>이전</button>' +
+          '<button type="button" class="btn btn-primary" id="next-btn"' + (answered ? '' : ' disabled') + '>' + (isLast ? '결과 보기' : '다음 문제') + '</button>' +
+        '</div>' +
+      '</div>';
+
+    if (!answered){
+      app.querySelectorAll('.option').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          selectOption(parseInt(btn.getAttribute('data-opt'), 10));
+        });
+      });
+    }
+    document.getElementById('passage-toggle-btn').addEventListener('click', togglePassage);
+    document.getElementById('prev-btn').addEventListener('click', goPrev);
+    document.getElementById('next-btn').addEventListener('click', goNext);
+  }
+
+  function renderResultScreen(){
+    var total = state.questions.length;
+    var score = 0;
+    state.questions.forEach(function(q, i){
+      if (state.answers[i] === q.answer) score++;
+    });
+    var tier = score >= Math.ceil(total * 0.8) ? 'tier-good' : (score <= Math.floor(total * 0.4) ? 'tier-bad' : 'tier-mid');
+    var pctText = Math.round((score / total) * 100) + '점';
+
+    var items = state.questions.map(function(q, i){
+      var mine = state.answers[i];
+      var correct = mine === q.answer;
+      return '<div class="review-item ' + (correct ? 'correct' : 'wrong') + '">' +
+        '<div class="review-head">' +
+          '<span class="review-index">Q' + (i + 1) + '</span>' +
+          '<span class="review-q">' + escapeHtml(q.q) + '</span>' +
+        '</div>' +
+        '<span class="review-chip ' + (correct ? 'correct' : 'wrong') + '">' + (correct ? '정답' : '오답') + '</span>' +
+        (q.box ? '<details class="review-stim"><summary>제시문 다시 보기</summary><div class="stim">' + q.box + '</div></details>' : '') +
+        '<div class="review-answers">' +
+          '내 답: <b>' + CIRCLED[mine] + ' ' + escapeHtml(q.options[mine]) + '</b>' +
+          (correct ? '' : '<br>정답: <b>' + CIRCLED[q.answer] + ' ' + escapeHtml(q.options[q.answer]) + '</b>') +
+        '</div>' +
+        '<p class="review-explain"><b>해설</b> ' + rich(q.explain) + '</p>' +
+      '</div>';
+    }).join('');
+
+    var encourageText = score === total ? '참 잘했어요!'
+      : tier === 'tier-good' ? '잘했어요! 틀린 문제만 다시 확인해볼까요?'
+      : tier === 'tier-mid' ? '좋아요! 틀린 문제를 다시 살펴봐요.'
+      : '한 번 더 도전해봐요!';
+    var perfectHtml = '<p class="perfect-badge' + (score === total ? '' : ' encourage') + '">' + encourageText + '</p>';
+
+    app.innerHTML =
+      '<p class="eyebrow">채점 결과 · ' + escapeHtml(setTag()) + '</p>' +
+      '<h1 class="title">「' + escapeHtml(TITLE) + '」 퀴즈 결과</h1>' +
+      '<div class="card">' +
+        '<div class="score-tile">' +
+          '<p class="score-number ' + tier + '">' + score + '/' + total + '</p>' +
+          '<p class="score-caption">' + total + '문제 중 ' + score + '개 정답 · ' + pctText + '</p>' +
+          perfectHtml +
+        '</div>' +
+      '</div>' +
+      '<div class="card" style="margin-top:16px;">' + renderPassageToggle() + items + '</div>' +
+      '<div class="btn-row">' +
+        '<button type="button" class="btn btn-primary" id="retry-btn">다시 풀기</button>' +
+        '<button type="button" class="btn btn-ghost" id="reset-btn">단원 다시 선택</button>' +
+      '</div>' +
+      '<p class="signature">' + escapeHtml(SIGNATURE) + '</p>';
+
+    var toggleBtn = document.getElementById('passage-toggle-btn');
+    if (toggleBtn) toggleBtn.addEventListener('click', togglePassage);
+    document.getElementById('retry-btn').addEventListener('click', retrySameQuiz);
+    document.getElementById('reset-btn').addEventListener('click', backToSetup);
+  }
+
+  function suppressHoverUntilMove(){
+    document.body.classList.add('suppress-hover');
+    document.addEventListener('mousemove', function onMove(){
+      document.body.classList.remove('suppress-hover');
+      document.removeEventListener('mousemove', onMove);
+    }, { once: true });
+  }
+
+  function render(){
+    suppressHoverUntilMove();
+    if (state.screen === 'setup') renderSetupScreen();
+    else if (state.screen === 'quiz') renderQuizScreen();
+    else if (state.screen === 'result') renderResultScreen();
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
