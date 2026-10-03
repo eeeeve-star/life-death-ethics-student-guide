@@ -840,7 +840,7 @@
     scorePill.textContent = correct + ' / ' + quiz.length + ' 맞힘';
     if(answered === quiz.length){
       var msg = correct === quiz.length ? '모두 맞혔습니다! 두 사상가의 차이를 정확히 알고 있습니다.'
-        : correct >= 6 ? '잘했습니다! 틀린 문항의 해설을 한 번 더 읽어 봅시다.'
+        : correct >= 4 ? '잘했습니다! 틀린 문항의 해설을 한 번 더 읽어 봅시다.'
         : '비교 표와 흐름도를 다시 보고 한 번 더 도전해 봅시다.';
       resultBox.innerHTML = '<span class="big">' + correct + ' / ' + quiz.length + '</span>' + msg;
       resultBox.classList.add('show');

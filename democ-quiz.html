@@ -933,7 +933,7 @@
     app.innerHTML =
       '<p class="eyebrow">' + escapeHtml(SUBTITLE) + ' · ' + escapeHtml(UNIT) + '</p>' +
       '<h1 class="title">「' + escapeHtml(TITLE) + '」 퀴즈</h1>' +
-      '<p class="lede">단원을 골라서 풀어보세요. 파이팅!</p>' +
+      '<p class="lede">단원을 골라 풀어 봅시다. 파이팅!</p>' +
       '<div class="card">' +
         '<div class="field-block">' +
           '<label class="field-label">단원 (10문제 · 5지선다)</label>' +
@@ -996,7 +996,7 @@
 
     var feedbackHtml = answered
       ? '<div class="feedback-box ' + (isCorrect ? 'correct' : 'wrong') + '">' +
-          '<p class="feedback-label ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '정답이에요!' : '오답이에요') + '</p>' +
+          '<p class="feedback-label ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '정답입니다!' : '오답입니다') + '</p>' +
           '<p class="feedback-explain">' + rich(q.explain) + '</p>' +
         '</div>'
       : '';

@@ -646,13 +646,13 @@
       '<div class="fade-in">' +
       '<p class="eyebrow">현대사회와 윤리 · Ⅳ. 민주시민과 윤리</p>' +
       '<h1 class="title">누가 한 말일까?</h1>' +
-      '<p class="lede">교과서에 나온 사상가들의 말을 카드로 모았어요. 말을 읽고 누가 한 말인지 맞혀 보세요. 맞힌 카드는 <b>사상가 도감</b>에 차곡차곡 모입니다.</p>' +
+      '<p class="lede">교과서에 나온 사상가들의 말을 읽고 누가 한 말인지 맞혀 봅시다. 맞힌 카드는 <b>사상가 도감</b>에 모입니다.</p>' +
 
       '<div class="card">' +
         '<span class="section-label">① 범위 고르기</span>' +
         '<div class="pill-row">' + scopePills + '</div>' +
         '<div class="roster" aria-label="등장 사상가">' + roster + '</div>' +
-        '<p class="hint">사상가마다 고유한 색이 있어요. 색을 기억해 두면 도감에서 찾기 쉬워요.</p>' +
+        '<p class="hint">사상가마다 고유한 색이 있습니다.</p>' +
       '</div>' +
 
       '<div class="card">' +
@@ -660,16 +660,16 @@
         '<div class="modes">' +
           '<button type="button" class="mode-btn" data-act="memory">' +
             '<span class="mode-ico" style="background:color-mix(in srgb, #5B8DEF 20%, var(--surface));color:#4A7BE0">' + ICON_MEM + '</span>' +
-            '<span><b class="mt">짝 맞추기</b><span class="desc">사상가 카드와 말 카드를 뒤집어 짝을 찾아요. 시도 횟수와 시간을 재요.</span></span><span class="chev" aria-hidden="true">›</span>' +
+            '<span><b class="mt">짝 맞추기</b><span class="desc">사상가 카드와 말 카드를 뒤집어 짝 찾기 · 시도 횟수와 시간 기록</span></span><span class="chev" aria-hidden="true">›</span>' +
           '</button>' +
           '<div class="pill-row" style="padding:0 2px">' + pairPills + '</div>' +
           '<button type="button" class="mode-btn" data-act="quiz">' +
             '<span class="mode-ico" style="background:color-mix(in srgb, #E07B12 20%, var(--surface));color:#D9730F">' + ICON_QUIZ + '</span>' +
-            '<span><b class="mt">스피드 퀴즈</b><span class="desc">말 카드 10장! 빨리, 연속으로 맞힐수록 점수가 올라가요.</span></span><span class="chev" aria-hidden="true">›</span>' +
+            '<span><b class="mt">스피드 퀴즈</b><span class="desc">말 카드 10장 · 빨리, 연속으로 맞힐수록 높은 점수</span></span><span class="chev" aria-hidden="true">›</span>' +
           '</button>' +
           '<button type="button" class="mode-btn" data-act="dex">' +
             '<span class="mode-ico" style="background:color-mix(in srgb, #2BB3A3 20%, var(--surface));color:#1F9A8C">' + ICON_DEX + '</span>' +
-            '<span><b class="mt">사상가 도감</b><span class="desc">지금까지 맞힌 말 카드 <b>' + store.got.length + '</b> / ' + CARDS.length + '장을 사상가별로 복습해요.</span></span><span class="chev" aria-hidden="true">›</span>' +
+            '<span><b class="mt">사상가 도감</b><span class="desc">지금까지 맞힌 말 카드 <b>' + store.got.length + '</b> / ' + CARDS.length + '장을 사상가별로 복습</span></span><span class="chev" aria-hidden="true">›</span>' +
           '</button>' +
         '</div>' +
       '</div>' +
@@ -715,7 +715,7 @@
   function renderMemory(){
     app.innerHTML = topbar(true) +
       '<p class="eyebrow">짝 맞추기 · ' + SCOPES[M.scope].label + ' ' + SCOPES[M.scope].name + '</p>' +
-      '<h2 class="sub">사상가와 그 사람의 말을 짝지어요</h2>' +
+      '<h2 class="sub">사상가와 그 사람의 말 짝짓기</h2>' +
       '<p class="lede" style="margin-bottom:14px">카드 두 장을 뒤집어 <b>사상가 카드 + 말 카드</b>가 맞으면 짝 성공!</p>' +
       '<div class="stats">' +
         '<div class="stat"><small>찾은 짝</small><strong id="m-found">' + M.matched + '/' + M.pairs + '</strong></div>' +
@@ -736,9 +736,9 @@
       return '<p class="r-label">펼친 말 카드</p>' + openQ.map(function(t){ return '<p class="r-quote">“' + rich(t.card.t) + '”</p>'; }).join('');
     }
     if(M.last && M.last.type === 'no'){
-      return '<p class="r-label" style="color:var(--bad)">짝이 아니에요. 카드 위치를 기억해 두세요!</p><p class="r-quote" style="font-size:15px;color:var(--ink-soft)">사상가 카드와 말 카드를 한 장씩 뒤집어야 짝이 될 수 있어요.</p>';
+      return '<p class="r-label" style="color:var(--bad)">짝이 아닙니다.</p><p class="r-quote" style="font-size:15px;color:var(--ink-soft)">사상가 카드와 말 카드를 한 장씩 뒤집어야 짝이 됩니다.</p>';
     }
-    return '<p class="r-label">말 카드를 뒤집으면 여기에 전체 문장이 보여요.</p><p class="r-quote" style="font-size:15px;color:var(--ink-soft)">카드 글씨가 작으면 여기서 읽으세요.</p>';
+    return '<p class="r-label">펼친 말 카드의 전체 문장</p>';
   }
   function updateTile(i){
     var el = app.querySelector('.tile[data-i="' + i + '"]');
@@ -813,10 +813,10 @@
   function renderMemoryEnd(){
     clearTimers();
     var ratio = M.tries / M.pairs, msg;
-    if(ratio <= 1.5) msg = '와, 기억력 천재! 사상가들의 말을 거의 한 번에 찾아냈어요. 이제 스피드 퀴즈로 실력을 뽐내 볼까요?';
-    else if(ratio <= 2.2) msg = '아주 잘했어요! 사상가와 그 사람의 핵심 주장이 머릿속에서 잘 연결되고 있어요.';
-    else if(ratio <= 3) msg = '좋아요, 끝까지 다 찾았어요! 한 번 더 하면 시도 횟수가 확 줄어들 거예요.';
-    else msg = '끝까지 해낸 것이 대단해요! 아래에서 짝지은 말을 한 번 더 읽고 다시 도전해 봐요.';
+    if(ratio <= 1.5) msg = '훌륭합니다! 사상가들의 말을 거의 한 번에 찾아냈습니다.';
+    else if(ratio <= 2.2) msg = '잘했습니다! 사상가와 그 사람의 핵심 주장을 잘 연결하고 있습니다.';
+    else if(ratio <= 3) msg = '모든 짝을 찾았습니다! 한 번 더 하면 시도 횟수가 줄어듭니다.';
+    else msg = '끝까지 해냈습니다! 짝지은 말을 한 번 더 읽고 다시 도전해 봅시다.';
     var review = M.log.map(function(c){
       return '<div class="review-item tc" ' + tcStyle(c.w) + '><div class="ri-head">' + avatar(c.w, 28) + esc(T[c.w].name) + '</div><p>“' + rich(c.t) + '”</p><p class="src">출처: ' + esc(srcLine(c)) + '</p></div>';
     }).join('');
@@ -824,7 +824,7 @@
       '<div class="card"><div class="score-tile">' +
         '<p class="eyebrow">짝 맞추기 완료 · ' + SCOPES[M.scope].label + '</p>' +
         '<p class="score-number">' + M.tries + '번</p>' +
-        '<p class="score-caption">' + M.pairs + '쌍을 찾는 데 <b>' + M.tries + '번</b> 시도, <b>' + fmtTime(M.sec) + '</b> 걸렸어요.</p>' +
+        '<p class="score-caption">' + M.pairs + '쌍을 찾는 데 <b>' + M.tries + '번</b> 시도, <b>' + fmtTime(M.sec) + '</b> 걸렸습니다.</p>' +
         '<div class="cheer">' + msg + '<span class="sig">— ' + SIGN + '</span></div>' +
       '</div>' +
       '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="memory">한 판 더</button><button type="button" class="btn btn-ghost" data-act="dex">도감 보기</button></div></div>' +
@@ -884,9 +884,9 @@
     if(answered){
       var ok = it.pick === c.w;
       fb = '<div class="feedback ' + (ok ? 'correct' : 'wrong') + ' fade-in" role="status">' +
-        '<div class="fb-head">' + avatar(c.w) + '<span class="fb-title ' + (ok ? 'correct' : 'wrong') + '">' + (ok ? '정답! ' : '아쉬워요. 정답은 ') + esc(T[c.w].name) + (ok ? '' : '') + '</span>' +
+        '<div class="fb-head">' + avatar(c.w) + '<span class="fb-title ' + (ok ? 'correct' : 'wrong') + '">' + (ok ? '정답! ' : '오답 · 정답은 ') + esc(T[c.w].name) + (ok ? '' : '') + '</span>' +
         (ok ? '<span class="fb-pts">+' + it.pts + '</span>' : '') + '</div>' +
-        (ok ? '' : '<p class="fb-text"><b>' + esc(T[c.w].name) + '</b>의 핵심 키워드를 기억해 두세요.</p>') +
+        (ok ? '' : '<p class="fb-text"><b>' + esc(T[c.w].name) + '</b>의 핵심 키워드를 기억해 둡시다.</p>') +
         chips(c.w) +
         '<p class="src">출처: ' + esc(srcLine(c)) + '</p>' +
       '</div>' +
@@ -930,10 +930,10 @@
   }
   function renderQuizEnd(){
     var r = Q.right, msg;
-    if(r === QN) msg = '10문제 모두 정답! 사상가 박사 인정합니다. 이 실력이면 단원 평가도 걱정 없어요!';
-    else if(r >= 8) msg = '정말 잘했어요! 틀린 문제의 키워드만 한 번 더 보면 완벽해요.';
-    else if(r >= 5) msg = '절반 이상 맞혔어요, 좋은 출발이에요! 도감에서 사상가별 말을 복습하고 다시 도전해 봐요.';
-    else msg = '괜찮아요, 처음엔 누구나 헷갈려요. 짝 맞추기로 사상가와 말을 먼저 익히고 다시 오세요. 분명 늘어요!';
+    if(r === QN) msg = '10문제를 모두 맞혔습니다!';
+    else if(r >= 8) msg = '잘했습니다! 틀린 문제의 키워드를 한 번 더 확인해 봅시다.';
+    else if(r >= 5) msg = '절반 이상 맞혔습니다! 도감에서 사상가별 말을 복습하고 다시 도전해 봅시다.';
+    else msg = '짝 맞추기로 사상가와 말을 먼저 익히고 다시 도전해 봅시다.';
     var review = Q.items.map(function(it, i){
       var ok = it.pick === it.card.w, c = it.card;
       return '<div class="review-item tc" ' + tcStyle(c.w) + '><div class="ri-head">' + avatar(c.w, 28) + (i + 1) + '. ' + esc(T[c.w].name) +
@@ -982,12 +982,11 @@
     app.innerHTML = topbar(true) + '<div class="fade-in">' +
       '<p class="eyebrow">사상가 도감</p>' +
       '<h2 class="sub">내가 모은 말 카드</h2>' +
-      '<p class="lede" style="margin-bottom:14px">짝 맞추기·스피드 퀴즈에서 맞힌 말 카드가 사상가별로 모여요. <b class="blank">빨간 굵은 글씨</b>는 학습지 빈칸 정답이에요.</p>' +
+      '<p class="lede" style="margin-bottom:14px">짝 맞추기·스피드 퀴즈에서 맞힌 말 카드를 사상가별로 모았습니다. <b class="blank">빨간 굵은 글씨</b>는 학습지 빈칸 정답입니다.</p>' +
       '<div class="card"><div class="dex-total"><div class="dex-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + got + '"><i style="width:' + (got / total * 100) + '%"></i></div><strong>' + got + '/' + total + '</strong></div>' +
-      (got === 0 ? '<p class="hint">아직 모은 카드가 없어요. 게임을 해서 첫 카드를 모아 보세요!</p>' : (got === total ? '<p class="hint" style="color:var(--good);font-weight:700">도감 완성! 모든 말 카드를 모았어요. ' + SIGN + '</p>' : '')) +
+      (got === 0 ? '<p class="hint">아직 모은 카드가 없습니다.</p>' : (got === total ? '<p class="hint" style="color:var(--good);font-weight:700">도감 완성! 모든 말 카드를 모았습니다. ' + SIGN + '</p>' : '')) +
       '</div>' + people +
-      '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="quiz">스피드 퀴즈로 더 모으기</button><button type="button" class="btn btn-ghost" data-act="reset">' + (resetArmed ? '정말 지울까요? 한 번 더 누르기' : '도감 초기화') + '</button></div>' +
-      '<p class="hint" style="text-align:center">도감은 이 기기의 브라우저에만 저장돼요.</p>' +
+      '<div class="btn-row"><button type="button" class="btn btn-primary" data-act="quiz">스피드 퀴즈로 더 모으기</button><button type="button" class="btn btn-ghost" data-act="reset">' + (resetArmed ? '한 번 더 누르면 초기화' : '도감 초기화') + '</button></div>' +
       footer() + '</div>';
   }
 
@@ -1013,7 +1012,7 @@
         break;
       case 'reset':
         if(!resetArmed){ resetArmed = true; renderDex(); }
-        else{ resetArmed = false; store.got = []; save(); renderDex(); toast('도감을 비웠어요.'); }
+        else{ resetArmed = false; store.got = []; save(); renderDex(); toast('도감을 비웠습니다.'); }
         break;
     }
   });
