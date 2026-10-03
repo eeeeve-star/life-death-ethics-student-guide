@@ -1,15 +1,6 @@
 {
   "rewrites": [
     { "source": "/quiz-natural", "destination": "/자연과윤리_형성평가.html" },
-    { "source": "/job-interview-ethics", "destination": "/직업생활과윤리_잡지인터뷰.html" },
-    { "source": "/democ", "destination": "/democ.html" },
-    { "source": "/contract", "destination": "/social-contract.html" },
-    { "source": "/rawls-macintyre", "destination": "/rawls-macintyre.html" },
-    { "source": "/disobey", "destination": "/civil-disobedience.html" },
-    { "source": "/rawls-nozick", "destination": "/rawls-nozick-2.html" },
-    { "source": "/punish", "destination": "/death-penalty.html" },
-    { "source": "/democ-quiz", "destination": "/democ-quiz.html" },
-    { "source": "/crossword", "destination": "/crossword.html" },
-    { "source": "/who-said", "destination": "/who-said.html" }
+    { "source": "/job-interview-ethics", "destination": "/직업생활과윤리_잡지인터뷰.html" }
   ]
 }
